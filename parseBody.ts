@@ -1,4 +1,4 @@
-export async function parseBody(response: Response) {
+export async function parseBody(response: Request | Response) {
   const text = await response.text();
 
   try {

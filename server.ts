@@ -1,18 +1,15 @@
-import type { ParamData } from "npm:path-to-regexp";
-import { match } from "npm:path-to-regexp";
+import { match, ParamData } from "npm:path-to-regexp";
+import { createValidator } from "./createValidator.ts";
 import { otherRouteRegistration } from "./otherRoute.ts";
-import type { RouteRegistration } from "./registerRoute.ts";
+import { parseBody } from "./parseBody.ts";
+import { RouteRegistration } from "./registerRoute.ts";
 import { someRouteRegistration } from "./someRoute.ts";
 
 export function server(
   routeRegistrations: Array<RouteRegistration<any, any, any, any, any>>
 ) {
-  Deno.serve(async (req) => {
-    const url = req.url
-      .replace("http://localhost:8000", "")
-      .replace(/\?.*$/, ""); // TODO needed?
-
-    console.log("HERE", url);
+  Deno.serve(async (request) => {
+    const url = new URL(request.url);
 
     const result = routeRegistrations.reduce(
       (acc, routeRegistration) => {
@@ -24,7 +21,7 @@ export function server(
           routeRegistration.routeDefinition.path
             // TODO copy-pasted
             .replace(/\?.*$/, "")
-        )(url);
+        )(url.pathname);
 
         if (result === false) {
           return acc;
@@ -40,9 +37,7 @@ export function server(
 
     // TODO lint?
     if (result === null) {
-      const body = JSON.stringify({ message: "NOT FOUND" });
-
-      return new Response(body, {
+      return new Response(JSON.stringify({ message: "NOT FOUND" }), {
         status: 404,
         headers: {
           "content-type": "application/json; charset=utf-8",
@@ -50,15 +45,39 @@ export function server(
       });
     }
 
-    const responseBody = await result.routeRegistration.handler(
-      result.params,
-      null,
-      null
+    const queryParams = Object.fromEntries(
+      new URLSearchParams(url.search).entries()
     );
 
-    const body = JSON.stringify(responseBody);
+    const requestBody =
+      result.routeRegistration.routeDefinition.method === "get" // TODO improve
+        ? undefined
+        : await parseBody(request);
 
-    return new Response(body, {
+    const validate = createValidator(result.routeRegistration.routeDefinition);
+
+    const validationResult = validate({
+      params: result.params,
+      query: queryParams,
+      body: requestBody,
+    });
+
+    if (validationResult.type === "error") {
+      return new Response(JSON.stringify(validationResult.error), {
+        status: 403,
+        headers: {
+          "content-type": "application/json; charset=utf-8",
+        },
+      });
+    }
+
+    const responseBody = await result.routeRegistration.handler(
+      validationResult.value.parsedParams,
+      validationResult.value.parsedQuery,
+      validationResult.value.parsedBody
+    );
+
+    return new Response(JSON.stringify(responseBody), {
       status: 200,
       headers: {
         "content-type": "application/json; charset=utf-8",

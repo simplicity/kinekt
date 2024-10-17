@@ -17,10 +17,6 @@ export const otherRouteRegistration = registerRoute(
   (params, query, body) => {
     console.log("other route!");
 
-    console.log(params);
-    console.log(query);
-    console.log(body);
-
     return Promise.resolve({ result: 1234 });
   }
 );

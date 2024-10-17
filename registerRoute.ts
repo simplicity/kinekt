@@ -18,6 +18,7 @@ export type RouteRegistration<
 };
 
 // const validate = createValidator(routeDefinition);
+//
 // async function handle(request: Request) {
 //   const validationResult = validate({
 //     params: null, // TODO how to get params

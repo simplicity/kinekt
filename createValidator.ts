@@ -6,11 +6,18 @@ import type {
   RouteDefinition,
 } from "./types.ts";
 
-type Validator = (options: { params: any; query: any; body: any }) => {
-  parsedParams: any;
-  parsedQuery: any;
-  parsedBody: any;
-};
+export type Result<Value, Error> =
+  | { type: "ok"; value: Value }
+  | { type: "error"; error: Error };
+
+type Validator = (options: { params: any; query: any; body: any }) => Result<
+  {
+    parsedParams: any;
+    parsedQuery: any;
+    parsedBody: any;
+  },
+  Array<{ message: string; issue: ZodIssue }>
+>;
 
 function parseBody<
   Path extends string,
@@ -81,19 +88,22 @@ export function createValidator<
       paramsParseResult.success
     ) {
       return {
-        parsedParams: paramsParseResult.data,
-        parsedQuery: queryParseResult.data,
-        parsedBody: bodyParseResult.data,
+        type: "ok",
+        value: {
+          parsedParams: paramsParseResult.data,
+          parsedQuery: queryParseResult.data,
+          parsedBody: bodyParseResult.data,
+        },
       };
     }
 
-    // TODO avoid throwing errors
-    throw new Error("Validation errors", {
-      cause: [
+    return {
+      type: "error",
+      error: [
         ...extractZodIssues(paramsParseResult, "params"),
         ...extractZodIssues(queryParseResult, "query"),
         ...extractZodIssues(bodyParseResult, "body"),
       ],
-    });
+    };
   };
 }

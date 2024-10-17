@@ -7,7 +7,8 @@ type ResponseBody = { b: string };
 const someRoute = get(
   "/some/:bla/path?abc",
   z.object({ bla: z.string() }),
-  z.object({ abc: z.number() }),
+  // TODO how to handle z.number()? the param will always come as a string, and zod will fail -> we have to auto-transform it
+  z.object({ abc: z.string() }),
   z.custom<ResponseBody>()
 );
 
@@ -15,10 +16,6 @@ export const someRouteRegistration = registerRoute(
   someRoute,
   (params, query, body) => {
     console.log("some route!");
-
-    console.log(params);
-    console.log(query);
-    console.log(body);
 
     return Promise.resolve({ b: "slkdjf" });
   }
