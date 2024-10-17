@@ -1,0 +1,110 @@
+import type { z } from "zod";
+import {
+  type BasePipelineContext,
+  type Middleware,
+} from "../../createPipeline/types";
+import { extractMethod } from "../../helpers/extractMethod";
+import { removeMethod } from "../../helpers/removeMethod";
+import { removeQuery } from "../../helpers/removeQuery";
+import { routeMatchMetadata } from "../../helpers/routeMatch";
+import type {
+  EndpointDeclarationBase,
+  ExtractPathParams,
+  ExtractQueryParams,
+  RouteDefinition,
+  StatusCode,
+} from "../../types";
+import { checkAcceptHeaderMetadata } from "../checkAcceptHeader/helpers/metadata";
+import type { DeserializeContextExtension } from "../deserialize/types";
+import type { WithValidationContextExtension } from "../withValidation";
+import { collectMimeTypes } from "./helpers/collectMimeTypes";
+import { getValidationResult } from "./helpers/getValidationResult";
+import { reply } from "./helpers/reply";
+import type { RouteHandlerCallback } from "./types";
+
+export const validatedEndpoint = <
+  PipelineContext extends BasePipelineContext &
+    DeserializeContextExtension &
+    WithValidationContextExtension,
+  EndpointDeclaration extends EndpointDeclarationBase,
+  PathParams extends ExtractPathParams<EndpointDeclaration>,
+  QueryParams extends ExtractQueryParams<EndpointDeclaration>,
+  ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
+  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
+  ReqB extends z.ZodType,
+  ResB extends { [key: number]: z.ZodType },
+  ResC extends keyof ResB & StatusCode
+>(
+  routeDefinition: RouteDefinition<
+    EndpointDeclaration,
+    PathParams,
+    QueryParams,
+    ReqP,
+    ReqQ,
+    ReqB,
+    ResB
+  >,
+  callback: RouteHandlerCallback<
+    EndpointDeclaration,
+    PathParams,
+    QueryParams,
+    ReqP,
+    ReqQ,
+    ReqB,
+    ResB,
+    ResC,
+    PipelineContext
+  >
+): Middleware<PipelineContext, PipelineContext> => {
+  const middleware: Middleware<PipelineContext, PipelineContext> = async (
+    context
+  ) => {
+    if (context.request.deserializedBody.type === "unset") {
+      return context;
+    }
+
+    const validationResult = await getValidationResult(
+      context.request.deserializedBody.body,
+      context.request.method,
+      routeDefinition,
+      context.request.params,
+      context.request.query
+    );
+
+    if (validationResult.type === "error") {
+      return reply(
+        context,
+        null,
+        validationResult.metadata.validationErrors
+      ) as PipelineContext;
+    }
+
+    const response = await callback({
+      params: validationResult.value.parsedParams,
+      query: validationResult.value.parsedQuery,
+      body: validationResult.value.parsedBody,
+      context,
+    });
+
+    return reply(
+      context,
+      {
+        type: "set",
+        statusCode: response.statusCode,
+        body: response.body,
+        headers: {},
+      },
+      []
+    ) as PipelineContext;
+  };
+
+  const method = extractMethod(routeDefinition.endpointDeclaration);
+  const path = removeQuery(removeMethod(routeDefinition.endpointDeclaration));
+
+  middleware.collectMetadata = () => [
+    routeMatchMetadata([{ method, path }]),
+    checkAcceptHeaderMetadata(collectMimeTypes(routeDefinition.response)),
+  ];
+
+  return middleware;
+};

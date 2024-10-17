@@ -1,0 +1,41 @@
+{
+  "name": "kinekt",
+  "packageManager": "yarn@4.5.0",
+  "version": "0.0.7",
+  "license": "MIT",
+  "main": "./dist/main.mjs",
+  "types": "./dist/pkg/types.d.ts",
+  "exports": {
+    "import": "./dist/main.mjs",
+    "require": "./dist/main.umd.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "package.json",
+    "dist/**/*"
+  ],
+  "scripts": {
+    "watch": "tsc --watch",
+    "build": "rm -rf ./dist && vite build && tsc --project tsconfig.build.json --emitDeclarationOnly",
+    "test": "vitest",
+    "test-coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.12.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/node": "^22.7.4",
+    "@vitest/coverage-v8": "2.1.4",
+    "eslint": "^9.12.0",
+    "typescript": "^5.6.2",
+    "typescript-eslint": "^8.8.0",
+    "vite": "^5.4.8",
+    "vitest": "^2.1.2"
+  },
+  "dependencies": {
+    "@commander-js/extra-typings": "^12.1.0",
+    "commander": "^12.1.0",
+    "zod": "^3.23.8"
+  }
+}

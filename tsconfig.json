@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "outDir": "dist",
+    "declaration": true,
+    "declarationMap": true,
+    "lib": ["ESNext", "dom", "dom.iterable"],
+    "target": "ES6",
+    "moduleResolution": "Bundler",
+    "module": "ESNext"
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"]
+}
