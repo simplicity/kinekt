@@ -1,25 +1,29 @@
 import { z } from "npm:zod";
-import { createClient } from "./createClient.ts";
 import { get } from "./get.ts";
-import { registerEndpoint } from "./registerEndpoint.ts";
+import { registerRoute } from "./registerRoute.ts";
 
 type ResponseBody = { b: string };
 
-const routeDefinition = get(
+const someRoute = get(
   "/some/:bla/path?abc",
   z.object({ bla: z.string() }),
   z.object({ abc: z.number() }),
   z.custom<ResponseBody>()
 );
 
-registerEndpoint(routeDefinition, ({ params, query, body }) => {
-  console.log(params.bla);
-  console.log(query.abc);
-  console.log(body);
+export const someRouteRegistration = registerRoute(
+  someRoute,
+  (params, query, body) => {
+    console.log("some route!");
 
-  return Promise.resolve({ b: "slkdjf" });
-});
+    console.log(params);
+    console.log(query);
+    console.log(body);
 
-const client = createClient(routeDefinition);
+    return Promise.resolve({ b: "slkdjf" });
+  }
+);
 
-client({ bla: "1" }, { abc: 1 }).then((result) => console.log(result.b));
+// const client = createClient(routeDefinition);
+
+// client({ bla: "1" }, { abc: 1 }).then((result) => console.log(result.b));

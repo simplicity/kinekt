@@ -61,11 +61,11 @@ export type RouteHandler<
   ReqQ extends z.ZodType<ExtractQueryParams<Path>>,
   ReqB extends z.ZodType,
   ResB extends z.ZodType
-> = (options: {
-  params: z.infer<ReqP>;
-  query: z.infer<ReqQ>;
-  body: z.infer<ReqB>;
-}) => Promise<z.infer<ResB>>;
+> = (
+  params: z.infer<ReqP>,
+  query: z.infer<ReqQ>,
+  body: z.infer<ReqB>
+) => Promise<z.infer<ResB>>;
 
 export type Client<
   Path extends string,
