@@ -3,7 +3,7 @@ import { z } from "npm:zod";
 import { createClient } from "./src/createClient.ts";
 import { get } from "./src/get.ts";
 import { printResult } from "./src/printResult.ts";
-import { registerRoute } from "./registerRoute.ts";
+import { registerRoute } from "./src/registerRoute.ts";
 
 type ResponseBody = { b: string };
 

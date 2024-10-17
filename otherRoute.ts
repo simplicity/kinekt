@@ -1,6 +1,6 @@
 import { z } from "npm:zod";
 import { get } from "./src/get.ts";
-import { registerRoute } from "./registerRoute.ts";
+import { registerRoute } from "./src/registerRoute.ts";
 
 type ResponseBody = { result: number };
 
