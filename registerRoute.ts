@@ -4,7 +4,7 @@ import type {
   ExtractQueryParams,
   RouteDefinition,
   RouteHandler,
-} from "./types.ts";
+} from "./src/types.ts";
 
 export type RouteRegistration<
   Path extends string,

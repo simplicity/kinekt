@@ -1,8 +1,8 @@
 import type { Command } from "npm:@commander-js/extra-typings";
 import { z } from "npm:zod";
-import { createClient } from "./createClient.ts";
-import { get } from "./get.ts";
-import { printResult } from "./printResult.ts";
+import { createClient } from "./src/createClient.ts";
+import { get } from "./src/get.ts";
+import { printResult } from "./src/printResult.ts";
 import { registerRoute } from "./registerRoute.ts";
 
 type ResponseBody = { b: string };
@@ -18,8 +18,6 @@ const someRoute = get(
 export const someRouteRegistration = registerRoute(
   someRoute,
   (params, query, body) => {
-    console.log("some route!");
-
     return Promise.resolve({ b: "slkdjf" });
   }
 );

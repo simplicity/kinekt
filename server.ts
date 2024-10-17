@@ -1,7 +1,7 @@
 import { match, ParamData } from "npm:path-to-regexp";
-import { createValidator } from "./createValidator.ts";
+import { createValidator } from "./src/createValidator.ts";
 import { otherRouteRegistration } from "./otherRoute.ts";
-import { parseBody } from "./parseBody.ts";
+import { parseBody } from "./src/parseBody.ts";
 import { RouteRegistration } from "./registerRoute.ts";
 import { someRouteRegistration } from "./someRoute.ts";
 
