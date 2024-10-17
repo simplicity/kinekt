@@ -1,5 +1,8 @@
+import type { Command } from "npm:@commander-js/extra-typings";
 import { z } from "npm:zod";
+import { createClient } from "./createClient.ts";
 import { get } from "./get.ts";
+import { printResult } from "./printResult.ts";
 import { registerRoute } from "./registerRoute.ts";
 
 type ResponseBody = { b: string };
@@ -21,6 +24,15 @@ export const someRouteRegistration = registerRoute(
   }
 );
 
-// const client = createClient(routeDefinition);
+const someRouteClient = createClient(someRoute);
 
-// client({ bla: "1" }, { abc: 1 }).then((result) => console.log(result.b));
+export function registerSomeRouteCommand(program: Command) {
+  program
+    .command("some-route")
+    .description("Some route")
+    .requiredOption("--bla <string>", "Bla")
+    .requiredOption("--abc <string>", "Abc")
+    .action(({ bla, abc }) =>
+      someRouteClient({ bla }, { abc }).then(printResult)
+    );
+}

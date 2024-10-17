@@ -19,7 +19,7 @@ export function createClient<
   return async (path, query, body) => {
     const pathString = Object.entries(path).reduce<string>(
       (acc, [key, value]) => acc.replace(`:${key}`, value),
-      routeDefinition.path
+      routeDefinition.path.replace(/\?.*$/, "") // TODO copy-pasted
     );
 
     let queryString = query
@@ -31,11 +31,13 @@ export function createClient<
 
     queryString = queryString === "" ? "" : `?${queryString}`;
 
-    const rootUrl = "some-root-url";
+    const rootUrl = "http://localhost:8000";
 
     const url = `${rootUrl}${pathString}${queryString}`;
 
     // TODO handle errors
+
+    console.log(`calling ${url}`);
 
     const response = await fetch(url, {
       headers: {
