@@ -58,7 +58,8 @@ export function server(
 
     const validationResult = validate({
       params: result.params,
-      query: queryParams,
+      // TODO not great
+      query: Object.values(queryParams).length === 0 ? undefined : queryParams,
       body: requestBody,
     });
 

@@ -21,10 +21,12 @@ export function createClient<
     // - for body, because it might not be possible to declare the whole object in commander
     // - for the case where no typescript is used
 
-    const pathString = Object.entries(path).reduce<string>(
-      (acc, [key, value]) => acc.replace(`:${key}`, value),
-      routeDefinition.path.replace(/\?.*$/, "") // TODO copy-pasted
-    );
+    const pathString = path
+      ? Object.entries(path).reduce<string>(
+          (acc, [key, value]) => acc.replace(`:${key}`, value),
+          routeDefinition.path.replace(/\?.*$/, "") // TODO copy-pasted
+        )
+      : "";
 
     let queryString = query
       ? Object.entries(query)

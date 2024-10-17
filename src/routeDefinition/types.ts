@@ -1,21 +1,22 @@
 import { z } from "npm:zod";
 
-type ExtractParams<Path extends string> =
-  Path extends `:${infer Param}/${infer Rest}`
-    ? { [K in Param | keyof ExtractParams<Rest>]: any }
-    : Path extends `:${infer Param}`
-    ? { [K in Param]: any }
-    : Path extends `${infer _Segment}/${infer Rest}`
-    ? ExtractParams<Rest>
-    : {};
+type ExtractParams<Path extends string> = Path extends ""
+  ? void
+  : Path extends `:${infer Param}/${infer Rest}`
+  ? { [K in Param | keyof ExtractParams<Rest>]: any }
+  : Path extends `:${infer Param}`
+  ? { [K in Param]: any }
+  : Path extends `${infer _Segment}/${infer Rest}`
+  ? ExtractParams<Rest>
+  : void;
 
 type ExtractQuery<Query extends string> = Query extends ""
-  ? void // Return void for no query params
+  ? void
   : Query extends `${infer Param}&${infer Rest}`
   ? { [K in Param | keyof ExtractQuery<Rest>]: any }
   : Query extends `${infer Param}`
   ? { [K in Param]: any }
-  : {};
+  : void;
 
 type SplitPathAndQuery<Url extends string> =
   Url extends `${infer Path}?${infer Query}` ? [Path, Query] : [Url, ""];

@@ -8,8 +8,7 @@ import { post } from "./src/routeDefinition/post.ts";
 type ResponseBody = { result: number };
 
 const otherRoute = post(
-  "/cool",
-  // TODO this is incorrect
+  "/cool/:bla",
   z.object({ bla: z.string() }),
   z.void(),
   z.object({ data: z.string() }),
