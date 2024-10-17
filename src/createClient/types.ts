@@ -1,5 +1,5 @@
 import { z } from "npm:zod";
-import type { ExtractPathParams } from "../types.ts";
+import type { ExtractPathParams } from "../routeDefinition/types.ts";
 
 export type Client<
   Path extends string,

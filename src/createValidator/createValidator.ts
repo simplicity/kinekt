@@ -4,7 +4,7 @@ import type {
   ExtractPathParams,
   ExtractQueryParams,
   RouteDefinition,
-} from "../types.ts";
+} from "../routeDefinition/types.ts";
 import type { Validator } from "./types.ts";
 
 export type Result<Value, Error> =
@@ -67,11 +67,15 @@ export function createValidator<
   ReqB extends z.ZodType,
   ResB extends z.ZodType
 >(routeDefinition: RouteDefinition<Path, ReqP, ReqQ, ReqB, ResB>): Validator {
-  return ({ query, body, params }) => {
+  return ({ params, query, body }) => {
+    console.log(params, query, body);
+
     const paramsParseResult =
       routeDefinition.requestParamsSchema.safeParse(params);
+
     const queryParseResult =
       routeDefinition.requestQuerySchema.safeParse(query);
+
     const bodyParseResult = parseBody(routeDefinition, body);
 
     if (

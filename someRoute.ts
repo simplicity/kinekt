@@ -1,9 +1,9 @@
 import type { Command } from "npm:@commander-js/extra-typings";
 import { z } from "npm:zod";
-import { createClient } from "./src/createClient/createClient.ts";
-import { get } from "./src/get.ts";
 import { printResult } from "./printResult.ts";
+import { createClient } from "./src/createClient/createClient.ts";
 import { createRouteHandler } from "./src/createRouteHandler/createRouteHandler.ts";
+import { get } from "./src/routeDefinition/get.ts";
 
 type ResponseBody = { b: string };
 

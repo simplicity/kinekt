@@ -3,7 +3,7 @@ import type {
   ExtractPathParams,
   ExtractQueryParams,
   RouteDefinition,
-} from "../types.ts";
+} from "../routeDefinition/types.ts";
 
 export type RouteHandlerCallback<
   Path extends string,

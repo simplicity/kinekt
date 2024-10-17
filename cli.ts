@@ -1,4 +1,5 @@
 import { Command } from "npm:@commander-js/extra-typings";
+import { registerOtherRouteCommand } from "./otherRoute.ts";
 import { registerSomeRouteCommand } from "./someRoute.ts";
 
 export let verbose = false;
@@ -19,5 +20,6 @@ program
   );
 
 registerSomeRouteCommand(program);
+registerOtherRouteCommand(program);
 
 program.parse();

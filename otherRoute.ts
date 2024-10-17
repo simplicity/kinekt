@@ -1,14 +1,18 @@
+import type { Command } from "npm:@commander-js/extra-typings";
 import { z } from "npm:zod";
-import { get } from "./src/get.ts";
+import { printResult } from "./printResult.ts";
+import { createClient } from "./src/createClient/createClient.ts";
 import { createRouteHandler } from "./src/createRouteHandler/createRouteHandler.ts";
+import { post } from "./src/routeDefinition/post.ts";
 
 type ResponseBody = { result: number };
 
-const otherRoute = get(
+const otherRoute = post(
   "/cool",
   // TODO this is incorrect
-  z.object({ la: z.string() }),
+  z.object({ bla: z.string() }),
   z.void(),
+  z.object({ data: z.string() }),
   z.custom<ResponseBody>()
 );
 
@@ -20,3 +24,15 @@ export const otherRouteRegistration = createRouteHandler(
     return Promise.resolve({ result: 1234 });
   }
 );
+
+const otherRouteClient = createClient(otherRoute);
+
+export function registerOtherRouteCommand(program: Command) {
+  program
+    .command("other-route")
+    .description("Other route")
+    .requiredOption("--bla <string>", "Bla")
+    .action(({ bla }) =>
+      otherRouteClient({ bla }, undefined, { data: "sdf" }).then(printResult)
+    );
+}

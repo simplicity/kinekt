@@ -3,7 +3,7 @@ import type {
   ExtractPathParams,
   ExtractQueryParams,
   RouteDefinition,
-} from "../types.ts";
+} from "../routeDefinition/types.ts";
 import type { RouteHandler, RouteHandlerCallback } from "./types.ts";
 
 export function createRouteHandler<

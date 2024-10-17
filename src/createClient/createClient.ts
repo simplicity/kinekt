@@ -4,7 +4,7 @@ import type {
   ExtractPathParams,
   ExtractQueryParams,
   RouteDefinition,
-} from "../types.ts";
+} from "../routeDefinition/types.ts";
 import type { Client } from "./types.ts";
 
 export function createClient<
@@ -17,6 +17,10 @@ export function createClient<
   routeDefinition: RouteDefinition<Path, ReqP, ReqQ, ReqB, ResB>
 ): Client<Path, ReqP, ReqQ, ReqB, ResB> {
   return async (path, query, body) => {
+    // TODO might make sense to do input validation here
+    // - for body, because it might not be possible to declare the whole object in commander
+    // - for the case where no typescript is used
+
     const pathString = Object.entries(path).reduce<string>(
       (acc, [key, value]) => acc.replace(`:${key}`, value),
       routeDefinition.path.replace(/\?.*$/, "") // TODO copy-pasted
