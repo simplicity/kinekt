@@ -1,24 +1,24 @@
 import { match, ParamData } from "npm:path-to-regexp";
 import { otherRouteRegistration } from "./otherRoute.ts";
 import { someRouteRegistration } from "./someRoute.ts";
+import type { RouteHandler } from "./src/createRouteHandler/types.ts";
 import { createValidator } from "./src/createValidator/createValidator.ts";
 import { parseBody } from "./src/helpers/parseBody.ts";
-import type { RouteHandler } from "./src/createRouteHandler/types.ts";
 
 export function server(
-  routeRegistrations: Array<RouteHandler<any, any, any, any, any>>
+  routeHandlers: Array<RouteHandler<any, any, any, any, any>>
 ) {
   Deno.serve(async (request) => {
     const url = new URL(request.url);
 
-    const result = routeRegistrations.reduce(
-      (acc, routeRegistration) => {
+    const result = routeHandlers.reduce(
+      (acc, routeHandler) => {
         if (acc !== null) {
           return acc;
         }
 
         const result = match(
-          routeRegistration.routeDefinition.path
+          routeHandler.routeDefinition.path
             // TODO copy-pasted
             .replace(/\?.*$/, "")
         )(url.pathname);
@@ -27,10 +27,10 @@ export function server(
           return acc;
         }
 
-        return { routeRegistration, params: result.params };
+        return { routeHandler, params: result.params };
       },
       null as {
-        routeRegistration: RouteHandler<any, any, any, any, any>;
+        routeHandler: RouteHandler<any, any, any, any, any>;
         params: ParamData;
       } | null
     );
@@ -50,11 +50,11 @@ export function server(
     );
 
     const requestBody =
-      result.routeRegistration.routeDefinition.method === "get" // TODO improve
+      result.routeHandler.routeDefinition.method === "get" // TODO improve
         ? undefined
         : await parseBody(request);
 
-    const validate = createValidator(result.routeRegistration.routeDefinition);
+    const validate = createValidator(result.routeHandler.routeDefinition);
 
     const validationResult = validate({
       params: result.params,
@@ -71,7 +71,7 @@ export function server(
       });
     }
 
-    const responseBody = await result.routeRegistration.callback(
+    const responseBody = await result.routeHandler.callback(
       validationResult.value.parsedParams,
       validationResult.value.parsedQuery,
       validationResult.value.parsedBody
