@@ -1,11 +1,11 @@
 import { z } from "npm:zod";
-import { parseBody } from "./parseBody.ts";
+import { parseBody } from "../helpers/parseBody.ts";
 import type {
-  Client,
   ExtractPathParams,
   ExtractQueryParams,
   RouteDefinition,
-} from "./types.ts";
+} from "../types.ts";
+import type { Client } from "./types.ts";
 
 export function createClient<
   Path extends string,

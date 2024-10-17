@@ -4,20 +4,12 @@ import type {
   ExtractPathParams,
   ExtractQueryParams,
   RouteDefinition,
-} from "./types.ts";
+} from "../types.ts";
+import type { Validator } from "./types.ts";
 
 export type Result<Value, Error> =
   | { type: "ok"; value: Value }
   | { type: "error"; error: Error };
-
-type Validator = (options: { params: any; query: any; body: any }) => Result<
-  {
-    parsedParams: any;
-    parsedQuery: any;
-    parsedBody: any;
-  },
-  Array<{ message: string; issue: ZodIssue }>
->;
 
 function parseBody<
   Path extends string,

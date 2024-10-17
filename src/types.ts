@@ -54,38 +54,3 @@ export type RouteDefinition<
       method: "post";
       requestBodySchema: ReqB;
     } & RouteDefinitionDefaults<Path, ReqP, ReqQ, ResB>);
-
-export type RouteHandler<
-  Path extends string,
-  ReqP extends z.ZodType<ExtractPathParams<Path>>,
-  ReqQ extends z.ZodType<ExtractQueryParams<Path>>,
-  ReqB extends z.ZodType,
-  ResB extends z.ZodType
-> = (
-  params: z.infer<ReqP>,
-  query: z.infer<ReqQ>,
-  body: z.infer<ReqB>
-) => Promise<z.infer<ResB>>;
-
-export type Client<
-  Path extends string,
-  ReqP extends z.ZodType<ExtractPathParams<Path>>,
-  ReqQ extends z.ZodType,
-  ReqB extends z.ZodType,
-  ResB extends z.ZodType
-> = (
-  path: z.infer<ReqP>,
-  query: z.infer<ReqQ>,
-  body: z.infer<ReqB>
-) => Promise<z.infer<ResB>>;
-
-export type RouteRegistration<
-  Path extends string,
-  ReqP extends z.ZodType<ExtractPathParams<Path>>,
-  ReqQ extends z.ZodType<ExtractQueryParams<Path>>,
-  ReqB extends z.ZodType,
-  ResB extends z.ZodType
-> = {
-  routeDefinition: RouteDefinition<Path, ReqP, ReqQ, ReqB, ResB>;
-  handler: RouteHandler<Path, ReqP, ReqQ, ReqB, ResB>;
-};

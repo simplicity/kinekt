@@ -1,12 +1,12 @@
 import { match, ParamData } from "npm:path-to-regexp";
-import { createValidator } from "./src/createValidator.ts";
 import { otherRouteRegistration } from "./otherRoute.ts";
-import { parseBody } from "./src/parseBody.ts";
-import { RouteRegistration } from "./src/registerRoute.ts";
 import { someRouteRegistration } from "./someRoute.ts";
+import { createValidator } from "./src/createValidator/createValidator.ts";
+import { parseBody } from "./src/helpers/parseBody.ts";
+import type { RouteHandler } from "./src/createRouteHandler/types.ts";
 
 export function server(
-  routeRegistrations: Array<RouteRegistration<any, any, any, any, any>>
+  routeRegistrations: Array<RouteHandler<any, any, any, any, any>>
 ) {
   Deno.serve(async (request) => {
     const url = new URL(request.url);
@@ -30,7 +30,7 @@ export function server(
         return { routeRegistration, params: result.params };
       },
       null as {
-        routeRegistration: RouteRegistration<any, any, any, any, any>;
+        routeRegistration: RouteHandler<any, any, any, any, any>;
         params: ParamData;
       } | null
     );
@@ -71,7 +71,7 @@ export function server(
       });
     }
 
-    const responseBody = await result.routeRegistration.handler(
+    const responseBody = await result.routeRegistration.callback(
       validationResult.value.parsedParams,
       validationResult.value.parsedQuery,
       validationResult.value.parsedBody

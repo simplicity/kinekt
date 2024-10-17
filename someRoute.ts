@@ -1,9 +1,9 @@
 import type { Command } from "npm:@commander-js/extra-typings";
 import { z } from "npm:zod";
-import { createClient } from "./src/createClient.ts";
+import { createClient } from "./src/createClient/createClient.ts";
 import { get } from "./src/get.ts";
-import { printResult } from "./src/printResult.ts";
-import { registerRoute } from "./src/registerRoute.ts";
+import { printResult } from "./printResult.ts";
+import { createRouteHandler } from "./src/createRouteHandler/createRouteHandler.ts";
 
 type ResponseBody = { b: string };
 
@@ -15,7 +15,7 @@ const someRoute = get(
   z.custom<ResponseBody>()
 );
 
-export const someRouteRegistration = registerRoute(
+export const someRouteRegistration = createRouteHandler(
   someRoute,
   (params, query, body) => {
     return Promise.resolve({ b: "slkdjf" });

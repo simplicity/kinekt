@@ -1,6 +1,6 @@
 import { z } from "npm:zod";
 import { get } from "./src/get.ts";
-import { registerRoute } from "./src/registerRoute.ts";
+import { createRouteHandler } from "./src/createRouteHandler/createRouteHandler.ts";
 
 type ResponseBody = { result: number };
 
@@ -12,7 +12,7 @@ const otherRoute = get(
   z.custom<ResponseBody>()
 );
 
-export const otherRouteRegistration = registerRoute(
+export const otherRouteRegistration = createRouteHandler(
   otherRoute,
   (params, query, body) => {
     console.log("other route!");
