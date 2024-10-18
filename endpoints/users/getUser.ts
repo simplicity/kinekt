@@ -11,16 +11,16 @@ type User = {
 };
 
 export const getUser = get2(
-  "/users/:id?includePosts",
+  "/users/:id?includePosts&more",
 
   {
     params: z.object({ id: z.string() }),
-    query: z.object({ includePosts: z.boolean() }),
+    query: z.object({ includePosts: z.boolean(), more: z.string() }),
     response: z.custom<User>(),
   },
 
   ({ params, query }) => {
-    console.log(params.id, query.includePosts);
+    console.log(params.id, query.includePosts, query.more);
 
     return Promise.resolve({ id: "", bla: "", name: "", email: "" });
   }
