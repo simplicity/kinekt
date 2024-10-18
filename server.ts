@@ -1,5 +1,5 @@
 import { match, ParamData } from "npm:path-to-regexp";
-import { otherRouteRegistration } from "./otherRoute.ts";
+import { otherRouteHandler } from "./otherRoute.ts";
 import { someRouteRegistration } from "./someRoute.ts";
 import type { RouteHandler } from "./src/createRouteHandler/types.ts";
 import { createValidator } from "./src/createValidator/createValidator.ts";
@@ -87,4 +87,4 @@ export function server(
   });
 }
 
-server([someRouteRegistration, otherRouteRegistration]);
+server([someRouteRegistration, otherRouteHandler]);

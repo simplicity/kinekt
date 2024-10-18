@@ -15,7 +15,7 @@ const otherRoute = post(
   z.custom<ResponseBody>()
 );
 
-export const otherRouteRegistration = createRouteHandler(
+export const otherRouteHandler = createRouteHandler(
   otherRoute,
   (params, query, body) => {
     console.log("other route!");
