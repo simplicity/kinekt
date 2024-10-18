@@ -10,6 +10,56 @@ import { createUser } from "./endpoints/users/getUser.ts";
 
 const logger = new Logger();
 
+type MatchingRoute = {
+  routeHandler: RouteHandler<any, any, any, any, any, any, any>;
+  params: ParamData;
+};
+
+function findMatchingRoute(
+  routeHandlers: Array<RouteHandler<any, any, any, any, any, any, any>>,
+  pathname: string
+): MatchingRoute | null {
+  return routeHandlers.reduce((acc, routeHandler) => {
+    if (acc !== null) {
+      return acc;
+    }
+
+    const result = match(removeQuery(routeHandler.routeDefinition.path))(
+      pathname
+    );
+
+    if (result === false) {
+      return acc;
+    }
+
+    return { routeHandler, params: result.params };
+  }, null as MatchingRoute | null);
+}
+
+async function getValidationResult(
+  request: Request,
+  matchingRoute: MatchingRoute,
+  queryString: string
+) {
+  const queryParams = Object.fromEntries(
+    new URLSearchParams(queryString).entries()
+  );
+
+  const requestBody =
+    matchingRoute.routeHandler.routeDefinition.method === "get" // TODO improve
+      ? undefined
+      : await parseBody(request);
+
+  const validate = createValidator(matchingRoute.routeHandler.routeDefinition);
+
+  return validate({
+    params: matchingRoute.params,
+    // TODO not great
+    query: Object.values(queryParams).length === 0 ? undefined : queryParams,
+    body: requestBody,
+  });
+}
+
 export function server(
   routeHandlers: Array<RouteHandler<any, any, any, any, any, any, any>>
 ) {
@@ -18,30 +68,10 @@ export function server(
 
     logger.info(`serving ${url}`);
 
-    const result = routeHandlers.reduce(
-      (acc, routeHandler) => {
-        if (acc !== null) {
-          return acc;
-        }
-
-        const result = match(removeQuery(routeHandler.routeDefinition.path))(
-          url.pathname
-        );
-
-        if (result === false) {
-          return acc;
-        }
-
-        return { routeHandler, params: result.params };
-      },
-      null as {
-        routeHandler: RouteHandler<any, any, any, any, any, any, any>;
-        params: ParamData;
-      } | null
-    );
+    const matchingRoute = findMatchingRoute(routeHandlers, url.pathname);
 
     // TODO lint?
-    if (result === null) {
+    if (matchingRoute === null) {
       logger.info(`Unable to serve ${url}`);
 
       return new Response(JSON.stringify({ message: "NOT FOUND" }), {
@@ -52,23 +82,11 @@ export function server(
       });
     }
 
-    const queryParams = Object.fromEntries(
-      new URLSearchParams(url.search).entries()
+    const validationResult = await getValidationResult(
+      request,
+      matchingRoute,
+      url.search
     );
-
-    const requestBody =
-      result.routeHandler.routeDefinition.method === "get" // TODO improve
-        ? undefined
-        : await parseBody(request);
-
-    const validate = createValidator(result.routeHandler.routeDefinition);
-
-    const validationResult = validate({
-      params: result.params,
-      // TODO not great
-      query: Object.values(queryParams).length === 0 ? undefined : queryParams,
-      body: requestBody,
-    });
 
     if (validationResult.type === "error") {
       return new Response(JSON.stringify(validationResult.error), {
@@ -79,7 +97,7 @@ export function server(
       });
     }
 
-    const responseBody = await result.routeHandler.callback({
+    const responseBody = await matchingRoute.routeHandler.callback({
       params: validationResult.value.parsedParams,
       query: validationResult.value.parsedQuery,
       body: validationResult.value.parsedBody,
