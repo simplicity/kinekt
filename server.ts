@@ -1,4 +1,5 @@
 import { match, ParamData } from "npm:path-to-regexp";
+import { getUser } from "./endpoints/users/getUser.ts";
 import { otherRouteHandler } from "./otherRoute.ts";
 import { someRouteRegistration } from "./someRoute.ts";
 import type { RouteHandler } from "./src/createRouteHandler/types.ts";
@@ -87,4 +88,4 @@ export function server(
   });
 }
 
-server([someRouteRegistration, otherRouteHandler]);
+server([someRouteRegistration, otherRouteHandler, getUser.routeHandler]);
