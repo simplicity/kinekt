@@ -1,6 +1,6 @@
 import { match, ParamData } from "npm:path-to-regexp";
 import { getUser } from "./endpoints/users/getUser.ts";
-import type { RouteHandler } from "./src/createRouteHandler/types.ts";
+import type { RouteHandler } from "./src/createEndpoint/types.ts";
 import { createValidator } from "./src/createValidator/createValidator.ts";
 import { parseBody } from "./src/helpers/parseBody.ts";
 import { removeQuery } from "./src/helpers/removeQuery.ts";

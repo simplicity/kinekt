@@ -1,40 +1,11 @@
 import type z from "npm:zod";
 import { createClient } from "../createClient/createClient.ts";
-import { createRouteHandler } from "../createRouteHandler/createRouteHandler.ts";
-import type {
-  RouteHandler,
-  RouteHandlerCallback,
-} from "../createRouteHandler/types.ts";
 import type {
   ExtractPathParams,
   ExtractQueryParams,
   RouteDefinition,
 } from "../routeDefinition/types.ts";
-
-type Endpoint<
-  Path extends string,
-  PathParams extends ExtractPathParams<Path>,
-  QueryParams extends ExtractQueryParams<Path>,
-  ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
-  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
-  ReqB extends z.ZodType,
-  ResB extends z.ZodType
-> = {
-  (props: {
-    path: z.infer<ReqP>;
-    query: z.infer<ReqQ>;
-    body: z.infer<ReqB>;
-  }): Promise<z.infer<ResB>>;
-  routeHandler: RouteHandler<
-    Path,
-    PathParams,
-    QueryParams,
-    ReqP,
-    ReqQ,
-    ReqB,
-    ResB
-  >;
-};
+import type { Endpoint, RouteHandlerCallback } from "./types.ts";
 
 export function createEndpoint<
   Path extends string,
@@ -74,7 +45,7 @@ export function createEndpoint<
     ResB
   >;
 
-  client.routeHandler = createRouteHandler(routeDefinition, callback);
+  client.routeHandler = { routeDefinition, callback };
 
   return client;
 }

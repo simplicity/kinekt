@@ -1,6 +1,6 @@
 import { z } from "npm:zod";
 import { createEndpoint } from "../createEndpoint/createEndpoint.ts";
-import type { RouteHandlerCallback } from "../createRouteHandler/types.ts";
+import type { RouteHandlerCallback } from "../createEndpoint/types.ts";
 import type { ExtractPathParams, ExtractQueryParams } from "./types.ts";
 
 export function post2<
