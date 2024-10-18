@@ -27,7 +27,7 @@ export function createClient<
     ResB
   >
 ): Client<Path, PathParams, QueryParams, ReqP, ReqQ, ReqB, ResB> {
-  return async (path, query, body) => {
+  return async ({ path, query, body }) => {
     // TODO might make sense to do input validation here
     // - for body, because it might not be possible to declare the whole object in commander
     // - for the case where no typescript is used

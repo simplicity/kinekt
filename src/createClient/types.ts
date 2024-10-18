@@ -12,8 +12,8 @@ export type Client<
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
   ResB extends z.ZodType
-> = (
-  path: z.infer<ReqP>,
-  query: z.infer<ReqQ>,
-  body: z.infer<ReqB>
-) => Promise<z.infer<ResB>>;
+> = (props: {
+  path: z.infer<ReqP>;
+  query: z.infer<ReqQ>;
+  body: z.infer<ReqB>;
+}) => Promise<z.infer<ResB>>;

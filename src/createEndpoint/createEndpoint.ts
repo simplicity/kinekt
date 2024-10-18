@@ -20,9 +20,11 @@ type Endpoint<
   ReqB extends z.ZodType,
   ResB extends z.ZodType
 > = {
-  (path: z.infer<ReqP>, query: z.infer<ReqQ>, body: z.infer<ReqB>): Promise<
-    z.infer<ResB>
-  >;
+  (props: {
+    path: z.infer<ReqP>;
+    query: z.infer<ReqQ>;
+    body: z.infer<ReqB>;
+  }): Promise<z.infer<ResB>>;
   routeHandler: RouteHandler<
     Path,
     PathParams,
