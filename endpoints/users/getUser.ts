@@ -1,5 +1,6 @@
 import type { Command } from "npm:@commander-js/extra-typings";
 import z from "npm:zod";
+import { printResult } from "../../printResult.ts";
 import { get2 } from "../../src/routeDefinition/get.ts";
 import { post2 } from "../../src/routeDefinition/post.ts";
 
@@ -52,11 +53,13 @@ export function registerCreateUserCommand(program: Command) {
     .description("Create user")
     .requiredOption("--name <string>", "Name")
     .requiredOption("--email <string>", "Email")
-    .action(({ name, email }) => {
-      createUser({
-        path: { id: "" },
-        query: { bla: "" },
-        body: { name, email },
-      });
-    });
+    .action(({ name, email }) => 
+      printResult(
+        createUser({
+          path: { id: "" },
+          query: { bla: "" },
+          body: { name, email },
+        })
+      );
+    );
 }
