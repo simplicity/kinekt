@@ -12,9 +12,15 @@ export function get2<
   ResB extends z.ZodType
 >(
   path: Path,
-  requestParamsSchema: ReqP,
-  requestQuerySchema: ReqQ,
-  responseBodySchema: ResB,
+  props: {
+    response: ResB;
+  } & (PathParams extends void
+    ? QueryParams extends void
+      ? { query?: z.ZodVoid; params?: z.ZodVoid }
+      : { query: ReqQ; params?: z.ZodVoid }
+    : QueryParams extends void
+    ? { query?: z.ZodVoid; params: ReqP }
+    : { query: ReqQ; params: ReqP }),
   callback: RouteHandlerCallback<
     Path,
     PathParams,
@@ -29,9 +35,9 @@ export function get2<
     {
       method: "get",
       path,
-      requestParamsSchema,
-      requestQuerySchema,
-      responseBodySchema,
+      requestParamsSchema: (props.params ?? z.void()) as ReqP, // TODO correct?
+      requestQuerySchema: (props.query ?? z.void()) as ReqQ,
+      responseBodySchema: props.response,
     },
     callback
   );
