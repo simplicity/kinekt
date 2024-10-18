@@ -65,6 +65,7 @@ export function createClient<
     // TODO why is this any cast necessary?
     const queryString = buildQueryString(query as any);
 
+    // TODO how to pass this as config?
     const rootUrl = "http://localhost:8000";
 
     const url = `${rootUrl}${pathString}${queryString}`;
