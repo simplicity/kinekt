@@ -1,7 +1,5 @@
 import { match, ParamData } from "npm:path-to-regexp";
 import { getUser } from "./endpoints/users/getUser.ts";
-import { otherRouteHandler } from "./otherRoute.ts";
-import { someRouteRegistration } from "./someRoute.ts";
 import type { RouteHandler } from "./src/createRouteHandler/types.ts";
 import { createValidator } from "./src/createValidator/createValidator.ts";
 import { parseBody } from "./src/helpers/parseBody.ts";
@@ -73,11 +71,11 @@ export function server(
       });
     }
 
-    const responseBody = await result.routeHandler.callback(
-      validationResult.value.parsedParams,
-      validationResult.value.parsedQuery,
-      validationResult.value.parsedBody
-    );
+    const responseBody = await result.routeHandler.callback({
+      params: validationResult.value.parsedParams,
+      query: validationResult.value.parsedQuery,
+      body: validationResult.value.parsedBody,
+    });
 
     return new Response(JSON.stringify(responseBody), {
       status: 200,
@@ -88,4 +86,4 @@ export function server(
   });
 }
 
-server([someRouteRegistration, otherRouteHandler, getUser.routeHandler]);
+server([getUser.routeHandler]);

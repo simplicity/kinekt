@@ -11,11 +11,11 @@ export type RouteHandlerCallback<
   ReqQ extends z.ZodType<ExtractQueryParams<Path>>,
   ReqB extends z.ZodType,
   ResB extends z.ZodType
-> = (
-  params: z.infer<ReqP>,
-  query: z.infer<ReqQ>,
-  body: z.infer<ReqB>
-) => Promise<z.infer<ResB>>;
+> = (params: {
+  params: z.infer<ReqP>;
+  query: z.infer<ReqQ>;
+  body: z.infer<ReqB>;
+}) => Promise<z.infer<ResB>>;
 
 export type RouteHandler<
   Path extends string,

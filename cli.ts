@@ -1,6 +1,5 @@
 import { Command } from "npm:@commander-js/extra-typings";
-import { registerOtherRouteCommand } from "./otherRoute.ts";
-import { registerSomeRouteCommand } from "./someRoute.ts";
+import { registerCreateUserCommand } from "./endpoints/users/getUser.ts";
 
 export let verbose = false;
 
@@ -19,7 +18,6 @@ program
     increaseVerbosity
   );
 
-registerSomeRouteCommand(program);
-registerOtherRouteCommand(program);
+registerCreateUserCommand(program);
 
 program.parse();

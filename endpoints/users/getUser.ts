@@ -13,7 +13,7 @@ export const getUser = get2(
   z.object({ id: z.string() }),
   z.object({ includePosts: z.boolean() }),
   z.custom<User>(),
-  (params, query) => {
+  ({ params, query }) => {
     console.log("other route!", params.id, query.includePosts);
     return Promise.resolve({ name: "", email: "" });
   }
@@ -25,7 +25,7 @@ export const createUser = post2(
   z.void(),
   z.object({ name: z.string(), email: z.string() }),
   z.custom<User>(),
-  (params, query, body) => {
+  ({ body }) => {
     console.log("other route!", body.name, body.email);
     return Promise.resolve({ name: "", email: "" });
   }
