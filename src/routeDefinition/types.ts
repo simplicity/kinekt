@@ -31,8 +31,10 @@ export type ExtractQueryParams<Url extends string> = ExtractQuery<
 
 type RouteDefinitionDefaults<
   Path extends string,
-  ReqP extends z.ZodType<ExtractPathParams<Path>>,
-  ReqQ extends z.ZodType<ExtractQueryParams<Path>>,
+  PathParams extends ExtractPathParams<Path>,
+  QueryParams extends ExtractQueryParams<Path>,
+  ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
+  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ResB extends z.ZodType
 > = {
   path: Path;
@@ -43,15 +45,31 @@ type RouteDefinitionDefaults<
 
 export type RouteDefinition<
   Path extends string,
-  ReqP extends z.ZodType<ExtractPathParams<Path>>,
-  ReqQ extends z.ZodType<ExtractQueryParams<Path>>,
+  PathParams extends ExtractPathParams<Path>,
+  QueryParams extends ExtractQueryParams<Path>,
+  ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
+  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
   ResB extends z.ZodType
 > =
   | ({
       method: "get";
-    } & RouteDefinitionDefaults<Path, ReqP, ReqQ, ResB>)
+    } & RouteDefinitionDefaults<
+      Path,
+      PathParams,
+      QueryParams,
+      ReqP,
+      ReqQ,
+      ResB
+    >)
   | ({
       method: "post";
       requestBodySchema: ReqB;
-    } & RouteDefinitionDefaults<Path, ReqP, ReqQ, ResB>);
+    } & RouteDefinitionDefaults<
+      Path,
+      PathParams,
+      QueryParams,
+      ReqP,
+      ReqQ,
+      ResB
+    >);

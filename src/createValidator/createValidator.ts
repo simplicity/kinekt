@@ -13,12 +13,22 @@ export type Result<Value, Error> =
 
 function parseBody<
   Path extends string,
-  ReqP extends z.ZodType<ExtractPathParams<Path>>,
-  ReqQ extends z.ZodType<ExtractQueryParams<Path>>,
+  PathParams extends ExtractPathParams<Path>,
+  QueryParams extends ExtractQueryParams<Path>,
+  ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
+  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
   ResB extends z.ZodType
 >(
-  routeDefinition: RouteDefinition<Path, ReqP, ReqQ, ReqB, ResB>,
+  routeDefinition: RouteDefinition<
+    Path,
+    PathParams,
+    QueryParams,
+    ReqP,
+    ReqQ,
+    ReqB,
+    ResB
+  >,
   body: any
 ): SafeParseReturnType<any, any> {
   switch (routeDefinition.method) {
@@ -62,11 +72,23 @@ function extractZodIssues(
 
 export function createValidator<
   Path extends string,
-  ReqP extends z.ZodType<ExtractPathParams<Path>>,
-  ReqQ extends z.ZodType<ExtractQueryParams<Path>>,
+  PathParams extends ExtractPathParams<Path>,
+  QueryParams extends ExtractQueryParams<Path>,
+  ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
+  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
   ResB extends z.ZodType
->(routeDefinition: RouteDefinition<Path, ReqP, ReqQ, ReqB, ResB>): Validator {
+>(
+  routeDefinition: RouteDefinition<
+    Path,
+    PathParams,
+    QueryParams,
+    ReqP,
+    ReqQ,
+    ReqB,
+    ResB
+  >
+): Validator {
   return ({ params, query, body }) => {
     console.log(params, query, body);
 

@@ -13,6 +13,7 @@ export const getUser = get2(
   z.object({ id: z.string() }),
   z.object({ includePosts: z.boolean() }),
   z.custom<User>(),
+
   ({ params, query }) => {
     console.log("other route!", params.id, query.includePosts);
     return Promise.resolve({ name: "", email: "" });
@@ -20,13 +21,17 @@ export const getUser = get2(
 );
 
 export const createUser = post2(
-  "/users",
-  z.void(),
-  z.void(),
+  "/users/:id/abc?bla",
+  {
+    params: z.object({ id: z.string() }),
+    query: z.object({ bla: z.string() }),
+  },
+
   z.object({ name: z.string(), email: z.string() }),
   z.custom<User>(),
-  ({ body }) => {
-    console.log("other route!", body.name, body.email);
+
+  ({ params, query, body }) => {
+    console.log("other route!", params.id, query.bla, body.name, body.email);
     return Promise.resolve({ name: "", email: "" });
   }
 );
@@ -38,6 +43,6 @@ export function registerCreateUserCommand(program: Command) {
     .requiredOption("--name <string>", "Name")
     .requiredOption("--email <string>", "Email")
     .action(({ name, email }) => {
-      createUser(undefined, undefined, { name, email });
+      createUser({ id: "" }, { bla: "" }, { name, email });
     });
 }

@@ -13,29 +13,59 @@ import type {
 
 type Endpoint<
   Path extends string,
-  ReqP extends z.ZodType<ExtractPathParams<Path>>,
-  ReqQ extends z.ZodType<ExtractQueryParams<Path>>,
+  PathParams extends ExtractPathParams<Path>,
+  QueryParams extends ExtractQueryParams<Path>,
+  ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
+  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
   ResB extends z.ZodType
 > = {
   (path: z.infer<ReqP>, query: z.infer<ReqQ>, body: z.infer<ReqB>): Promise<
     z.infer<ResB>
   >;
-  routeHandler: RouteHandler<Path, ReqP, ReqQ, ReqB, ResB>;
+  routeHandler: RouteHandler<
+    Path,
+    PathParams,
+    QueryParams,
+    ReqP,
+    ReqQ,
+    ReqB,
+    ResB
+  >;
 };
 
 export function createEndpoint<
   Path extends string,
-  ReqP extends z.ZodType<ExtractPathParams<Path>>,
-  ReqQ extends z.ZodType<ExtractQueryParams<Path>>,
+  PathParams extends ExtractPathParams<Path>,
+  QueryParams extends ExtractQueryParams<Path>,
+  ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
+  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
   ResB extends z.ZodType
 >(
-  routeDefinition: RouteDefinition<Path, ReqP, ReqQ, ReqB, ResB>,
-  callback: RouteHandlerCallback<Path, ReqP, ReqQ, ReqB, ResB>
-): Endpoint<Path, ReqP, ReqQ, ReqB, ResB> {
+  routeDefinition: RouteDefinition<
+    Path,
+    PathParams,
+    QueryParams,
+    ReqP,
+    ReqQ,
+    ReqB,
+    ResB
+  >,
+  callback: RouteHandlerCallback<
+    Path,
+    PathParams,
+    QueryParams,
+    ReqP,
+    ReqQ,
+    ReqB,
+    ResB
+  >
+): Endpoint<Path, PathParams, QueryParams, ReqP, ReqQ, ReqB, ResB> {
   const client = createClient(routeDefinition) as Endpoint<
     Path,
+    PathParams,
+    QueryParams,
     ReqP,
     ReqQ,
     ReqB,

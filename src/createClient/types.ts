@@ -6,8 +6,10 @@ import type {
 
 export type Client<
   Path extends string,
-  ReqP extends z.ZodType<ExtractPathParams<Path>>,
-  ReqQ extends z.ZodType<ExtractQueryParams<Path>>,
+  PathParams extends ExtractPathParams<Path>,
+  QueryParams extends ExtractQueryParams<Path>,
+  ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
+  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
   ResB extends z.ZodType
 > = (

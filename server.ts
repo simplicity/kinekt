@@ -5,7 +5,7 @@ import { createValidator } from "./src/createValidator/createValidator.ts";
 import { parseBody } from "./src/helpers/parseBody.ts";
 
 export function server(
-  routeHandlers: Array<RouteHandler<any, any, any, any, any>>
+  routeHandlers: Array<RouteHandler<any, any, any, any, any, any, any>>
 ) {
   Deno.serve(async (request) => {
     const url = new URL(request.url);
@@ -29,7 +29,7 @@ export function server(
         return { routeHandler, params: result.params };
       },
       null as {
-        routeHandler: RouteHandler<any, any, any, any, any>;
+        routeHandler: RouteHandler<any, any, any, any, any, any, any>;
         params: ParamData;
       } | null
     );
