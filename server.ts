@@ -3,6 +3,7 @@ import { getUser } from "./endpoints/users/getUser.ts";
 import type { RouteHandler } from "./src/createRouteHandler/types.ts";
 import { createValidator } from "./src/createValidator/createValidator.ts";
 import { parseBody } from "./src/helpers/parseBody.ts";
+import { removeQuery } from "./src/helpers/removeQuery.ts";
 
 export function server(
   routeHandlers: Array<RouteHandler<any, any, any, any, any, any, any>>
@@ -16,11 +17,9 @@ export function server(
           return acc;
         }
 
-        const result = match(
-          routeHandler.routeDefinition.path
-            // TODO copy-pasted
-            .replace(/\?.*$/, "")
-        )(url.pathname);
+        const result = match(removeQuery(routeHandler.routeDefinition.path))(
+          url.pathname
+        );
 
         if (result === false) {
           return acc;

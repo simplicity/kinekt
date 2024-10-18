@@ -1,5 +1,6 @@
 import { z } from "npm:zod";
 import { parseBody } from "../helpers/parseBody.ts";
+import { removeQuery } from "../helpers/removeQuery.ts";
 import type {
   ExtractPathParams,
   ExtractQueryParams,
@@ -34,7 +35,7 @@ export function createClient<
     const pathString = path
       ? Object.entries(path).reduce<string>(
           (acc, [key, value]) => acc.replace(`:${key}`, value),
-          routeDefinition.path.replace(/\?.*$/, "") // TODO copy-pasted
+          removeQuery(routeDefinition.path)
         )
       : "";
 
