@@ -5,11 +5,18 @@ import { createValidator } from "./src/createValidator/createValidator.ts";
 import { parseBody } from "./src/helpers/parseBody.ts";
 import { removeQuery } from "./src/helpers/removeQuery.ts";
 
+import Logger from "https://deno.land/x/logger@v1.1.6/logger.ts";
+import { createUser } from "./endpoints/users/getUser.ts";
+
+const logger = new Logger();
+
 export function server(
   routeHandlers: Array<RouteHandler<any, any, any, any, any, any, any>>
 ) {
   Deno.serve(async (request) => {
     const url = new URL(request.url);
+
+    logger.info(`serving ${url}`);
 
     const result = routeHandlers.reduce(
       (acc, routeHandler) => {
@@ -35,6 +42,8 @@ export function server(
 
     // TODO lint?
     if (result === null) {
+      logger.info(`Unable to serve ${url}`);
+
       return new Response(JSON.stringify({ message: "NOT FOUND" }), {
         status: 404,
         headers: {
@@ -85,4 +94,4 @@ export function server(
   });
 }
 
-server([getUser.routeHandler]);
+server([getUser.routeHandler, createUser.routeHandler]);

@@ -60,6 +60,7 @@ export function createClient<
     // - for body, because it might not be possible to declare the whole object in commander
     // - for the case where no typescript is used
 
+    // TODO we could check when something is empty (e.g. avoid /users//stuff)
     const pathString = buildPathString(path, routeDefinition.path);
 
     // TODO why is this any cast necessary?

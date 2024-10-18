@@ -53,11 +53,11 @@ export function registerCreateUserCommand(program: Command) {
     .description("Create user")
     .requiredOption("--name <string>", "Name")
     .requiredOption("--email <string>", "Email")
-    .action(({ name, email }) =>
+    .action(async ({ name, email }) =>
       printResult(
-        createUser({
-          path: { id: "" },
-          query: { bla: "" },
+        await createUser({
+          path: { id: "someid" }, // TODO how does 'some-id' arrive in the controller?
+          query: { bla: "test" },
           body: { name, email },
         })
       )
