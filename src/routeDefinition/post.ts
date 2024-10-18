@@ -13,21 +13,16 @@ export function post2<
   ResB extends z.ZodType
 >(
   path: Path,
-  // p: (PathParams extends void ? Empty1 : { params: ReqP }) &
-  //   (QueryParams extends void ? Empty2 : { query: ReqQ }),
-  // p: {
-  //   params: PathParams extends void ? void : ReqP;
-  //   query: QueryParams extends void ? void : ReqQ;
-  // },
-  p: PathParams extends void
+  props: {
+    request: ReqB;
+    response: ResB;
+  } & (PathParams extends void
     ? QueryParams extends void
       ? { query?: z.ZodVoid; params?: z.ZodVoid }
       : { query: ReqQ; params?: z.ZodVoid }
     : QueryParams extends void
     ? { query?: z.ZodVoid; params: ReqP }
-    : { query: ReqQ; params: ReqP },
-  requestBodySchema: ReqB,
-  responseBodySchema: ResB,
+    : { query: ReqQ; params: ReqP }),
   callback: RouteHandlerCallback<
     Path,
     PathParams,
@@ -42,10 +37,10 @@ export function post2<
     {
       method: "post",
       path,
-      requestParamsSchema: (p.params ?? z.void()) as ReqP,
-      requestQuerySchema: (p.query ?? z.void()) as ReqQ,
-      requestBodySchema,
-      responseBodySchema,
+      requestParamsSchema: (props.params ?? z.void()) as ReqP, // TODO correct?
+      requestQuerySchema: (props.query ?? z.void()) as ReqQ,
+      requestBodySchema: props.request,
+      responseBodySchema: props.response,
     },
     callback
   );
