@@ -1,3 +1,4 @@
+import type { Command } from "npm:@commander-js/extra-typings";
 import z from "npm:zod";
 import { get2 } from "../../src/routeDefinition/get.ts";
 import { post2 } from "../../src/routeDefinition/post.ts";
@@ -30,4 +31,13 @@ export const createUser = post2(
   }
 );
 
-createUser(undefined, undefined, { name: "", email: "" });
+export function registerCreateUserCommand(program: Command) {
+  program
+    .command("create-user")
+    .description("Create user")
+    .requiredOption("--name <string>", "Name")
+    .requiredOption("--email <string>", "Email")
+    .action(({ name, email }) => {
+      createUser(undefined, undefined, { name, email });
+    });
+}
