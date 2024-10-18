@@ -53,13 +53,13 @@ export function registerCreateUserCommand(program: Command) {
     .description("Create user")
     .requiredOption("--name <string>", "Name")
     .requiredOption("--email <string>", "Email")
-    .action(({ name, email }) => 
+    .action(({ name, email }) =>
       printResult(
         createUser({
           path: { id: "" },
           query: { bla: "" },
           body: { name, email },
         })
-      );
+      )
     );
 }

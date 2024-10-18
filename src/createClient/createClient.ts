@@ -8,6 +8,34 @@ import type {
 } from "../routeDefinition/types.ts";
 import type { Client } from "./types.ts";
 
+function buildPathString<
+  Path extends string,
+  PathParams extends ExtractPathParams<Path>,
+  ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>
+>(reqP: z.infer<ReqP>, path: Path): string {
+  return reqP
+    ? Object.entries(reqP).reduce<string>(
+        (acc, [key, value]) => acc.replace(`:${key}`, value),
+        removeQuery(path)
+      )
+    : "";
+}
+
+function buildQueryString<
+  Path extends string,
+  QueryParams extends ExtractQueryParams<Path>,
+  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>
+>(query: z.infer<ReqQ>): string {
+  const queryString = query
+    ? Object.entries(query)
+        .filter(([, value]) => value)
+        .map(([key, value]) => `${key}=${value}`)
+        .join("&")
+    : "";
+
+  return queryString === "" ? "" : `?${queryString}`;
+}
+
 export function createClient<
   Path extends string,
   PathParams extends ExtractPathParams<Path>,
@@ -32,29 +60,16 @@ export function createClient<
     // - for body, because it might not be possible to declare the whole object in commander
     // - for the case where no typescript is used
 
-    const pathString = path
-      ? Object.entries(path).reduce<string>(
-          (acc, [key, value]) => acc.replace(`:${key}`, value),
-          removeQuery(routeDefinition.path)
-        )
-      : "";
+    const pathString = buildPathString(path, routeDefinition.path);
 
-    let queryString = query
-      ? Object.entries(query)
-          .filter(([, value]) => value)
-          .map(([key, value]) => `${key}=${value}`)
-          .join("&")
-      : "";
-
-    queryString = queryString === "" ? "" : `?${queryString}`;
+    // TODO why is this any cast necessary?
+    const queryString = buildQueryString(query as any);
 
     const rootUrl = "http://localhost:8000";
 
     const url = `${rootUrl}${pathString}${queryString}`;
 
     // TODO handle errors
-
-    console.log(`calling ${url}`);
 
     const response = await fetch(url, {
       headers: {
