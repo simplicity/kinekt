@@ -8,24 +8,18 @@ import type {
 } from "../routeDefinition/types.ts";
 import type { Client } from "./types.ts";
 
-function buildPathString<
-  Path extends string,
-  PathParams extends ExtractPathParams<Path>,
-  ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>
->(reqP: z.infer<ReqP>, path: Path): string {
+// TODO any
+function buildPathString(reqP: any, path: string): string {
   return reqP
     ? Object.entries(reqP).reduce<string>(
-        (acc, [key, value]) => acc.replace(`:${key}`, value),
+        (acc, [key, value]) => acc.replace(`:${key}`, value as string),
         removeQuery(path)
       )
     : "";
 }
 
-function buildQueryString<
-  Path extends string,
-  QueryParams extends ExtractQueryParams<Path>,
-  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>
->(query: z.infer<ReqQ>): string {
+// TODO any
+function buildQueryString(query: any): string {
   const queryString = query
     ? Object.entries(query)
         .filter(([, value]) => value)
@@ -63,8 +57,7 @@ export function createClient<
     // TODO we could check when something is empty (e.g. avoid /users//stuff)
     const pathString = buildPathString(path, routeDefinition.path);
 
-    // TODO why is this any cast necessary?
-    const queryString = buildQueryString(query as any);
+    const queryString = buildQueryString(query);
 
     // TODO how to pass this as config?
     const rootUrl = "http://localhost:8000";

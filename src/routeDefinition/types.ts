@@ -19,14 +19,22 @@ type ExtractQuery<Query extends string> = Query extends ""
   : void;
 
 type SplitPathAndQuery<Url extends string> =
-  Url extends `${infer Path}?${infer Query}` ? [Path, Query] : [Url, ""];
+  Url extends `${infer Method extends
+    | "GET"
+    | "POST"} ${infer Path}?${infer Query}`
+    ? [Method, Path, Query]
+    : Url extends `${infer Method extends "GET" | "POST"} ${infer Path}`
+    ? [Method, Path, string]
+    : never;
+
+export type ExtractMethod<Url extends string> = SplitPathAndQuery<Url>[0];
 
 export type ExtractPathParams<Url extends string> = ExtractParams<
-  SplitPathAndQuery<Url>[0]
+  SplitPathAndQuery<Url>[1]
 >;
 
 export type ExtractQueryParams<Url extends string> = ExtractQuery<
-  SplitPathAndQuery<Url>[1]
+  SplitPathAndQuery<Url>[2]
 >;
 
 type RouteDefinitionDefaults<

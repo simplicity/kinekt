@@ -2,7 +2,6 @@ import type { Command } from "npm:@commander-js/extra-typings";
 import z from "npm:zod";
 import { printResult } from "../../printResult.ts";
 import { get2 } from "../../src/routeDefinition/get.ts";
-import { post2 } from "../../src/routeDefinition/post.ts";
 
 type User = {
   id: string;
@@ -12,7 +11,11 @@ type User = {
 };
 
 export const getUser = get2(
-  "/users/:id?includePosts&more",
+  // TODO when removing "more" here, the compiler doesn't complain
+  "GET /users/:id?includePosts&more",
+
+  // TODO how to disallow this?
+  // "GET ",
 
   {
     params: z.object({ id: z.string() }),
@@ -27,8 +30,8 @@ export const getUser = get2(
   }
 );
 
-export const createUser = post2(
-  "/users/:id/abc?bla",
+export const createUser = get2(
+  "POST /users/:id/abc?bla",
 
   {
     params: z.object({ id: z.string() }),
