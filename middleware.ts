@@ -50,7 +50,10 @@ export function doStuff(context: BaseContext) {
 }
 
 doStuff({
-  request: new Request(new URL("https://example.com")),
+  request: {
+    method: "GET",
+    url: "https://example.com",
+  },
   halted: false,
   response: null,
 });

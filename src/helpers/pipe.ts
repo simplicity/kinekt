@@ -7,8 +7,10 @@ interface UnaryFunction<T, R> {
 // }
 
 export type BaseContext = {
-  // TODO this doesn't have to be a Request object
-  request: Request;
+  request: {
+    url: string;
+    method: "GET" | "OPTIONS";
+  };
   halted: boolean;
   response: null | {
     code: number;
