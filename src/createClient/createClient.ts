@@ -5,7 +5,7 @@ import type {
   ExtractPathParams,
   ExtractQueryParams,
   RouteDefinition,
-} from "../routeDefinition/types.ts";
+} from "../createEndpoint/types.ts";
 import type { Client } from "./types.ts";
 
 // TODO any

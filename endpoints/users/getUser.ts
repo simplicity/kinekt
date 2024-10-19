@@ -1,7 +1,7 @@
 import type { Command } from "npm:@commander-js/extra-typings";
 import z from "npm:zod";
 import { printResult } from "../../printResult.ts";
-import { get2 } from "../../src/routeDefinition/get.ts";
+import { createEndpoint } from "../../src/createEndpoint/createEndpoint.ts";
 
 type User = {
   id: string;
@@ -10,7 +10,7 @@ type User = {
   email: string;
 };
 
-export const getUser = get2(
+export const getUser = createEndpoint(
   // TODO when removing "more" here, the compiler doesn't complain
   "GET /users/:id?includePosts&more",
 
@@ -30,7 +30,7 @@ export const getUser = get2(
   }
 );
 
-export const createUser = get2(
+export const createUser = createEndpoint(
   "POST /users/:id/abc?bla",
 
   {

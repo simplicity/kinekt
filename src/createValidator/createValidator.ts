@@ -4,7 +4,7 @@ import type {
   ExtractPathParams,
   ExtractQueryParams,
   RouteDefinition,
-} from "../routeDefinition/types.ts";
+} from "../createEndpoint/types.ts";
 import type { Validator } from "./types.ts";
 
 export type Result<Value, Error> =

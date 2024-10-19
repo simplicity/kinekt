@@ -1,12 +1,12 @@
 import { match, ParamData } from "npm:path-to-regexp";
 import { getUser } from "./endpoints/users/getUser.ts";
-import type { RouteHandler } from "./src/createEndpoint/types.ts";
 import { createValidator } from "./src/createValidator/createValidator.ts";
 import { parseBody } from "./src/helpers/parseBody.ts";
 import { removeQuery } from "./src/helpers/removeQuery.ts";
 
 import Logger from "https://deno.land/x/logger@v1.1.6/logger.ts";
 import { createUser } from "./endpoints/users/getUser.ts";
+import type { RouteHandler } from "./src/createEndpoint/types.ts";
 
 const logger = new Logger();
 
