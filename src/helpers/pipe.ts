@@ -67,19 +67,23 @@ export function pipe<R1 extends BaseContext, R2 extends R1>(
 // TODO we should probably allow promises
 
 export function pipe(...fns: Array<UnaryFunction<any, any>>) {
-  return (context: BaseContext) => process(() => true, context, fns);
+  return (context: BaseContext) => process(context, fns);
 }
 
-function process(
-  check: (v: any) => boolean,
-  input: BaseContext,
-  fns: Array<UnaryFunction<any, any>>
-) {
-  const [fn, ...rest] = fns;
+function process(input: BaseContext, fns: Array<UnaryFunction<any, any>>) {
+  if (input.halted === true) {
+    console.log("pipeline halted");
 
-  if (check(input) === false || fn === undefined) {
     return input;
   }
 
-  return process(check, fn(input), rest);
+  const [fn, ...rest] = fns;
+
+  if (fn === undefined) {
+    console.log("pipeline ended");
+
+    return input;
+  }
+
+  return process(fn(input), rest);
 }
