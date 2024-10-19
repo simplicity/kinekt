@@ -1,13 +1,4 @@
-import { pipe } from "./src/helpers/pipe.ts";
-
-type BaseContext = {
-  request: Request;
-  halted: boolean;
-  response: null | {
-    code: number;
-    body: any;
-  };
-};
+import { pipe, type BaseContext } from "./src/helpers/pipe.ts";
 
 type Middleware<Context extends BaseContext, NewContext extends Context> = (
   context: Context
@@ -49,10 +40,17 @@ const cors =
   };
 
 export function doStuff(context: BaseContext) {
-  const pipeline = pipe(moar(), authenticate(), cors());
+  const pipeline = pipe(cors(), moar(), authenticate());
 
   const r = pipeline(context);
 
   console.log(r.user);
   console.log(r.moar);
+  console.log(r);
 }
+
+doStuff({
+  request: new Request(new URL("https://example.com")),
+  halted: false,
+  response: null,
+});

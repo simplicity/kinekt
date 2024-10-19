@@ -2,25 +2,12 @@ interface UnaryFunction<T, R> {
   (source: T): R;
 }
 
-export function isDefined<T>(item: T | null | undefined): item is T {
-  return item !== null && item !== undefined;
-}
+// function isDefined<T>(item: T | null | undefined): item is T {
+//   return item !== null && item !== undefined;
+// }
 
-function process<T>(
-  check: (v: T) => boolean,
-  input: any,
-  fns: Array<UnaryFunction<any, any>>
-) {
-  const [fn, ...rest] = fns;
-
-  if (check(input) === false || fn === undefined) {
-    return input;
-  }
-
-  return process(check, fn(input), rest);
-}
-
-type BaseContext = {
+export type BaseContext = {
+  // TODO this doesn't have to be a Request object
   request: Request;
   halted: boolean;
   response: null | {
@@ -28,10 +15,6 @@ type BaseContext = {
     body: any;
   };
 };
-
-type Pipe<A, B, C> =
-  | ((fn1: UnaryFunction<A, B>) => B)
-  | ((fn1: UnaryFunction<A, B>, fn2: UnaryFunction<B, C>) => C);
 
 // function pipe<InitialValue>(
 //   initialValue: InitialValue,
@@ -83,6 +66,20 @@ export function pipe<R1 extends BaseContext, R2 extends R1>(
 
 // TODO we should probably allow promises
 
-export function pipe() {
-  return null as any;
+export function pipe(...fns: Array<UnaryFunction<any, any>>) {
+  return (context: BaseContext) => process(() => true, context, fns);
+}
+
+function process(
+  check: (v: any) => boolean,
+  input: BaseContext,
+  fns: Array<UnaryFunction<any, any>>
+) {
+  const [fn, ...rest] = fns;
+
+  if (check(input) === false || fn === undefined) {
+    return input;
+  }
+
+  return process(check, fn(input), rest);
 }
