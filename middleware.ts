@@ -2,13 +2,13 @@ import { pipe, type BaseContext } from "./src/helpers/pipe.ts";
 
 type Middleware<Context extends BaseContext, NewContext extends Context> = (
   context: Context
-) => NewContext;
+) => Promise<NewContext>;
 
 type Authenticated = { user: string };
 
 const authenticate =
   <A extends BaseContext>(): Middleware<A, A & Authenticated> =>
-  (context) => ({
+  async (context) => ({
     ...context,
     user: "stuffs",
   });
@@ -17,14 +17,14 @@ type Moar = { moar: boolean };
 
 const moar =
   <A extends BaseContext>(): Middleware<A, A & Moar> =>
-  (context) => ({
+  async (context) => ({
     ...context,
     moar: true,
   });
 
 const cors =
   <A extends BaseContext>(): Middleware<A, A> =>
-  (context) => {
+  async (context) => {
     if (context.request.method !== "OPTIONS") {
       return context;
     }
@@ -39,10 +39,10 @@ const cors =
     };
   };
 
-export function doStuff(context: BaseContext) {
+async function doStuff(context: BaseContext) {
   const pipeline = pipe(cors(), moar(), authenticate());
 
-  const r = pipeline(context);
+  const r = await pipeline(context);
 
   console.log(r.user);
   console.log(r.moar);

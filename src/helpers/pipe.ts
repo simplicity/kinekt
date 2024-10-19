@@ -56,15 +56,15 @@ export type BaseContext = {
 // ): (...args: TArgs) => R3;
 
 export function pipe<R1 extends BaseContext, R2 extends R1, R3 extends R2>(
-  f1: (context: BaseContext) => R1,
-  f2: (a: R1) => R2,
-  f3: (a: R2) => R3
-): (context: BaseContext) => R3;
+  f1: (context: BaseContext) => Promise<R1>,
+  f2: (a: R1) => Promise<R2>,
+  f3: (a: R2) => Promise<R3>
+): (context: BaseContext) => Promise<R3>;
 
 export function pipe<R1 extends BaseContext, R2 extends R1>(
-  f1: (context: BaseContext) => R1,
-  f2: (a: R1) => R2
-): (context: BaseContext) => R2;
+  f1: (context: BaseContext) => Promise<R1>,
+  f2: (a: R1) => Promise<R2>
+): (context: BaseContext) => Promise<R2>;
 
 // TODO we should probably allow promises
 
@@ -72,7 +72,10 @@ export function pipe(...fns: Array<UnaryFunction<any, any>>) {
   return (context: BaseContext) => process(context, fns);
 }
 
-function process(input: BaseContext, fns: Array<UnaryFunction<any, any>>) {
+async function process(
+  input: BaseContext,
+  fns: Array<UnaryFunction<any, any>>
+) {
   if (input.halted === true) {
     console.log("pipeline halted");
 
@@ -87,5 +90,5 @@ function process(input: BaseContext, fns: Array<UnaryFunction<any, any>>) {
     return input;
   }
 
-  return process(fn(input), rest);
+  return process(await fn(input), rest);
 }
