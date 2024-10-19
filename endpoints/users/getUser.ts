@@ -10,6 +10,18 @@ type User = {
   email: string;
 };
 
+export const getUsers = createEndpoint(
+  "GET /users",
+
+  {
+    response: z.custom<User>(),
+  },
+
+  () => {
+    return Promise.resolve({ id: "", bla: "", name: "", email: "" });
+  }
+);
+
 export const getUser = createEndpoint(
   // TODO when removing "more" here, the compiler doesn't complain
   "GET /users/:id?includePosts&more",
