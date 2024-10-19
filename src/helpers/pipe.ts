@@ -20,41 +20,69 @@ function process<T>(
   return process(check, fn(input), rest);
 }
 
-//prettier-ignore
-export function pipe<T, A>(input: T, check: (v: T) => boolean, fn1: UnaryFunction<T, A>): A;
-//prettier-ignore
-export function pipe<T, A, B>(input: T, check: (v: T) => boolean, fn1: UnaryFunction<T, A>, fn2: UnaryFunction<A, B>): B;
-//prettier-ignore
-export function pipe<T, A, B, C>(input: T, check: (v: T) => boolean, fn1: UnaryFunction<T, A>, fn2: UnaryFunction<A, B>, fn3: UnaryFunction<B, C>): C;
-//prettier-ignore
-export function pipe<T, A, B, C, D>(input: T, check: (v: T) => boolean, fn1: UnaryFunction<T, A>, fn2: UnaryFunction<A, B>, fn3: UnaryFunction<B, C>, fn4: UnaryFunction<C, D>): D;
-//prettier-ignore
-export function pipe<T, A, B, C, D, E>(input: T, check: (v: T) => boolean, fn1: UnaryFunction<T, A>, fn2: UnaryFunction<A, B>, fn3: UnaryFunction<B, C>, fn4: UnaryFunction<C, D>, fn5: UnaryFunction<D, E>): E;
-//prettier-ignore
-export function pipe<T, A, B, C, D, E, F>(input: T, check: (v: T) => boolean, fn1: UnaryFunction<T, A>, fn2: UnaryFunction<A, B>, fn3: UnaryFunction<B, C>, fn4: UnaryFunction<C, D>, fn5: UnaryFunction<D, E>, fn6: UnaryFunction<E, F>): F;
-//prettier-ignore
-export function pipe<T, A, B, C, D, E, F, G>(input: T, check: (v: T) => boolean, fn1: UnaryFunction<T, A>, fn2: UnaryFunction<A, B>, fn3: UnaryFunction<B, C>, fn4: UnaryFunction<C, D>, fn5: UnaryFunction<D, E>, fn6: UnaryFunction<E, F>, fn7: UnaryFunction<F, G>): G;
-//prettier-ignore
-export function pipe<T, A, B, C, D, E, F, G, H>(input: T, check: (v: T) => boolean, fn1: UnaryFunction<T, A>, fn2: UnaryFunction<A, B>, fn3: UnaryFunction<B, C>, fn4: UnaryFunction<C, D>, fn5: UnaryFunction<D, E>, fn6: UnaryFunction<E, F>, fn7: UnaryFunction<F, G>, fn8: UnaryFunction<G, H>): H;
+type BaseContext = {
+  request: Request;
+  halted: boolean;
+  response: null | {
+    code: number;
+    body: any;
+  };
+};
 
-export function pipe<T, A, B, C, D, E, F, G, H, I>(
-  input: T,
-  check: (v: T) => boolean,
-  fn1: UnaryFunction<T, A>,
-  fn2?: UnaryFunction<A, B>,
-  fn3?: UnaryFunction<B, C>,
-  fn4?: UnaryFunction<C, D>,
-  fn5?: UnaryFunction<D, E>,
-  fn6?: UnaryFunction<E, F>,
-  fn7?: UnaryFunction<F, G>,
-  fn8?: UnaryFunction<G, H>,
-  fn9?: UnaryFunction<H, I>
-): I {
-  return process(
-    check,
-    input,
-    [fn1, fn2, fn3, fn4, fn5, fn6, fn7, fn8, fn9].filter(isDefined)
-  );
+type Pipe<A, B, C> =
+  | ((fn1: UnaryFunction<A, B>) => B)
+  | ((fn1: UnaryFunction<A, B>, fn2: UnaryFunction<B, C>) => C);
+
+// function pipe<InitialValue>(
+//   initialValue: InitialValue,
+//   // TODO naming
+//   check: (currentValue: InitialValue) => boolean
+// ): <A, B>(fn1: UnaryFunction<InitialValue, A>, fn2: UnaryFunction<A, B>) => B {
+//   return (fn1, fn2) => fn2(fn1(initialValue));
+// }
+
+// TODO copy-pasted from rambda
+// function pipe<TArgs extends any[], R1, R2, R3, R4, R5, R6>(
+//   f1: (...args: TArgs) => R1,
+//   f2: (a: R1) => R2,
+//   f3: (a: R2) => R3,
+//   f4: (a: R3) => R4,
+//   f5: (a: R4) => R5,
+//   f6: (a: R5) => R6
+// ): (...args: TArgs) => R6;
+// function pipe<TArgs extends any[], R1, R2, R3, R4, R5>(
+//   f1: (...args: TArgs) => R1,
+//   f2: (a: R1) => R2,
+//   f3: (a: R2) => R3,
+//   f4: (a: R3) => R4,
+//   f5: (a: R4) => R5
+// ): (...args: TArgs) => R5;
+// function pipe<TArgs extends any[], R1, R2, R3, R4>(
+//   f1: (...args: TArgs) => R1,
+//   f2: (a: R1) => R2,
+//   f3: (a: R2) => R3,
+//   f4: (a: R3) => R4
+// ): (...args: TArgs) => R4;
+// function pipe<TArgs extends any[], R1, R2, R3>(
+//   f1: (...args: TArgs) => R1,
+//   f2: (a: R1) => R2,
+//   f3: (a: R2) => R3,
+//   proceed?: (currentValue: any) => boolean
+// ): (...args: TArgs) => R3;
+
+export function pipe<R1 extends BaseContext, R2 extends R1, R3 extends R2>(
+  f1: (context: BaseContext) => R1,
+  f2: (a: R1) => R2,
+  f3: (a: R2) => R3
+): (context: BaseContext) => R3;
+
+export function pipe<R1 extends BaseContext, R2 extends R1>(
+  f1: (context: BaseContext) => R1,
+  f2: (a: R1) => R2
+): (context: BaseContext) => R2;
+
+// TODO we should probably allow promises
+
+export function pipe() {
+  return null as any;
 }
-
-type PipeParameters = Parameters<typeof pipe>;
