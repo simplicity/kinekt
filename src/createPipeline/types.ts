@@ -4,6 +4,7 @@ import type {
   ExtractMethod,
   ExtractPathParams,
   ExtractQueryParams,
+  PathBase,
   RouteHandlerCallback,
 } from "../createEndpoint/types.ts";
 
@@ -28,7 +29,7 @@ export type Pipeline<Context extends BaseContext> = {
   (context: BaseContext): Promise<Context>;
 
   createEndpoint: <
-    Path extends string,
+    Path extends PathBase,
     Method extends ExtractMethod<Path>,
     PathParams extends ExtractPathParams<Path>,
     QueryParams extends ExtractQueryParams<Path>,

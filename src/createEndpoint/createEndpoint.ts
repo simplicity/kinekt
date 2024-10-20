@@ -6,12 +6,13 @@ import type {
   ExtractMethod,
   ExtractPathParams,
   ExtractQueryParams,
+  PathBase,
   RouteDefinition,
   RouteHandlerCallback,
 } from "./types.ts";
 
 function createEndpointInternal<
-  Path extends string,
+  Path extends PathBase,
   PathParams extends ExtractPathParams<Path>,
   QueryParams extends ExtractQueryParams<Path>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
@@ -58,7 +59,7 @@ function createEndpointInternal<
 }
 
 export function createEndpoint<
-  Path extends string,
+  Path extends PathBase,
   Method extends ExtractMethod<Path>,
   PathParams extends ExtractPathParams<Path>,
   QueryParams extends ExtractQueryParams<Path>,

@@ -19,7 +19,7 @@ type ExtractQuery<Query extends string> = Query extends ""
   ? { [K in Param]: any }
   : void;
 
-type SplitPathAndQuery<Url extends string> =
+type SplitPathAndQuery<Url extends PathBase> =
   Url extends `${infer Method extends
     | "GET"
     | "POST"} ${infer Path}?${infer Query}`
@@ -28,18 +28,20 @@ type SplitPathAndQuery<Url extends string> =
     ? [Method, Path, string]
     : never;
 
-export type ExtractMethod<Url extends string> = SplitPathAndQuery<Url>[0];
+export type PathBase = `${"GET" | "POST"} /${string}`;
 
-export type ExtractPathParams<Url extends string> = ExtractParams<
+export type ExtractMethod<Url extends PathBase> = SplitPathAndQuery<Url>[0];
+
+export type ExtractPathParams<Url extends PathBase> = ExtractParams<
   SplitPathAndQuery<Url>[1]
 >;
 
-export type ExtractQueryParams<Url extends string> = ExtractQuery<
+export type ExtractQueryParams<Url extends PathBase> = ExtractQuery<
   SplitPathAndQuery<Url>[2]
 >;
 
 type RouteDefinitionDefaults<
-  Path extends string,
+  Path extends PathBase,
   PathParams extends ExtractPathParams<Path>,
   QueryParams extends ExtractQueryParams<Path>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
@@ -53,7 +55,7 @@ type RouteDefinitionDefaults<
 };
 
 export type RouteDefinition<
-  Path extends string,
+  Path extends PathBase,
   PathParams extends ExtractPathParams<Path>,
   QueryParams extends ExtractQueryParams<Path>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
@@ -84,7 +86,7 @@ export type RouteDefinition<
     >);
 
 export type RouteHandlerCallback<
-  Path extends string,
+  Path extends PathBase,
   PathParams extends ExtractPathParams<Path>,
   QueryParams extends ExtractQueryParams<Path>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
@@ -100,7 +102,7 @@ export type RouteHandlerCallback<
 }) => Promise<z.infer<ResB>>;
 
 export type RouteHandler<
-  Path extends string,
+  Path extends PathBase,
   PathParams extends ExtractPathParams<Path>,
   QueryParams extends ExtractQueryParams<Path>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
@@ -132,7 +134,7 @@ export type RouteHandler<
 };
 
 export type Endpoint<
-  Path extends string,
+  Path extends PathBase,
   PathParams extends ExtractPathParams<Path>,
   QueryParams extends ExtractQueryParams<Path>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,

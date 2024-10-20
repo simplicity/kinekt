@@ -4,6 +4,7 @@ import { removeQuery } from "../../helpers/removeQuery.ts";
 import type {
   ExtractPathParams,
   ExtractQueryParams,
+  PathBase,
   RouteDefinition,
 } from "../types.ts";
 import type { Client } from "./types.ts";
@@ -31,7 +32,7 @@ function buildQueryString(query: any): string {
 }
 
 export function createClient<
-  Path extends string,
+  Path extends PathBase,
   PathParams extends ExtractPathParams<Path>,
   QueryParams extends ExtractQueryParams<Path>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,

@@ -1,8 +1,12 @@
 import { z } from "npm:zod";
-import type { ExtractPathParams, ExtractQueryParams } from "../types.ts";
+import type {
+  ExtractPathParams,
+  ExtractQueryParams,
+  PathBase,
+} from "../types.ts";
 
 export type Client<
-  Path extends string,
+  Path extends PathBase,
   PathParams extends ExtractPathParams<Path>,
   QueryParams extends ExtractQueryParams<Path>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
