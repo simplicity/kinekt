@@ -5,7 +5,7 @@ import type {
   ExtractPathParams,
   ExtractQueryParams,
   RouteHandlerCallback,
-} from "../src/createEndpoint/types.ts";
+} from "../createEndpoint/types.ts";
 
 export type BaseContext = {
   request: {

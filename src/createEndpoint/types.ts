@@ -1,5 +1,5 @@
 import { z } from "npm:zod";
-import type { BaseContext, Pipeline } from "../../createPipeline/types.ts";
+import type { BaseContext, Pipeline } from "../createPipeline/types.ts";
 
 type ExtractParams<Path extends string> = Path extends ""
   ? void

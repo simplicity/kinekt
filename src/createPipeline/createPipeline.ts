@@ -1,4 +1,4 @@
-import { createEndpoint } from "../src/createEndpoint/createEndpoint.ts";
+import { createEndpoint } from "../createEndpoint/createEndpoint.ts";
 import type { BaseContext, Pipeline } from "./types.ts";
 
 type UnaryFunction<A, B> = (a: A) => Promise<B>;

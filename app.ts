@@ -1,5 +1,5 @@
-import { createPipeline } from "./createPipeline/createPipeline.ts";
-import type { BaseContext, Middleware } from "./createPipeline/types.ts";
+import { createPipeline } from "./src/createPipeline/createPipeline.ts";
+import type { BaseContext, Middleware } from "./src/createPipeline/types.ts";
 
 type Authenticated = { user: string };
 
