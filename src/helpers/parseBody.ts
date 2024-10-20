@@ -1,3 +1,5 @@
+// TODO do this with a middleware?
+
 export async function parseBody(response: Request | Response) {
   const text = await response.text();
 
