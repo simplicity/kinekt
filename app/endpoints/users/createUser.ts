@@ -14,9 +14,7 @@ export const createUser = appPipeline.createEndpoint(
     response: z.custom<User>(),
   },
 
-  ({ params, query, body, context }) => {
-    console.log(`HERE`, context);
-
+  ({ params, query, body }) => {
     return Promise.resolve({
       id: params.id,
       bla: query.bla,
@@ -35,7 +33,7 @@ export function registerCreateUserCommand(program: Command) {
     .action(async ({ name, email }) =>
       printResult(
         await createUser({
-          path: { id: "someid" }, // TODO how does 'some-id' arrive in the controller?
+          path: { id: "some-id" },
           query: { bla: "test" },
           body: { name, email },
         })
