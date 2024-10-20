@@ -11,17 +11,20 @@ export const createUser = appPipeline.createEndpoint(
     params: z.object({ id: z.string() }),
     query: z.object({ bla: z.string() }),
     request: z.object({ name: z.string(), email: z.string() }),
-    response: z.custom<User>(),
+    response: { 200: z.custom<User>() },
   },
 
   ({ params, query, body, context }) => {
     console.log(`User: ${context.user}`);
 
     return Promise.resolve({
-      id: params.id,
-      bla: query.bla,
-      name: body.name,
-      email: body.email,
+      code: 200,
+      body: {
+        id: params.id,
+        bla: query.bla,
+        name: body.name,
+        email: body.email,
+      },
     });
   }
 );

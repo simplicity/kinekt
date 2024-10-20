@@ -39,13 +39,16 @@ export type ExtractPathParams<Url extends EndpointDeclarationBase> =
 export type ExtractQueryParams<Url extends EndpointDeclarationBase> =
   ExtractQuery<SplitPathAndQuery<Url>[2]>;
 
+// TODO move?
+export type StatusCode = 200 | 400;
+
 type RouteDefinitionDefaults<
   EndpointDeclaration extends EndpointDeclarationBase,
   PathParams extends ExtractPathParams<EndpointDeclaration>,
   QueryParams extends ExtractQueryParams<EndpointDeclaration>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
-  ResB extends z.ZodType
+  ResB extends { [key: number]: z.ZodType }
 > = {
   endpointDeclaration: EndpointDeclaration;
   requestParamsSchema: ReqP;
@@ -60,7 +63,7 @@ export type RouteDefinition<
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
-  ResB extends z.ZodType
+  ResB extends { [key: number]: z.ZodType }
 > =
   | ({
       method: "GET";
@@ -91,14 +94,15 @@ export type RouteHandlerCallback<
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
-  ResB extends z.ZodType,
+  ResB extends { [key: number]: z.ZodType },
+  ResC extends keyof ResB & StatusCode,
   PipelineContext extends BasePipelineContext
 > = (params: {
   params: z.infer<ReqP>;
   query: z.infer<ReqQ>;
   body: z.infer<ReqB>;
   context: PipelineContext;
-}) => Promise<z.infer<ResB>>;
+}) => Promise<{ code: ResC; body: z.infer<ResB[ResC]> }>;
 
 export type RouteHandler<
   EndpointDeclaration extends EndpointDeclarationBase,
@@ -107,7 +111,8 @@ export type RouteHandler<
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
-  ResB extends z.ZodType,
+  ResB extends { [key: number]: z.ZodType },
+  ResC extends keyof ResB & StatusCode,
   PipelineContext extends BasePipelineContext
 > = {
   routeDefinition: RouteDefinition<
@@ -127,6 +132,7 @@ export type RouteHandler<
     ReqQ,
     ReqB,
     ResB,
+    ResC,
     PipelineContext
   >;
   pipeline: Pipeline<PipelineContext>;
@@ -139,12 +145,13 @@ export type Client<
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
-  ResB extends z.ZodType
+  ResB extends { [key: number]: z.ZodType },
+  ResC extends keyof ResB & StatusCode
 > = (props: {
   params: z.infer<ReqP>;
   query: z.infer<ReqQ>;
   body: z.infer<ReqB>;
-}) => Promise<z.infer<ResB>>;
+}) => Promise<{ code: ResC; body: z.infer<ResB[ResC]> }>;
 
 export type Endpoint<
   EndpointDeclaration extends EndpointDeclarationBase,
@@ -153,7 +160,8 @@ export type Endpoint<
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
-  ResB extends z.ZodType,
+  ResB extends { [key: number]: z.ZodType },
+  ResC extends keyof ResB & StatusCode,
   PipelineContext extends BasePipelineContext
 > = Client<
   EndpointDeclaration,
@@ -162,7 +170,8 @@ export type Endpoint<
   ReqP,
   ReqQ,
   ReqB,
-  ResB
+  ResB,
+  ResC
 > & {
   routeHandler: RouteHandler<
     EndpointDeclaration,
@@ -172,6 +181,7 @@ export type Endpoint<
     ReqQ,
     ReqB,
     ResB,
+    ResC,
     PipelineContext
   >;
 };
@@ -184,7 +194,7 @@ export type CreateEndpointProps<
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
-  ResB extends z.ZodType
+  ResB extends { [key: number]: z.ZodType }
 > = {
   response: ResB;
 } & (Method extends "POST" ? { request: ReqB } : { request?: void }) &

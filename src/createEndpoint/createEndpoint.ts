@@ -10,6 +10,7 @@ import type {
   ExtractQueryParams,
   RouteDefinition,
   RouteHandlerCallback,
+  StatusCode,
 } from "./types.ts";
 
 function createEndpointInternal<
@@ -19,7 +20,8 @@ function createEndpointInternal<
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
-  ResB extends z.ZodType,
+  ResB extends { [key: number]: z.ZodType },
+  ResC extends keyof ResB & StatusCode,
   PipelineContext extends BasePipelineContext
 >(
   routeDefinition: RouteDefinition<
@@ -39,6 +41,7 @@ function createEndpointInternal<
     ReqQ,
     ReqB,
     ResB,
+    ResC,
     PipelineContext
   >,
   pipeline: Pipeline<PipelineContext>
@@ -50,6 +53,7 @@ function createEndpointInternal<
   ReqQ,
   ReqB,
   ResB,
+  ResC,
   PipelineContext
 > {
   const client = createClient(routeDefinition) as Endpoint<
@@ -60,6 +64,7 @@ function createEndpointInternal<
     ReqQ,
     ReqB,
     ResB,
+    ResC,
     PipelineContext
   >;
 
@@ -76,7 +81,8 @@ export function createEndpoint<
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
-  ResB extends z.ZodType,
+  ResB extends { [key: number]: z.ZodType },
+  ResC extends keyof ResB & StatusCode,
   PipelineContext extends BasePipelineContext
 >(
   pipeline: Pipeline<PipelineContext>,
@@ -99,6 +105,7 @@ export function createEndpoint<
     ReqQ,
     ReqB,
     ResB,
+    ResC,
     PipelineContext
   >
 ) {

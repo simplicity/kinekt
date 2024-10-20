@@ -7,6 +7,7 @@ import type {
   ExtractPathParams,
   ExtractQueryParams,
   RouteHandlerCallback,
+  StatusCode,
 } from "../createEndpoint/types.ts";
 
 export type BasePipelineContext = {
@@ -37,7 +38,8 @@ export type Pipeline<PipelineContext extends BasePipelineContext> = {
     ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
     ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
     ReqB extends z.ZodType,
-    ResB extends z.ZodType
+    ResB extends { [key: number]: z.ZodType },
+    ResC extends keyof ResB & StatusCode
   >(
     // TODO rename
     path: EndpointDeclaration,
@@ -59,6 +61,7 @@ export type Pipeline<PipelineContext extends BasePipelineContext> = {
       ReqQ,
       ReqB,
       ResB,
+      ResC,
       PipelineContext
     >
   ) => Endpoint<
@@ -69,6 +72,7 @@ export type Pipeline<PipelineContext extends BasePipelineContext> = {
     ReqQ,
     ReqB,
     ResB,
+    ResC,
     PipelineContext
   >;
 };

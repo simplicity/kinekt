@@ -5,7 +5,9 @@ import { removeQuery } from "../../helpers/removeQuery.ts";
 import type { MatchingRoute } from "../types.ts";
 
 export function findMatchingRoute(
-  routeHandlers: Array<RouteHandler<any, any, any, any, any, any, any, any>>,
+  routeHandlers: Array<
+    RouteHandler<any, any, any, any, any, any, any, any, any>
+  >,
   pathname: string
 ): MatchingRoute | null {
   return routeHandlers.reduce((acc, routeHandler) => {

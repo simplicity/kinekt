@@ -9,12 +9,15 @@ export const getUser = appPipeline.createEndpoint(
   {
     params: z.object({ id: z.string() }),
     query: z.object({ includePosts: z.boolean(), more: z.string() }),
-    response: z.custom<User>(),
+    response: { 200: z.custom<User>() },
   },
 
   ({ params, query }) => {
     console.log(params.id, query.includePosts, query.more);
 
-    return Promise.resolve({ id: "", bla: "", name: "", email: "" });
+    return Promise.resolve({
+      code: 200,
+      body: { id: "", bla: "", name: "", email: "" },
+    });
   }
 );

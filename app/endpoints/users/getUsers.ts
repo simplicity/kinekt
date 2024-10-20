@@ -6,13 +6,16 @@ export const getUsers = appPipeline.createEndpoint(
   "GET /users",
 
   {
-    response: z.custom<User>(),
+    response: { 200: z.custom<User>() },
   },
 
   ({ context }) => {
     console.log(context.moar);
     // console.log(context.bla);
 
-    return Promise.resolve({ id: "", bla: "", name: "", email: "" });
+    return Promise.resolve({
+      code: 200,
+      body: { id: "", bla: "", name: "", email: "" },
+    });
   }
 );

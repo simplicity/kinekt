@@ -16,7 +16,7 @@ function getBody(
     z.ZodType,
     z.ZodType,
     z.ZodType,
-    z.ZodType
+    any
   >,
   body: any
 ): SafeParseReturnType<any, any> {
@@ -67,7 +67,7 @@ function validate(
     z.ZodType,
     z.ZodType,
     z.ZodType,
-    z.ZodType
+    any
   >,
   params: any,
   query: any,

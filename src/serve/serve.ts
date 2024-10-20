@@ -6,7 +6,7 @@ import { getValidationResult } from "./helpers/getValidationResult.ts";
 const logger = new Logger();
 
 export function serve(
-  endpoints: Array<Endpoint<any, any, any, any, any, any, any, any>>
+  endpoints: Array<Endpoint<any, any, any, any, any, any, any, any, any>>
 ) {
   const routeHandlers = endpoints.map((endpoint) => endpoint.routeHandler);
 

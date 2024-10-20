@@ -8,6 +8,7 @@ import type {
   ExtractPathParams,
   ExtractQueryParams,
   RouteDefinition,
+  StatusCode,
 } from "../types.ts";
 
 function buildPathString(params: any, path: string): string {
@@ -37,7 +38,8 @@ export function createClient<
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
-  ResB extends z.ZodType
+  ResB extends { [key: number]: z.ZodType },
+  ResC extends keyof ResB & StatusCode
 >(
   routeDefinition: RouteDefinition<
     EndpointDeclaration,
@@ -55,7 +57,8 @@ export function createClient<
   ReqP,
   ReqQ,
   ReqB,
-  ResB
+  ResB,
+  ResC
 > {
   const path = removeMethod(routeDefinition.endpointDeclaration);
 
