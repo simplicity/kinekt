@@ -1,12 +1,12 @@
+import Logger from "https://deno.land/x/logger@v1.1.6/logger.ts";
 import { match, ParamData } from "npm:path-to-regexp";
+import { createUser } from "./app/endpoints/users/createUser.ts";
 import { getUser } from "./app/endpoints/users/getUser.ts";
+import { getUsers } from "./app/endpoints/users/getUsers.ts";
+import type { Endpoint, RouteHandler } from "./src/createEndpoint/types.ts";
 import { createValidator } from "./src/createValidator/createValidator.ts";
 import { parseBody } from "./src/helpers/parseBody.ts";
 import { removeQuery } from "./src/helpers/removeQuery.ts";
-
-import Logger from "https://deno.land/x/logger@v1.1.6/logger.ts";
-import { createUser } from "./app/endpoints/users/getUser.ts";
-import type { RouteHandler } from "./src/createEndpoint/types.ts";
 
 const logger = new Logger();
 
@@ -61,8 +61,10 @@ async function getValidationResult(
 }
 
 export function server(
-  routeHandlers: Array<RouteHandler<any, any, any, any, any, any, any, any>>
+  endpoints: Array<Endpoint<any, any, any, any, any, any, any, any>>
 ) {
+  const routeHandlers = endpoints.map((endpoint) => endpoint.routeHandler);
+
   Deno.serve(async (request) => {
     const url = new URL(request.url);
 
@@ -120,4 +122,4 @@ export function server(
   });
 }
 
-server([getUser.routeHandler, createUser.routeHandler]);
+server([getUser, getUsers, createUser]);

@@ -1,5 +1,5 @@
 import { Command } from "npm:@commander-js/extra-typings";
-import { registerCreateUserCommand } from "./app/endpoints/users/getUser.ts";
+import { registerCreateUserCommand } from "./app/endpoints/users/createUser.ts";
 
 export let verbose = false;
 
