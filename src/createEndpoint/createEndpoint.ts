@@ -96,17 +96,17 @@ export function createEndpoint<
 ) {
   const parts = path.split(" ");
 
-  const method = parts.at(0)?.toLowerCase();
+  const method = parts.at(0);
 
   // TODO naming
   // TODO what if it is empty?
   const actualPath = (parts.at(1) ?? "") as Path;
 
   switch (method) {
-    case "get": {
+    case "GET": {
       return createEndpointInternal(
         {
-          method: "get",
+          method: "GET",
           path: actualPath,
           requestParamsSchema: (props.params ?? z.void()) as ReqP, // TODO correct?
           requestQuerySchema: (props.query ?? z.void()) as ReqQ,
@@ -116,10 +116,10 @@ export function createEndpoint<
         pipeline
       );
     }
-    case "post": {
+    case "POST": {
       return createEndpointInternal(
         {
-          method: "post",
+          method: "POST",
           path: actualPath,
           requestParamsSchema: (props.params ?? z.void()) as ReqP, // TODO correct?
           requestQuerySchema: (props.query ?? z.void()) as ReqQ,

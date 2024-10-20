@@ -1,6 +1,10 @@
 import { z } from "npm:zod";
 import type { BaseContext, Pipeline } from "../createPipeline/types.ts";
 
+export type Method = "GET" | "POST";
+
+export type PathBase = `${Method} /${string}`;
+
 type ExtractParams<Path extends string> = Path extends ""
   ? void
   : Path extends `:${infer Param}/${infer Rest}`
@@ -20,15 +24,11 @@ type ExtractQuery<Query extends string> = Query extends ""
   : void;
 
 type SplitPathAndQuery<Url extends PathBase> =
-  Url extends `${infer Method extends
-    | "GET"
-    | "POST"} ${infer Path}?${infer Query}`
-    ? [Method, Path, Query]
-    : Url extends `${infer Method extends "GET" | "POST"} ${infer Path}`
-    ? [Method, Path, string]
+  Url extends `${infer MethodI extends Method} ${infer Path}?${infer Query}`
+    ? [MethodI, Path, Query]
+    : Url extends `${infer MethodI extends Method} ${infer Path}`
+    ? [MethodI, Path, string]
     : never;
-
-export type PathBase = `${"GET" | "POST"} /${string}`;
 
 export type ExtractMethod<Url extends PathBase> = SplitPathAndQuery<Url>[0];
 
@@ -64,7 +64,7 @@ export type RouteDefinition<
   ResB extends z.ZodType
 > =
   | ({
-      method: "get";
+      method: "GET";
     } & RouteDefinitionDefaults<
       Path,
       PathParams,
@@ -74,7 +74,7 @@ export type RouteDefinition<
       ResB
     >)
   | ({
-      method: "post";
+      method: "POST";
       requestBodySchema: ReqB;
     } & RouteDefinitionDefaults<
       Path,

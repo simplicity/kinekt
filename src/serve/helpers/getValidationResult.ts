@@ -21,13 +21,13 @@ function getBody(
   body: any
 ): SafeParseReturnType<any, any> {
   switch (routeDefinition.method) {
-    case "get": {
+    case "GET": {
       return {
         success: true,
         data: {},
       };
     }
-    case "post": {
+    case "POST": {
       if (
         // The express.json() middleware automatically sets body to an empty object ({}),
         // which is why we have to introduce a special handling here.
@@ -122,7 +122,7 @@ export async function getValidationResult(
   );
 
   const requestBody =
-    matchingRoute.routeHandler.routeDefinition.method === "get" // TODO improve
+    matchingRoute.routeHandler.routeDefinition.method === "GET" // TODO improve
       ? undefined
       : await parseBody(request);
 
