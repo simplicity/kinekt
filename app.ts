@@ -40,20 +40,3 @@ const cors =
   };
 
 export const app = pipeline(cors(), moar(), authenticate());
-
-async function doStuff(context: BaseContext) {
-  const r = await app(context);
-
-  console.log(r.user);
-  console.log(r.moar);
-  console.log(r);
-}
-
-// doStuff({
-//   request: {
-//     method: "GET",
-//     url: "https://example.com",
-//   },
-//   halted: false,
-//   response: null,
-// });
