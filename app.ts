@@ -1,8 +1,5 @@
-import {
-  pipeline,
-  type BaseContext,
-  type Middleware,
-} from "./src/helpers/pipeline.ts";
+import { createPipeline } from "./createPipeline/createPipeline.ts";
+import type { BaseContext, Middleware } from "./createPipeline/types.ts";
 
 type Authenticated = { user: string };
 
@@ -39,4 +36,4 @@ const cors =
     };
   };
 
-export const app = pipeline(cors(), moar(), authenticate());
+export const app = createPipeline(cors(), moar(), authenticate());
