@@ -1,3 +1,5 @@
+// TODO extract types
+
 export type BaseContext = {
   request: {
     url: string;
@@ -14,6 +16,11 @@ export type Middleware<
   Context extends BaseContext,
   NewContext extends Context
 > = (context: Context) => Promise<NewContext>;
+
+export type Pipeline<Context extends BaseContext> = Middleware<
+  BaseContext,
+  Context
+>;
 
 type UnaryFunction<A, B> = (a: A) => Promise<B>;
 

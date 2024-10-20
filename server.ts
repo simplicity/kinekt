@@ -11,12 +11,12 @@ import type { RouteHandler } from "./src/createEndpoint/types.ts";
 const logger = new Logger();
 
 type MatchingRoute = {
-  routeHandler: RouteHandler<any, any, any, any, any, any, any>;
+  routeHandler: RouteHandler<any, any, any, any, any, any, any, any>;
   params: ParamData;
 };
 
 function findMatchingRoute(
-  routeHandlers: Array<RouteHandler<any, any, any, any, any, any, any>>,
+  routeHandlers: Array<RouteHandler<any, any, any, any, any, any, any, any>>,
   pathname: string
 ): MatchingRoute | null {
   return routeHandlers.reduce((acc, routeHandler) => {
@@ -61,7 +61,7 @@ async function getValidationResult(
 }
 
 export function server(
-  routeHandlers: Array<RouteHandler<any, any, any, any, any, any, any>>
+  routeHandlers: Array<RouteHandler<any, any, any, any, any, any, any, any>>
 ) {
   Deno.serve(async (request) => {
     const url = new URL(request.url);
@@ -82,6 +82,13 @@ export function server(
       });
     }
 
+    // TODO what about middleware that should run independently of the route?
+    const context = await matchingRoute.routeHandler.pipeline({
+      request: { method: "GET", url: "lksjdf" },
+      halted: false,
+      response: { body: {}, code: 200 },
+    });
+
     const validationResult = await getValidationResult(
       request,
       matchingRoute,
@@ -101,6 +108,7 @@ export function server(
       params: validationResult.value.parsedParams,
       query: validationResult.value.parsedQuery,
       body: validationResult.value.parsedBody,
+      context,
     });
 
     return new Response(JSON.stringify(responseBody), {

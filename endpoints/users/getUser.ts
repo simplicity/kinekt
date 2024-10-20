@@ -1,5 +1,6 @@
 import type { Command } from "npm:@commander-js/extra-typings";
 import z from "npm:zod";
+import { app } from "../../app.ts";
 import { printResult } from "../../printResult.ts";
 import { createEndpoint } from "../../src/createEndpoint/createEndpoint.ts";
 
@@ -11,18 +12,25 @@ type User = {
 };
 
 export const getUsers = createEndpoint(
+  app,
+
   "GET /users",
 
   {
     response: z.custom<User>(),
   },
 
-  () => {
+  ({ context }) => {
+    console.log(context.moar);
+    // console.log(context.bla);
+
     return Promise.resolve({ id: "", bla: "", name: "", email: "" });
   }
 );
 
 export const getUser = createEndpoint(
+  app,
+
   // TODO when removing "more" here, the compiler doesn't complain
   "GET /users/:id?includePosts&more",
 
@@ -43,6 +51,8 @@ export const getUser = createEndpoint(
 );
 
 export const createUser = createEndpoint(
+  app,
+
   "POST /users/:id/abc?bla",
 
   {
@@ -52,7 +62,9 @@ export const createUser = createEndpoint(
     response: z.custom<User>(),
   },
 
-  ({ params, query, body }) => {
+  ({ params, query, body, context }) => {
+    console.log(`HERE`, context);
+
     return Promise.resolve({
       id: params.id,
       bla: query.bla,

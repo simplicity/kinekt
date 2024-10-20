@@ -1,5 +1,6 @@
 import { z } from "npm:zod";
 import { createClient } from "../createClient/createClient.ts";
+import type { BaseContext, Pipeline } from "../helpers/pipeline.ts";
 import type {
   Endpoint,
   ExtractMethod,
@@ -16,7 +17,8 @@ function createEndpointInternal<
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
-  ResB extends z.ZodType
+  ResB extends z.ZodType,
+  Context extends BaseContext
 >(
   routeDefinition: RouteDefinition<
     Path,
@@ -34,9 +36,11 @@ function createEndpointInternal<
     ReqP,
     ReqQ,
     ReqB,
-    ResB
-  >
-): Endpoint<Path, PathParams, QueryParams, ReqP, ReqQ, ReqB, ResB> {
+    ResB,
+    Context
+  >,
+  pipeline: Pipeline<Context>
+): Endpoint<Path, PathParams, QueryParams, ReqP, ReqQ, ReqB, ResB, Context> {
   const client = createClient(routeDefinition) as Endpoint<
     Path,
     PathParams,
@@ -44,10 +48,11 @@ function createEndpointInternal<
     ReqP,
     ReqQ,
     ReqB,
-    ResB
+    ResB,
+    Context
   >;
 
-  client.routeHandler = { routeDefinition, callback };
+  client.routeHandler = { routeDefinition, callback, pipeline };
 
   return client;
 }
@@ -60,8 +65,11 @@ export function createEndpoint<
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
-  ResB extends z.ZodType
+  ResB extends z.ZodType,
+  // TODO naming
+  Context extends BaseContext
 >(
+  pipeline: Pipeline<Context>,
   // TODO not really "path" anymore, because it contains the method
   path: Path,
   props: {
@@ -81,7 +89,8 @@ export function createEndpoint<
     ReqP,
     ReqQ,
     ReqB,
-    ResB
+    ResB,
+    Context
   >
 ) {
   const parts = path.split(" ");
@@ -102,7 +111,8 @@ export function createEndpoint<
           requestQuerySchema: (props.query ?? z.void()) as ReqQ,
           responseBodySchema: props.response,
         },
-        callback
+        callback,
+        pipeline
       );
     }
     case "post": {
@@ -115,7 +125,8 @@ export function createEndpoint<
           requestBodySchema: (props.request ?? z.void()) as ReqB,
           responseBodySchema: props.response,
         },
-        callback
+        callback,
+        pipeline
       );
     }
   }

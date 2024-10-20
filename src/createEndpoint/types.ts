@@ -1,4 +1,5 @@
 import { z } from "npm:zod";
+import type { BaseContext, Pipeline } from "../helpers/pipeline.ts";
 
 type ExtractParams<Path extends string> = Path extends ""
   ? void
@@ -89,11 +90,13 @@ export type RouteHandlerCallback<
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
-  ResB extends z.ZodType
+  ResB extends z.ZodType,
+  Context extends BaseContext
 > = (params: {
   params: z.infer<ReqP>;
   query: z.infer<ReqQ>;
   body: z.infer<ReqB>;
+  context: Context;
 }) => Promise<z.infer<ResB>>;
 
 export type RouteHandler<
@@ -103,7 +106,8 @@ export type RouteHandler<
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
-  ResB extends z.ZodType
+  ResB extends z.ZodType,
+  Context extends BaseContext
 > = {
   routeDefinition: RouteDefinition<
     Path,
@@ -121,8 +125,10 @@ export type RouteHandler<
     ReqP,
     ReqQ,
     ReqB,
-    ResB
+    ResB,
+    Context
   >;
+  pipeline: Pipeline<Context>;
 };
 
 export type Endpoint<
@@ -132,7 +138,8 @@ export type Endpoint<
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
-  ResB extends z.ZodType
+  ResB extends z.ZodType,
+  Context extends BaseContext
 > = {
   (props: {
     path: z.infer<ReqP>;
@@ -146,6 +153,7 @@ export type Endpoint<
     ReqP,
     ReqQ,
     ReqB,
-    ResB
+    ResB,
+    Context
   >;
 };
