@@ -1,5 +1,5 @@
 import { z } from "npm:zod";
-import type { BaseContext, Pipeline } from "../createPipeline/types.ts";
+import type { BasePipelineContext, Pipeline } from "../createPipeline/types.ts";
 
 export type Method = "GET" | "POST";
 
@@ -92,12 +92,12 @@ export type RouteHandlerCallback<
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
   ResB extends z.ZodType,
-  Context extends BaseContext
+  PipelineContext extends BasePipelineContext
 > = (params: {
   params: z.infer<ReqP>;
   query: z.infer<ReqQ>;
   body: z.infer<ReqB>;
-  context: Context;
+  context: PipelineContext;
 }) => Promise<z.infer<ResB>>;
 
 export type RouteHandler<
@@ -108,7 +108,7 @@ export type RouteHandler<
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
   ResB extends z.ZodType,
-  Context extends BaseContext
+  PipelineContext extends BasePipelineContext
 > = {
   routeDefinition: RouteDefinition<
     EndpointDeclaration,
@@ -127,9 +127,9 @@ export type RouteHandler<
     ReqQ,
     ReqB,
     ResB,
-    Context
+    PipelineContext
   >;
-  pipeline: Pipeline<Context>;
+  pipeline: Pipeline<PipelineContext>;
 };
 
 export type Endpoint<
@@ -140,7 +140,7 @@ export type Endpoint<
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
   ResB extends z.ZodType,
-  Context extends BaseContext
+  PipelineContext extends BasePipelineContext
 > = {
   (props: {
     path: z.infer<ReqP>;
@@ -155,6 +155,6 @@ export type Endpoint<
     ReqQ,
     ReqB,
     ResB,
-    Context
+    PipelineContext
   >;
 };

@@ -1,5 +1,5 @@
 import { z } from "npm:zod";
-import type { BaseContext, Pipeline } from "../createPipeline/types.ts";
+import type { BasePipelineContext, Pipeline } from "../createPipeline/types.ts";
 import { createClient } from "./createClient/createClient.ts";
 import type {
   Endpoint,
@@ -19,7 +19,7 @@ function createEndpointInternal<
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
   ResB extends z.ZodType,
-  Context extends BaseContext
+  PipelineContext extends BasePipelineContext
 >(
   routeDefinition: RouteDefinition<
     EndpointDeclaration,
@@ -38,9 +38,9 @@ function createEndpointInternal<
     ReqQ,
     ReqB,
     ResB,
-    Context
+    PipelineContext
   >,
-  pipeline: Pipeline<Context>
+  pipeline: Pipeline<PipelineContext>
 ): Endpoint<
   EndpointDeclaration,
   PathParams,
@@ -49,7 +49,7 @@ function createEndpointInternal<
   ReqQ,
   ReqB,
   ResB,
-  Context
+  PipelineContext
 > {
   const client = createClient(routeDefinition) as Endpoint<
     EndpointDeclaration,
@@ -59,7 +59,7 @@ function createEndpointInternal<
     ReqQ,
     ReqB,
     ResB,
-    Context
+    PipelineContext
   >;
 
   client.routeHandler = { routeDefinition, callback, pipeline };
@@ -77,9 +77,9 @@ export function createEndpoint<
   ReqB extends z.ZodType,
   ResB extends z.ZodType,
   // TODO naming
-  Context extends BaseContext
+  PipelineContext extends BasePipelineContext
 >(
-  pipeline: Pipeline<Context>,
+  pipeline: Pipeline<PipelineContext>,
   // TODO not really "path" anymore, because it contains the method
   path: EndpointDeclaration,
   props: {
@@ -100,7 +100,7 @@ export function createEndpoint<
     ReqQ,
     ReqB,
     ResB,
-    Context
+    PipelineContext
   >
 ) {
   const parts = path.split(" ");

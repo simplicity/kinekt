@@ -1,10 +1,13 @@
 import { createPipeline } from "../src/createPipeline/createPipeline.ts";
-import type { BaseContext, Middleware } from "../src/createPipeline/types.ts";
+import type {
+  BasePipelineContext,
+  Middleware,
+} from "../src/createPipeline/types.ts";
 
 type Authenticated = { user: string };
 
 const authenticate =
-  <A extends BaseContext>(): Middleware<A, A & Authenticated> =>
+  <A extends BasePipelineContext>(): Middleware<A, A & Authenticated> =>
   async (context) => ({
     ...context,
     user: "stuffs",
@@ -13,14 +16,14 @@ const authenticate =
 type Moar = { moar: boolean };
 
 const moar =
-  <A extends BaseContext>(): Middleware<A, A & Moar> =>
+  <A extends BasePipelineContext>(): Middleware<A, A & Moar> =>
   async (context) => ({
     ...context,
     moar: true,
   });
 
 const cors =
-  <A extends BaseContext>(): Middleware<A, A> =>
+  <A extends BasePipelineContext>(): Middleware<A, A> =>
   async (context) => {
     if (context.request.method !== "OPTIONS") {
       return context;

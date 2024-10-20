@@ -8,7 +8,7 @@ import type {
   RouteHandlerCallback,
 } from "../createEndpoint/types.ts";
 
-export type BaseContext = {
+export type BasePipelineContext = {
   request: {
     url: string;
     method: "GET" | "OPTIONS";
@@ -21,12 +21,12 @@ export type BaseContext = {
 };
 
 export type Middleware<
-  Context extends BaseContext,
-  NewContext extends Context
-> = (context: Context) => Promise<NewContext>;
+  PipelineContext extends BasePipelineContext,
+  NewPipelineContext extends PipelineContext
+> = (context: PipelineContext) => Promise<NewPipelineContext>;
 
-export type Pipeline<Context extends BaseContext> = {
-  (context: BaseContext): Promise<Context>;
+export type Pipeline<PipelineContext extends BasePipelineContext> = {
+  (context: BasePipelineContext): Promise<PipelineContext>;
 
   createEndpoint: <
     EndpointDeclaration extends EndpointDeclarationBase,
@@ -58,7 +58,7 @@ export type Pipeline<Context extends BaseContext> = {
       ReqQ,
       ReqB,
       ResB,
-      Context
+      PipelineContext
     >
   ) => Endpoint<
     EndpointDeclaration,
@@ -68,6 +68,6 @@ export type Pipeline<Context extends BaseContext> = {
     ReqQ,
     ReqB,
     ResB,
-    Context
+    PipelineContext
   >;
 };
