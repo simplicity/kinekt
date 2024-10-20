@@ -2,7 +2,9 @@ import type { Command } from "npm:@commander-js/extra-typings";
 import z from "npm:zod";
 import { app } from "../../app.ts";
 import { printResult } from "../../printResult.ts";
-import { createEndpoint } from "../../src/createEndpoint/createEndpoint.ts";
+import { createApp } from "../../src/createEndpoint/createEndpoint.ts";
+
+const myApp = createApp(app);
 
 type User = {
   id: string;
@@ -11,9 +13,7 @@ type User = {
   email: string;
 };
 
-export const getUsers = createEndpoint(
-  app,
-
+export const getUsers = myApp.createEndpoint(
   "GET /users",
 
   {
@@ -28,9 +28,7 @@ export const getUsers = createEndpoint(
   }
 );
 
-export const getUser = createEndpoint(
-  app,
-
+export const getUser = myApp.createEndpoint(
   // TODO when removing "more" here, the compiler doesn't complain
   "GET /users/:id?includePosts&more",
 
@@ -50,9 +48,7 @@ export const getUser = createEndpoint(
   }
 );
 
-export const createUser = createEndpoint(
-  app,
-
+export const createUser = myApp.createEndpoint(
   "POST /users/:id/abc?bla",
 
   {
