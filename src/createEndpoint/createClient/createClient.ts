@@ -1,11 +1,11 @@
 import { z } from "npm:zod";
-import { parseBody } from "../helpers/parseBody.ts";
-import { removeQuery } from "../helpers/removeQuery.ts";
+import { parseBody } from "../../helpers/parseBody.ts";
+import { removeQuery } from "../../helpers/removeQuery.ts";
 import type {
   ExtractPathParams,
   ExtractQueryParams,
   RouteDefinition,
-} from "../createEndpoint/types.ts";
+} from "../types.ts";
 import type { Client } from "./types.ts";
 
 // TODO any

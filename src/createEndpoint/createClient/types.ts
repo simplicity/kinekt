@@ -1,8 +1,5 @@
 import { z } from "npm:zod";
-import type {
-  ExtractPathParams,
-  ExtractQueryParams,
-} from "../createEndpoint/types.ts";
+import type { ExtractPathParams, ExtractQueryParams } from "../types.ts";
 
 export type Client<
   Path extends string,
