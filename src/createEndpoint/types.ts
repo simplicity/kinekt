@@ -132,6 +132,20 @@ export type RouteHandler<
   pipeline: Pipeline<PipelineContext>;
 };
 
+export type Client<
+  EndpointDeclaration extends EndpointDeclarationBase,
+  PathParams extends ExtractPathParams<EndpointDeclaration>,
+  QueryParams extends ExtractQueryParams<EndpointDeclaration>,
+  ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
+  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
+  ReqB extends z.ZodType,
+  ResB extends z.ZodType
+> = (props: {
+  params: z.infer<ReqP>;
+  query: z.infer<ReqQ>;
+  body: z.infer<ReqB>;
+}) => Promise<z.infer<ResB>>;
+
 export type Endpoint<
   EndpointDeclaration extends EndpointDeclarationBase,
   PathParams extends ExtractPathParams<EndpointDeclaration>,
@@ -141,12 +155,15 @@ export type Endpoint<
   ReqB extends z.ZodType,
   ResB extends z.ZodType,
   PipelineContext extends BasePipelineContext
-> = {
-  (props: {
-    params: z.infer<ReqP>;
-    query: z.infer<ReqQ>;
-    body: z.infer<ReqB>;
-  }): Promise<z.infer<ResB>>;
+> = Client<
+  EndpointDeclaration,
+  PathParams,
+  QueryParams,
+  ReqP,
+  ReqQ,
+  ReqB,
+  ResB
+> & {
   routeHandler: RouteHandler<
     EndpointDeclaration,
     PathParams,

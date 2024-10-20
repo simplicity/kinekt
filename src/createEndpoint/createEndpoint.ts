@@ -1,6 +1,6 @@
 import { z } from "npm:zod";
 import type { BasePipelineContext, Pipeline } from "../createPipeline/types.ts";
-import { createClient } from "./createClient/createClient.ts";
+import { createClient } from "./helpers/createClient.ts";
 import type {
   Endpoint,
   EndpointDeclarationBase,

@@ -3,12 +3,12 @@ import { parseBody } from "../../helpers/parseBody.ts";
 import { removeMethod } from "../../helpers/removeMethod.ts";
 import { removeQuery } from "../../helpers/removeQuery.ts";
 import type {
+  Client,
   EndpointDeclarationBase,
   ExtractPathParams,
   ExtractQueryParams,
   RouteDefinition,
 } from "../types.ts";
-import type { Client } from "./types.ts";
 
 function buildPathString(params: any, path: string): string {
   return params
