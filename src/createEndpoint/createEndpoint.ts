@@ -101,9 +101,7 @@ export function createEndpoint<
     PipelineContext
   >
 ) {
-  const parts = endpointDeclaration.split(" ");
-
-  const method = parts.at(0);
+  const method = endpointDeclaration.split(" ").at(0);
 
   switch (method) {
     case "GET": {
@@ -111,7 +109,7 @@ export function createEndpoint<
         {
           method: "GET",
           endpointDeclaration,
-          requestParamsSchema: (props.params ?? z.void()) as ReqP, // TODO correct?
+          requestParamsSchema: (props.params ?? z.void()) as ReqP,
           requestQuerySchema: (props.query ?? z.void()) as ReqQ,
           responseBodySchema: props.response,
         },
@@ -124,7 +122,7 @@ export function createEndpoint<
         {
           method: "POST",
           endpointDeclaration,
-          requestParamsSchema: (props.params ?? z.void()) as ReqP, // TODO correct?
+          requestParamsSchema: (props.params ?? z.void()) as ReqP,
           requestQuerySchema: (props.query ?? z.void()) as ReqQ,
           requestBodySchema: (props.request ?? z.void()) as ReqB,
           responseBodySchema: props.response,
