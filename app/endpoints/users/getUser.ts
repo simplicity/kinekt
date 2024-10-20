@@ -1,7 +1,7 @@
 import type { Command } from "npm:@commander-js/extra-typings";
 import z from "npm:zod";
 import { app } from "../../app.ts";
-import { printResult } from "../../printResult.ts";
+import { printResult } from "../../../printResult.ts";
 
 type User = {
   id: string;
