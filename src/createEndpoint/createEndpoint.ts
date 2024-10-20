@@ -2,6 +2,7 @@ import { z } from "npm:zod";
 import type { BasePipelineContext, Pipeline } from "../createPipeline/types.ts";
 import { createClient } from "./helpers/createClient.ts";
 import type {
+  CreateEndpointProps,
   Endpoint,
   EndpointDeclarationBase,
   ExtractMethod,
@@ -80,16 +81,16 @@ export function createEndpoint<
 >(
   pipeline: Pipeline<PipelineContext>,
   endpointDeclaration: EndpointDeclaration,
-  props: {
-    response: ResB;
-  } & (Method extends "POST" ? { request: ReqB } : { request?: void }) &
-    (PathParams extends void
-      ? QueryParams extends void
-        ? { query?: z.ZodVoid; params?: z.ZodVoid }
-        : { query: ReqQ; params?: z.ZodVoid }
-      : QueryParams extends void
-      ? { query?: z.ZodVoid; params: ReqP }
-      : { query: ReqQ; params: ReqP }),
+  props: CreateEndpointProps<
+    EndpointDeclaration,
+    Method,
+    PathParams,
+    QueryParams,
+    ReqP,
+    ReqQ,
+    ReqB,
+    ResB
+  >,
   callback: RouteHandlerCallback<
     EndpointDeclaration,
     PathParams,

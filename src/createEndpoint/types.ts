@@ -175,3 +175,23 @@ export type Endpoint<
     PipelineContext
   >;
 };
+
+export type CreateEndpointProps<
+  EndpointDeclaration extends EndpointDeclarationBase,
+  Method extends ExtractMethod<EndpointDeclaration>,
+  PathParams extends ExtractPathParams<EndpointDeclaration>,
+  QueryParams extends ExtractQueryParams<EndpointDeclaration>,
+  ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
+  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
+  ReqB extends z.ZodType,
+  ResB extends z.ZodType
+> = {
+  response: ResB;
+} & (Method extends "POST" ? { request: ReqB } : { request?: void }) &
+  (PathParams extends void
+    ? QueryParams extends void
+      ? { query?: z.ZodVoid; params?: z.ZodVoid }
+      : { query: ReqQ; params?: z.ZodVoid }
+    : QueryParams extends void
+    ? { query?: z.ZodVoid; params: ReqP }
+    : { query: ReqQ; params: ReqP });

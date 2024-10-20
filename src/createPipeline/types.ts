@@ -1,5 +1,6 @@
 import type { z } from "npm:zod";
 import type {
+  CreateEndpointProps,
   Endpoint,
   EndpointDeclarationBase,
   ExtractMethod,
@@ -38,18 +39,17 @@ export type Pipeline<PipelineContext extends BasePipelineContext> = {
     ReqB extends z.ZodType,
     ResB extends z.ZodType
   >(
-    // TODO all of this was copypasted
     path: EndpointDeclaration,
-    props: {
-      response: ResB;
-    } & (Method extends "POST" ? { request: ReqB } : { request?: void }) &
-      (PathParams extends void
-        ? QueryParams extends void
-          ? { query?: z.ZodVoid; params?: z.ZodVoid }
-          : { query: ReqQ; params?: z.ZodVoid }
-        : QueryParams extends void
-        ? { query?: z.ZodVoid; params: ReqP }
-        : { query: ReqQ; params: ReqP }),
+    props: CreateEndpointProps<
+      EndpointDeclaration,
+      Method,
+      PathParams,
+      QueryParams,
+      ReqP,
+      ReqQ,
+      ReqB,
+      ResB
+    >,
     callback: RouteHandlerCallback<
       EndpointDeclaration,
       PathParams,
