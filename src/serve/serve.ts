@@ -17,7 +17,7 @@ export function serve(
 
     const matchingRoute = findMatchingRoute(routeHandlers, url.pathname);
 
-    // TODO lint?
+    // TODO lint? (strict-boolean-expressions)
     if (matchingRoute === null) {
       logger.info(`Unable to serve ${url}`);
 
