@@ -1,10 +1,8 @@
-import type { Command } from "npm:@commander-js/extra-typings";
 import z from "npm:zod";
-import { printResult } from "../../../printResult.ts";
-import { app } from "../../app.ts";
+import { appPipeline } from "../../appPipeline.ts";
 import type { User } from "./types.ts";
 
-export const getUser = app.createEndpoint(
+export const getUser = appPipeline.createEndpoint(
   // TODO when removing "more" here, the compiler doesn't complain
   "GET /users/:id?includePosts&more",
 

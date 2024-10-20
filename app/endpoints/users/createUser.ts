@@ -1,10 +1,10 @@
 import type { Command } from "npm:@commander-js/extra-typings";
 import { z } from "npm:zod";
 import { printResult } from "../../../printResult.ts";
-import { app } from "../../app.ts";
+import { appPipeline } from "../../appPipeline.ts";
 import type { User } from "./types.ts";
 
-export const createUser = app.createEndpoint(
+export const createUser = appPipeline.createEndpoint(
   "POST /users/:id/abc?bla",
 
   {

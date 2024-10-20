@@ -36,4 +36,4 @@ const cors =
     };
   };
 
-export const app = createPipeline(cors(), moar(), authenticate());
+export const appPipeline = createPipeline(cors(), moar(), authenticate());

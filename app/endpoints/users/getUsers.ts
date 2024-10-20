@@ -1,8 +1,8 @@
 import { z } from "npm:zod";
-import { app } from "../../app.ts";
+import { appPipeline } from "../../appPipeline.ts";
 import type { User } from "./types.ts";
 
-export const getUsers = app.createEndpoint(
+export const getUsers = appPipeline.createEndpoint(
   "GET /users",
 
   {
