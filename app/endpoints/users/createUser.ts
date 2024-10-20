@@ -14,7 +14,9 @@ export const createUser = appPipeline.createEndpoint(
     response: z.custom<User>(),
   },
 
-  ({ params, query, body }) => {
+  ({ params, query, body, context }) => {
+    console.log(`User: ${context.user}`);
+
     return Promise.resolve({
       id: params.id,
       bla: query.bla,
