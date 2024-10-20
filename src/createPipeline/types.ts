@@ -39,6 +39,7 @@ export type Pipeline<PipelineContext extends BasePipelineContext> = {
     ReqB extends z.ZodType,
     ResB extends z.ZodType
   >(
+    // TODO rename
     path: EndpointDeclaration,
     props: CreateEndpointProps<
       EndpointDeclaration,
