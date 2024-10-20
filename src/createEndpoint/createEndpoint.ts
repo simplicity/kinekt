@@ -76,12 +76,10 @@ export function createEndpoint<
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
   ResB extends z.ZodType,
-  // TODO naming
   PipelineContext extends BasePipelineContext
 >(
   pipeline: Pipeline<PipelineContext>,
-  // TODO not really "path" anymore, because it contains the method
-  path: EndpointDeclaration,
+  endpointDeclaration: EndpointDeclaration,
   props: {
     response: ResB;
   } & (Method extends "POST" ? { request: ReqB } : { request?: void }) &
@@ -103,7 +101,7 @@ export function createEndpoint<
     PipelineContext
   >
 ) {
-  const parts = path.split(" ");
+  const parts = endpointDeclaration.split(" ");
 
   const method = parts.at(0);
 
