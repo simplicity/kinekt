@@ -6,9 +6,6 @@ export const getUser = appPipeline.createEndpoint(
   // TODO when removing "more" here, the compiler doesn't complain
   "GET /users/:id?includePosts&more",
 
-  // TODO how to disallow this?
-  // "GET ",
-
   {
     params: z.object({ id: z.string() }),
     query: z.object({ includePosts: z.boolean(), more: z.string() }),
