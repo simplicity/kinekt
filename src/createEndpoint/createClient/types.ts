@@ -14,8 +14,7 @@ export type Client<
   ReqB extends z.ZodType,
   ResB extends z.ZodType
 > = (props: {
-  // TODO rename to params?
-  path: z.infer<ReqP>;
+  params: z.infer<ReqP>;
   query: z.infer<ReqQ>;
   body: z.infer<ReqB>;
 }) => Promise<z.infer<ResB>>;

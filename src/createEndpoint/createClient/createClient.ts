@@ -7,6 +7,7 @@ import type {
   ExtractQueryParams,
   RouteDefinition,
 } from "../types.ts";
+import { removeMethod } from "../../helpers/removeMethod.ts";
 import type { Client } from "./types.ts";
 
 // TODO any
@@ -58,13 +59,15 @@ export function createClient<
   ReqB,
   ResB
 > {
-  return async ({ path, query, body }) => {
+  const path = removeMethod(routeDefinition.endpointDeclaration);
+
+  return async ({ params, query, body }) => {
     // TODO might make sense to do input validation here
     // - for body, because it might not be possible to declare the whole object in commander
     // - for the case where no typescript is used
 
     // TODO we could check when something is empty (e.g. avoid /users//stuff)
-    const pathString = buildPathString(path, routeDefinition.path);
+    const pathString = buildPathString(params, path);
 
     const queryString = buildQueryString(query);
 

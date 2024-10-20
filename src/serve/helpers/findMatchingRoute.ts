@@ -1,5 +1,6 @@
 import { match } from "npm:path-to-regexp";
 import type { RouteHandler } from "../../createEndpoint/types.ts";
+import { removeMethod } from "../../helpers/removeMethod.ts";
 import { removeQuery } from "../../helpers/removeQuery.ts";
 import type { MatchingRoute } from "../types.ts";
 
@@ -12,9 +13,12 @@ export function findMatchingRoute(
       return acc;
     }
 
-    const result = match(removeQuery(routeHandler.routeDefinition.path))(
-      pathname
-    );
+    const result = match(
+      // TODO precompile this
+      removeQuery(
+        removeMethod(routeHandler.routeDefinition.endpointDeclaration)
+      )
+    )(pathname);
 
     if (result === false) {
       return acc;

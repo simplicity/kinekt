@@ -105,16 +105,12 @@ export function createEndpoint<
 
   const method = parts.at(0);
 
-  // TODO naming
-  // TODO what if it is empty?
-  const actualPath = (parts.at(1) ?? "") as EndpointDeclaration;
-
   switch (method) {
     case "GET": {
       return createEndpointInternal(
         {
           method: "GET",
-          path: actualPath,
+          endpointDeclaration,
           requestParamsSchema: (props.params ?? z.void()) as ReqP, // TODO correct?
           requestQuerySchema: (props.query ?? z.void()) as ReqQ,
           responseBodySchema: props.response,
@@ -127,7 +123,7 @@ export function createEndpoint<
       return createEndpointInternal(
         {
           method: "POST",
-          path: actualPath,
+          endpointDeclaration,
           requestParamsSchema: (props.params ?? z.void()) as ReqP, // TODO correct?
           requestQuerySchema: (props.query ?? z.void()) as ReqQ,
           requestBodySchema: (props.request ?? z.void()) as ReqB,

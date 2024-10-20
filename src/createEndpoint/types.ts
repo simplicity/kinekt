@@ -47,7 +47,7 @@ type RouteDefinitionDefaults<
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ResB extends z.ZodType
 > = {
-  path: EndpointDeclaration;
+  endpointDeclaration: EndpointDeclaration;
   requestParamsSchema: ReqP;
   requestQuerySchema: ReqQ;
   responseBodySchema: ResB;
@@ -143,7 +143,7 @@ export type Endpoint<
   PipelineContext extends BasePipelineContext
 > = {
   (props: {
-    path: z.infer<ReqP>;
+    params: z.infer<ReqP>;
     query: z.infer<ReqQ>;
     body: z.infer<ReqB>;
   }): Promise<z.infer<ResB>>;

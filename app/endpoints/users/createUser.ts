@@ -33,7 +33,7 @@ export function registerCreateUserCommand(program: Command) {
     .action(async ({ name, email }) =>
       printResult(
         await createUser({
-          path: { id: "some-id" },
+          params: { id: "some-id" },
           query: { bla: "test" },
           body: { name, email },
         })
