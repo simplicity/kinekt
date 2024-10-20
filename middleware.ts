@@ -1,8 +1,8 @@
-import { pipe, type BaseContext } from "./src/helpers/pipe.ts";
-
-type Middleware<Context extends BaseContext, NewContext extends Context> = (
-  context: Context
-) => Promise<NewContext>;
+import {
+  pipeline,
+  type BaseContext,
+  type Middleware,
+} from "./src/helpers/pipeline.ts";
 
 type Authenticated = { user: string };
 
@@ -40,9 +40,9 @@ const cors =
   };
 
 async function doStuff(context: BaseContext) {
-  const pipeline = pipe(cors(), moar(), authenticate());
+  const app = pipeline(cors(), moar(), authenticate());
 
-  const r = await pipeline(context);
+  const r = await app(context);
 
   console.log(r.user);
   console.log(r.moar);
