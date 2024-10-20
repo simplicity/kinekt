@@ -39,9 +39,9 @@ const cors =
     };
   };
 
-async function doStuff(context: BaseContext) {
-  const app = pipeline(cors(), moar(), authenticate());
+export const app = pipeline(cors(), moar(), authenticate());
 
+async function doStuff(context: BaseContext) {
   const r = await app(context);
 
   console.log(r.user);
@@ -49,11 +49,11 @@ async function doStuff(context: BaseContext) {
   console.log(r);
 }
 
-doStuff({
-  request: {
-    method: "GET",
-    url: "https://example.com",
-  },
-  halted: false,
-  response: null,
-});
+// doStuff({
+//   request: {
+//     method: "GET",
+//     url: "https://example.com",
+//   },
+//   halted: false,
+//   response: null,
+// });
