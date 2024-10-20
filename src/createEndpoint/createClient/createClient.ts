@@ -2,9 +2,9 @@ import { z } from "npm:zod";
 import { parseBody } from "../../helpers/parseBody.ts";
 import { removeQuery } from "../../helpers/removeQuery.ts";
 import type {
+  EndpointDeclarationBase,
   ExtractPathParams,
   ExtractQueryParams,
-  PathBase,
   RouteDefinition,
 } from "../types.ts";
 import type { Client } from "./types.ts";
@@ -32,16 +32,16 @@ function buildQueryString(query: any): string {
 }
 
 export function createClient<
-  Path extends PathBase,
-  PathParams extends ExtractPathParams<Path>,
-  QueryParams extends ExtractQueryParams<Path>,
+  EndpointDeclaration extends EndpointDeclarationBase,
+  PathParams extends ExtractPathParams<EndpointDeclaration>,
+  QueryParams extends ExtractQueryParams<EndpointDeclaration>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
   ResB extends z.ZodType
 >(
   routeDefinition: RouteDefinition<
-    Path,
+    EndpointDeclaration,
     PathParams,
     QueryParams,
     ReqP,
@@ -49,7 +49,15 @@ export function createClient<
     ReqB,
     ResB
   >
-): Client<Path, PathParams, QueryParams, ReqP, ReqQ, ReqB, ResB> {
+): Client<
+  EndpointDeclaration,
+  PathParams,
+  QueryParams,
+  ReqP,
+  ReqQ,
+  ReqB,
+  ResB
+> {
   return async ({ path, query, body }) => {
     // TODO might make sense to do input validation here
     // - for body, because it might not be possible to declare the whole object in commander

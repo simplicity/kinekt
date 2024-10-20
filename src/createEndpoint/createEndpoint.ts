@@ -3,18 +3,18 @@ import type { BaseContext, Pipeline } from "../createPipeline/types.ts";
 import { createClient } from "./createClient/createClient.ts";
 import type {
   Endpoint,
+  EndpointDeclarationBase,
   ExtractMethod,
   ExtractPathParams,
   ExtractQueryParams,
-  PathBase,
   RouteDefinition,
   RouteHandlerCallback,
 } from "./types.ts";
 
 function createEndpointInternal<
-  Path extends PathBase,
-  PathParams extends ExtractPathParams<Path>,
-  QueryParams extends ExtractQueryParams<Path>,
+  EndpointDeclaration extends EndpointDeclarationBase,
+  PathParams extends ExtractPathParams<EndpointDeclaration>,
+  QueryParams extends ExtractQueryParams<EndpointDeclaration>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
@@ -22,7 +22,7 @@ function createEndpointInternal<
   Context extends BaseContext
 >(
   routeDefinition: RouteDefinition<
-    Path,
+    EndpointDeclaration,
     PathParams,
     QueryParams,
     ReqP,
@@ -31,7 +31,7 @@ function createEndpointInternal<
     ResB
   >,
   callback: RouteHandlerCallback<
-    Path,
+    EndpointDeclaration,
     PathParams,
     QueryParams,
     ReqP,
@@ -41,9 +41,18 @@ function createEndpointInternal<
     Context
   >,
   pipeline: Pipeline<Context>
-): Endpoint<Path, PathParams, QueryParams, ReqP, ReqQ, ReqB, ResB, Context> {
+): Endpoint<
+  EndpointDeclaration,
+  PathParams,
+  QueryParams,
+  ReqP,
+  ReqQ,
+  ReqB,
+  ResB,
+  Context
+> {
   const client = createClient(routeDefinition) as Endpoint<
-    Path,
+    EndpointDeclaration,
     PathParams,
     QueryParams,
     ReqP,
@@ -59,10 +68,10 @@ function createEndpointInternal<
 }
 
 export function createEndpoint<
-  Path extends PathBase,
-  Method extends ExtractMethod<Path>,
-  PathParams extends ExtractPathParams<Path>,
-  QueryParams extends ExtractQueryParams<Path>,
+  EndpointDeclaration extends EndpointDeclarationBase,
+  Method extends ExtractMethod<EndpointDeclaration>,
+  PathParams extends ExtractPathParams<EndpointDeclaration>,
+  QueryParams extends ExtractQueryParams<EndpointDeclaration>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
   ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
   ReqB extends z.ZodType,
@@ -72,7 +81,7 @@ export function createEndpoint<
 >(
   pipeline: Pipeline<Context>,
   // TODO not really "path" anymore, because it contains the method
-  path: Path,
+  path: EndpointDeclaration,
   props: {
     response: ResB;
   } & (Method extends "POST" ? { request: ReqB } : { request?: void }) &
@@ -84,7 +93,7 @@ export function createEndpoint<
       ? { query?: z.ZodVoid; params: ReqP }
       : { query: ReqQ; params: ReqP }),
   callback: RouteHandlerCallback<
-    Path,
+    EndpointDeclaration,
     PathParams,
     QueryParams,
     ReqP,
@@ -100,7 +109,7 @@ export function createEndpoint<
 
   // TODO naming
   // TODO what if it is empty?
-  const actualPath = (parts.at(1) ?? "") as Path;
+  const actualPath = (parts.at(1) ?? "") as EndpointDeclaration;
 
   switch (method) {
     case "GET": {
