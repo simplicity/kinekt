@@ -1,5 +1,6 @@
 import { z } from "npm:zod";
 import { parseBody } from "../../helpers/parseBody.ts";
+import { removeMethod } from "../../helpers/removeMethod.ts";
 import { removeQuery } from "../../helpers/removeQuery.ts";
 import type {
   EndpointDeclarationBase,
@@ -7,20 +8,17 @@ import type {
   ExtractQueryParams,
   RouteDefinition,
 } from "../types.ts";
-import { removeMethod } from "../../helpers/removeMethod.ts";
 import type { Client } from "./types.ts";
 
-// TODO any
-function buildPathString(reqP: any, path: string): string {
-  return reqP
-    ? Object.entries(reqP).reduce<string>(
+function buildPathString(params: any, path: string): string {
+  return params
+    ? Object.entries(params).reduce<string>(
         (acc, [key, value]) => acc.replace(`:${key}`, value as string),
         removeQuery(path)
       )
     : "";
 }
 
-// TODO any
 function buildQueryString(query: any): string {
   const queryString = query
     ? Object.entries(query)
