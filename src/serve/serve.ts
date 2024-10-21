@@ -62,15 +62,15 @@ export function serve(
       });
     }
 
-    const responseBody = await matchingRoute.routeHandler.callback({
+    const response = await matchingRoute.routeHandler.callback({
       params: validationResult.value.parsedParams,
       query: validationResult.value.parsedQuery,
       body: validationResult.value.parsedBody,
       context,
     });
 
-    return new Response(JSON.stringify(responseBody), {
-      status: 200,
+    return new Response(JSON.stringify(response.body), {
+      status: response.code,
       headers: {
         "content-type": "application/json; charset=utf-8",
       },
