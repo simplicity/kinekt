@@ -1,5 +1,6 @@
 import { z } from "npm:zod";
 import type { BasePipelineContext, Pipeline } from "../createPipeline/types.ts";
+import { abort } from "../helpers/abort.ts";
 import { createClient } from "./helpers/createClient.ts";
 import type {
   CreateEndpointProps,
@@ -166,8 +167,7 @@ export function createEndpoint<
       );
     }
     case undefined: {
-      // TODO here we do throw an error
-      throw new Error(
+      abort(
         `Invalid method ${method} in endpoint declaration ${endpointDeclaration}`
       );
     }
