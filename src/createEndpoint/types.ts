@@ -39,7 +39,6 @@ export type ExtractPathParams<Url extends EndpointDeclarationBase> =
 export type ExtractQueryParams<Url extends EndpointDeclarationBase> =
   ExtractQuery<SplitPathAndQuery<Url>[2]>;
 
-// TODO move?
 export type StatusCode = 200 | 400;
 
 type RouteDefinitionDefaults<
