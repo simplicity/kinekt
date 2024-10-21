@@ -39,7 +39,7 @@ export type ExtractPathParams<Url extends EndpointDeclarationBase> =
 export type ExtractQueryParams<Url extends EndpointDeclarationBase> =
   ExtractQuery<SplitPathAndQuery<Url>[2]>;
 
-export type StatusCode = 200 | 400;
+export type StatusCode = 200 | 401 | 422;
 
 type RouteDefinitionDefaults<
   EndpointDeclaration extends EndpointDeclarationBase,
@@ -155,9 +155,11 @@ export type Client<
   query: z.infer<ReqQ>;
   body: z.infer<ReqB>;
 }) => Promise<
-  {
-    [Code in ResC]: { code: Code; body: z.infer<ResB[Code]> };
-  }[ResC]
+  | {
+      [Code in ResC]: { code: Code; body: z.infer<ResB[Code]> };
+    }[ResC]
+  // TODO what typing to use here?
+  | { code: 400; body: any }
 >;
 
 export type Endpoint<

@@ -89,11 +89,11 @@ export function createClient<
 
     switch (result.type) {
       case "ok": {
-        return result.value;
+        return { code: response.status as ResC, body: result.value };
       }
       case "error": {
         // TODO what to do here?
-        return {};
+        return { code: 200 as ResC, body: {} };
       }
     }
   };

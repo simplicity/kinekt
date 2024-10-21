@@ -55,7 +55,7 @@ export function serve(
 
     if (validationResult.type === "error") {
       return new Response(JSON.stringify(validationResult.error), {
-        status: 403,
+        status: 400,
         headers: {
           "content-type": "application/json; charset=utf-8",
         },

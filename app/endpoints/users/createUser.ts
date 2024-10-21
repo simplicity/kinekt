@@ -1,6 +1,5 @@
 import type { Command } from "npm:@commander-js/extra-typings";
 import { z } from "npm:zod";
-import { printResult } from "../../../printResult.ts";
 import { appPipeline } from "../../appPipeline.ts";
 import type { User } from "./types.ts";
 
@@ -13,7 +12,7 @@ export const createUser = appPipeline.createEndpoint(
     request: z.object({ name: z.string(), email: z.string() }),
     response: {
       200: z.custom<User>(),
-      400: z.object({ error: z.string() }),
+      422: z.object({ error: z.string() }),
     },
   },
 
@@ -32,7 +31,7 @@ export const createUser = appPipeline.createEndpoint(
       });
     } else {
       return Promise.resolve({
-        code: 400,
+        code: 422,
         body: {
           error: "A random error occured!",
         },
@@ -47,13 +46,13 @@ export function registerCreateUserCommand(program: Command) {
     .description("Create user")
     .requiredOption("--name <string>", "Name")
     .requiredOption("--email <string>", "Email")
-    .action(async ({ name, email }) =>
-      printResult(
-        await createUser({
-          params: { id: "some-id" },
-          query: { bla: "test" },
-          body: { name, email },
-        })
-      )
-    );
+    .action(async ({ name, email }) => {
+      const result = await createUser({
+        params: { id: "some-id" },
+        query: { bla: "test" },
+        body: { name, email },
+      });
+
+      console.log(result);
+    });
 }
