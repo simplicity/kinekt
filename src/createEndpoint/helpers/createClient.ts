@@ -72,8 +72,6 @@ export function createClient<
 
     const url = `${rootUrl}${pathString}${queryString}`;
 
-    // TODO handle errors
-
     const fetchResult = await toResult(
       fetch(url, {
         headers: {
