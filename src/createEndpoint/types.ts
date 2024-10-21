@@ -75,7 +75,7 @@ export type RouteDefinition<
       ResB
     >)
   | ({
-      method: "POST";
+      method: "POST" | "PUT" | "PATCH" | "DELETE";
       requestBodySchema: ReqB;
     } & RouteDefinitionDefaults<
       EndpointDeclaration,

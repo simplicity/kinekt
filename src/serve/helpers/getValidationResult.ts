@@ -27,8 +27,12 @@ function getBody(
         data: {},
       };
     }
-    case "POST": {
+    case "POST":
+    case "PUT":
+    case "PATCH":
+    case "DELETE": {
       if (
+        // TODO fix
         // The express.json() middleware automatically sets body to an empty object ({}),
         // which is why we have to introduce a special handling here.
         routeDefinition.requestBodySchema instanceof ZodVoid &&

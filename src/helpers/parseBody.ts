@@ -1,7 +1,7 @@
 // TODO do this with a middleware?
 
-export async function parseBody(response: Request | Response) {
-  const text = await response.text();
+export async function parseBody(carrier: Request | Response) {
+  const text = await carrier.text();
 
   try {
     return JSON.parse(text);
