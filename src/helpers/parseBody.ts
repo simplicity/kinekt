@@ -1,6 +1,6 @@
 // TODO do this with a middleware?
 
-import type { Result } from "./types.ts";
+import type { Result } from "./result.ts";
 
 export async function parseBody(
   carrier: Request | Response
