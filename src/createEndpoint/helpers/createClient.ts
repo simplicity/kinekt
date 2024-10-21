@@ -2,6 +2,7 @@ import { z } from "npm:zod";
 import { parseBody } from "../../helpers/parseBody.ts";
 import { removeMethod } from "../../helpers/removeMethod.ts";
 import { removeQuery } from "../../helpers/removeQuery.ts";
+import { toResult } from "../../helpers/result.ts";
 import type {
   Client,
   EndpointDeclarationBase,
@@ -73,27 +74,42 @@ export function createClient<
 
     // TODO handle errors
 
-    const response = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: routeDefinition.method,
-      ...(body
-        ? {
-            body: JSON.stringify(body),
-          }
-        : {}),
-    });
+    const fetchResult = await toResult(
+      fetch(url, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: routeDefinition.method,
+        ...(body
+          ? {
+              body: JSON.stringify(body),
+            }
+          : {}),
+      })
+    );
 
-    const result = await parseBody(response);
+    if (fetchResult.type === "error") {
+      return {
+        type: "network-call-failed",
+        error: fetchResult.error,
+      };
+    }
 
-    switch (result.type) {
+    const bodyParseResult = await parseBody(fetchResult.value);
+
+    switch (bodyParseResult.type) {
       case "ok": {
-        return { code: response.status as ResC, body: result.value };
+        return {
+          type: "network-call-succeeded",
+          code: fetchResult.value.status as ResC,
+          body: bodyParseResult.value,
+        };
       }
       case "error": {
-        // TODO what to do here?
-        return { code: 200 as ResC, body: {} };
+        return {
+          type: "failed-to-parse-body",
+          text: bodyParseResult.metadata.text,
+        };
       }
     }
   };

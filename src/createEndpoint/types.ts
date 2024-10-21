@@ -156,10 +156,27 @@ export type Client<
   body: z.infer<ReqB>;
 }) => Promise<
   | {
-      [Code in ResC]: { code: Code; body: z.infer<ResB[Code]> };
+      [Code in ResC]: {
+        type: "network-call-succeeded";
+        code: Code;
+        body: z.infer<ResB[Code]>;
+      };
     }[ResC]
   // TODO what typing to use here?
-  | { code: 400; body: any }
+  | {
+      // TODO how to enforce this inside serve?
+      type: "network-call-succeeded";
+      code: 400;
+      body: any;
+    }
+  | {
+      type: "failed-to-parse-body";
+      text: string;
+    }
+  | {
+      type: "network-call-failed";
+      error: any;
+    }
 >;
 
 export type Endpoint<

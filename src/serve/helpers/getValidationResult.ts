@@ -100,7 +100,8 @@ export async function getValidationResult(
 
   return {
     type: "error",
-    error: [
+    error: "validation failed",
+    metadata: [
       ...extractZodIssues(paramsParseResult, "params"),
       ...extractZodIssues(queryParseResult, "query"),
       ...extractZodIssues(bodyParseResult, "body"),
