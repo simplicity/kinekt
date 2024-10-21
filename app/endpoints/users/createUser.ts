@@ -20,7 +20,7 @@ export const createUser = appPipeline.createEndpoint(
   ({ params, query, body, context }) => {
     console.log(`User: ${context.user}`);
 
-    if (Math.random() === 1) {
+    if (Math.random() > 0.25) {
       return Promise.resolve({
         code: 200,
         body: {
