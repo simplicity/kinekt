@@ -1,4 +1,4 @@
-import { z } from "npm:zod";
+import { z, type ZodIssue } from "npm:zod";
 import type { BasePipelineContext, Pipeline } from "../createPipeline/types.ts";
 
 export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -141,6 +141,10 @@ export type RouteHandler<
   pipeline: Pipeline<PipelineContext>;
 };
 
+// TODO is there a better way to connect this to serve.ts?
+export type ValidationErrorStatusCode = 400;
+export type ValidationErrors = Array<{ message: string; issue: ZodIssue }>;
+
 export type Client<
   EndpointDeclaration extends EndpointDeclarationBase,
   PathParams extends ExtractPathParams<EndpointDeclaration>,
@@ -165,8 +169,8 @@ export type Client<
   | {
       // TODO how to enforce this inside serve?
       type: "network-call-succeeded";
-      code: 400;
-      body: any;
+      code: ValidationErrorStatusCode;
+      body: ValidationErrors;
     }
   | {
       type: "failed-to-parse-body";

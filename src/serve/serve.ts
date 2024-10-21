@@ -1,6 +1,9 @@
 import Logger from "https://deno.land/x/logger@v1.1.6/logger.ts";
 import { match } from "npm:path-to-regexp";
-import type { Endpoint } from "../createEndpoint/types.ts";
+import type {
+  Endpoint,
+  ValidationErrorStatusCode,
+} from "../createEndpoint/types.ts";
 import { removeMethod } from "../helpers/removeMethod.ts";
 import { removeQuery } from "../helpers/removeQuery.ts";
 import { findMatchingRoute } from "./helpers/findMatchingRoute.ts";
@@ -55,7 +58,7 @@ export function serve(
 
     if (validationResult.type === "error") {
       return new Response(JSON.stringify(validationResult.metadata), {
-        status: 400,
+        status: 400 as ValidationErrorStatusCode,
         headers: {
           "content-type": "application/json; charset=utf-8",
         },

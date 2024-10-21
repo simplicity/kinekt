@@ -1,5 +1,8 @@
 import { z, type SafeParseReturnType, type ZodIssue } from "npm:zod";
-import type { RouteDefinition } from "../../createEndpoint/types.ts";
+import type {
+  RouteDefinition,
+  ValidationErrors,
+} from "../../createEndpoint/types.ts";
 import { parseBody } from "../../helpers/parseBody.ts";
 import { fallback_c, type Result } from "../../helpers/result.ts";
 import type { MatchingRoute } from "../types.ts";
@@ -58,7 +61,7 @@ export async function getValidationResult(
       parsedQuery: any;
       parsedBody: any;
     },
-    Array<{ message: string; issue: ZodIssue }>
+    ValidationErrors
   >
 > {
   const queryParams = Object.fromEntries(
