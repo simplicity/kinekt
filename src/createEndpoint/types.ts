@@ -162,7 +162,6 @@ export type Client<
         body: z.infer<ResB[Code]>;
       };
     }[ResC]
-  // TODO what typing to use here?
   | {
       // TODO how to enforce this inside serve?
       type: "network-call-succeeded";
