@@ -1,31 +1,23 @@
-import { match } from "npm:path-to-regexp";
-import type { RouteHandler } from "../../createEndpoint/types.ts";
-import { removeMethod } from "../../helpers/removeMethod.ts";
-import { removeQuery } from "../../helpers/removeQuery.ts";
-import type { MatchingRoute } from "../types.ts";
+import type { CompiledRoute, MatchingRoute } from "../types.ts";
 
 export function findMatchingRoute(
-  routeHandlers: Array<
-    RouteHandler<any, any, any, any, any, any, any, any, any>
-  >,
+  compiledRouts: Array<CompiledRoute>,
   pathname: string
 ): MatchingRoute | null {
-  return routeHandlers.reduce((acc, routeHandler) => {
+  return compiledRouts.reduce((acc, compiledRouteHandler) => {
     if (acc !== null) {
       return acc;
     }
 
-    const result = match(
-      // TODO precompile this
-      removeQuery(
-        removeMethod(routeHandler.routeDefinition.endpointDeclaration)
-      )
-    )(pathname);
+    const result = compiledRouteHandler.match(pathname);
 
     if (result === false) {
       return acc;
     }
 
-    return { routeHandler, params: result.params };
+    return {
+      routeHandler: compiledRouteHandler.routeHandler,
+      params: result.params,
+    };
   }, null as MatchingRoute | null);
 }

@@ -1,21 +1,32 @@
 import Logger from "https://deno.land/x/logger@v1.1.6/logger.ts";
+import { match } from "npm:path-to-regexp";
 import type { Endpoint } from "../createEndpoint/types.ts";
+import { removeMethod } from "../helpers/removeMethod.ts";
+import { removeQuery } from "../helpers/removeQuery.ts";
 import { findMatchingRoute } from "./helpers/findMatchingRoute.ts";
 import { getValidationResult } from "./helpers/getValidationResult.ts";
+import type { CompiledRoute } from "./types.ts";
 
 const logger = new Logger();
 
 export function serve(
   endpoints: Array<Endpoint<any, any, any, any, any, any, any, any, any>>
 ) {
-  const routeHandlers = endpoints.map((endpoint) => endpoint.routeHandler);
+  const compiledRoute: Array<CompiledRoute> = endpoints.map((endpoint) => ({
+    routeHandler: endpoint.routeHandler,
+    match: match(
+      removeQuery(
+        removeMethod(endpoint.routeHandler.routeDefinition.endpointDeclaration)
+      )
+    ),
+  }));
 
   Deno.serve(async (request) => {
     const url = new URL(request.url);
 
     logger.info(`serving ${url}`);
 
-    const matchingRoute = findMatchingRoute(routeHandlers, url.pathname);
+    const matchingRoute = findMatchingRoute(compiledRoute, url.pathname);
 
     // TODO lint? (strict-boolean-expressions)
     if (matchingRoute === null) {
