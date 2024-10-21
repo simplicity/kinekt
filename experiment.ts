@@ -7,7 +7,12 @@ type StatusCode = 200 | 400;
 function experiment<
   Schema extends { [key: number]: z.ZodType },
   K extends keyof Schema & StatusCode
->(schemas: Schema, cb: () => { code: K; body: z.infer<Schema[K]> }) {}
+>(
+  schemas: Schema,
+  cb: () => {
+    [P in K]: { code: P; body: z.infer<Schema[P]> };
+  }[K]
+) {}
 
 // Example with multiple status codes
 experiment(

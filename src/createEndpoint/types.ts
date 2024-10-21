@@ -102,7 +102,11 @@ export type RouteHandlerCallback<
   query: z.infer<ReqQ>;
   body: z.infer<ReqB>;
   context: PipelineContext;
-}) => Promise<{ code: ResC; body: z.infer<ResB[ResC]> }>;
+}) => Promise<
+  {
+    [Code in ResC]: { code: Code; body: z.infer<ResB[Code]> };
+  }[ResC]
+>;
 
 export type RouteHandler<
   EndpointDeclaration extends EndpointDeclarationBase,
@@ -151,7 +155,11 @@ export type Client<
   params: z.infer<ReqP>;
   query: z.infer<ReqQ>;
   body: z.infer<ReqB>;
-}) => Promise<{ code: ResC; body: z.infer<ResB[ResC]> }>;
+}) => Promise<
+  {
+    [Code in ResC]: { code: Code; body: z.infer<ResB[Code]> };
+  }[ResC]
+>;
 
 export type Endpoint<
   EndpointDeclaration extends EndpointDeclarationBase,
