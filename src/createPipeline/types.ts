@@ -41,8 +41,7 @@ export type Pipeline<PipelineContext extends BasePipelineContext> = {
     ResB extends { [key: number]: z.ZodType },
     ResC extends keyof ResB & StatusCode
   >(
-    // TODO rename
-    path: EndpointDeclaration,
+    endpointDeclaration: EndpointDeclaration,
     props: CreateEndpointProps<
       EndpointDeclaration,
       Method,

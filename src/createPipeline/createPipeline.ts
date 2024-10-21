@@ -40,8 +40,8 @@ export function createPipeline<R1 extends BasePipelineContext, R2 extends R1>(
 ): Pipeline<R2>;
 
 export function createPipeline(...fns: Array<UnaryFunction<any, any>>) {
-  const p = ((context: BasePipelineContext) =>
+  const pipeline = ((context: BasePipelineContext) =>
     process(context, fns)) as Pipeline<any>;
-  p.createEndpoint = (...args) => createEndpoint(p, ...args);
-  return p;
+  pipeline.createEndpoint = (...args) => createEndpoint(pipeline, ...args);
+  return pipeline;
 }
