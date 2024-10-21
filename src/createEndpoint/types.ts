@@ -1,7 +1,7 @@
 import { z } from "npm:zod";
 import type { BasePipelineContext, Pipeline } from "../createPipeline/types.ts";
 
-export type Method = "GET" | "POST";
+export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export type EndpointDeclarationBase = `${Method} /${string}`;
 
@@ -212,3 +212,20 @@ export type CreateEndpointProps<
     : QueryParams extends void
     ? { query?: z.ZodVoid; params: ReqP }
     : { query: ReqQ; params: ReqP });
+
+// TODO review
+// test
+type MissingMethods<T extends { method: string }> = Exclude<
+  Method,
+  T["method"]
+>;
+
+type TestCoverage = MissingMethods<
+  RouteDefinition<any, any, any, any, any, any, any>
+>;
+
+type AssertNever<T extends never> = T;
+
+type EnsureAllMethodsCovered = AssertNever<
+  MissingMethods<RouteDefinition<any, any, any, any, any, any, any>>
+>;

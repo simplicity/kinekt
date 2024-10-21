@@ -8,10 +8,23 @@ import type {
   ExtractMethod,
   ExtractPathParams,
   ExtractQueryParams,
+  Method,
   RouteDefinition,
   RouteHandlerCallback,
   StatusCode,
 } from "./types.ts";
+
+const validMethods: Array<Method> = ["GET", "POST", "PUT", "PATCH", "DELETE"];
+
+function isMethod(method: string | undefined): method is Method {
+  return validMethods.includes(method as Method);
+}
+
+function extractMethod(endpointDeclaration: string): Method | undefined {
+  const method = endpointDeclaration.split(" ").at(0);
+
+  return isMethod(method) ? method : undefined;
+}
 
 function createEndpointInternal<
   EndpointDeclaration extends EndpointDeclarationBase,
@@ -108,8 +121,18 @@ export function createEndpoint<
     ResC,
     PipelineContext
   >
-) {
-  const method = endpointDeclaration.split(" ").at(0);
+): Endpoint<
+  EndpointDeclaration,
+  PathParams,
+  QueryParams,
+  ReqP,
+  ReqQ,
+  ReqB,
+  ResB,
+  ResC,
+  PipelineContext
+> {
+  const method = extractMethod(endpointDeclaration);
 
   switch (method) {
     case "GET": {
@@ -125,7 +148,10 @@ export function createEndpoint<
         pipeline
       );
     }
-    case "POST": {
+    case "POST":
+    case "PUT":
+    case "PATCH":
+    case "DELETE": {
       return createEndpointInternal(
         {
           method: "POST",
@@ -139,8 +165,11 @@ export function createEndpoint<
         pipeline
       );
     }
+    case undefined: {
+      // TODO here we do throw an error
+      throw new Error(
+        `Invalid method ${method} in endpoint declaration ${endpointDeclaration}`
+      );
+    }
   }
-
-  // TODO don't throw?
-  throw new Error(`Unknown method ${method}`);
 }
