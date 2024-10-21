@@ -85,6 +85,16 @@ export function createClient<
         : {}),
     });
 
-    return await parseBody(response);
+    const result = await parseBody(response);
+
+    switch (result.type) {
+      case "ok": {
+        return result.value;
+      }
+      case "error": {
+        // TODO what to do here?
+        return {};
+      }
+    }
   };
 }

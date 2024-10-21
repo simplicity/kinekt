@@ -1,14 +1,21 @@
 // TODO do this with a middleware?
 
-export async function parseBody(carrier: Request | Response) {
+import type { Result } from "./types.ts";
+
+export async function parseBody(
+  carrier: Request | Response
+): Promise<Result<any, string>> {
   const text = await carrier.text();
 
   try {
-    return JSON.parse(text);
+    return {
+      type: "ok",
+      value: JSON.parse(text),
+    };
   } catch {
-    // TODO avoid throw
-    throw new Error("Unable to parse response", {
-      cause: `Tried to parse json, received:\n\n${text}`,
-    });
+    return {
+      type: "error",
+      error: `Tried to parse json, received:\n\n${text}`,
+    };
   }
 }

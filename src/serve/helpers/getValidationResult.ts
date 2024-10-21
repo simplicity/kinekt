@@ -1,11 +1,8 @@
-import { z, type SafeParseReturnType, type ZodIssue } from "npm:zod";
+import { z, ZodError, type SafeParseReturnType, type ZodIssue } from "npm:zod";
 import type { RouteDefinition } from "../../createEndpoint/types.ts";
 import { parseBody } from "../../helpers/parseBody.ts";
+import type { Result } from "../../helpers/types.ts";
 import type { MatchingRoute } from "../types.ts";
-
-type Result<Value, Error> =
-  | { type: "ok"; value: Value }
-  | { type: "error"; error: Error };
 
 async function getBody(
   request: Request,
@@ -31,7 +28,18 @@ async function getBody(
     case "PATCH":
     case "DELETE": {
       const body = await parseBody(request);
-      return routeDefinition.requestBodySchema.safeParse(body);
+      switch (body.type) {
+        case "ok": {
+          return routeDefinition.requestBodySchema.safeParse(body);
+        }
+        case "error": {
+          return {
+            success: false,
+            // TODO avoid throwing zod error
+            error: new ZodError([]),
+          };
+        }
+      }
     }
   }
 }
