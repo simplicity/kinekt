@@ -167,7 +167,6 @@ export type Client<
       };
     }[ResC]
   | {
-      // TODO how to enforce this inside serve?
       type: "network-call-succeeded";
       code: ValidationErrorStatusCode;
       body: ValidationErrors;
