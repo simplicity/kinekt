@@ -88,8 +88,9 @@ export function createClient<
 
     if (fetchResult.type === "error") {
       return {
-        type: "network-call-failed",
-        error: fetchResult.error,
+        type: "error",
+        error: "Failed to make network call",
+        metadata: fetchResult.error,
       };
     }
 
@@ -98,15 +99,18 @@ export function createClient<
     switch (bodyParseResult.type) {
       case "ok": {
         return {
-          type: "network-call-succeeded",
-          code: fetchResult.value.status as ResC,
-          body: bodyParseResult.value,
+          type: "ok",
+          value: {
+            code: fetchResult.value.status as ResC,
+            body: bodyParseResult.value,
+          },
         };
       }
       case "error": {
         return {
-          type: "failed-to-parse-body",
-          text: bodyParseResult.metadata.text,
+          type: "error",
+          error: "Failed to parse body",
+          metadata: bodyParseResult.metadata.text,
         };
       }
     }

@@ -161,23 +161,29 @@ export type Client<
 }) => Promise<
   | {
       [Code in ResC]: {
-        type: "network-call-succeeded";
-        code: Code;
-        body: z.infer<ResB[Code]>;
+        type: "ok";
+        value: {
+          code: Code;
+          body: z.infer<ResB[Code]>;
+        };
       };
     }[ResC]
   | {
-      type: "network-call-succeeded";
-      code: ValidationErrorStatusCode;
-      body: ValidationErrors;
+      type: "ok";
+      value: {
+        code: ValidationErrorStatusCode;
+        body: ValidationErrors;
+      };
     }
   | {
-      type: "failed-to-parse-body";
-      text: string;
-    }
+      type: "error";
+      error: "Failed to parse body";
+      metadata: string;
+    } // TODO: would be better with an explicit type like ExplicitErrorResult<"Failed to parse body"> - maybe there should be an error code, too
   | {
-      type: "network-call-failed";
-      error: any;
+      type: "error";
+      error: "Failed to make network call";
+      metadata: any;
     }
 >;
 
