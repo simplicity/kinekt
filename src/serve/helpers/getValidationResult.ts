@@ -61,7 +61,8 @@ export async function getValidationResult(
       parsedQuery: any;
       parsedBody: any;
     },
-    ValidationErrors
+    string,
+    { validationErrors: ValidationErrors }
   >
 > {
   const queryParams = Object.fromEntries(
@@ -104,7 +105,7 @@ export async function getValidationResult(
   return {
     type: "error",
     error: "validation failed",
-    metadata: [
+    validationErrors: [
       ...extractZodIssues(paramsParseResult, "params"),
       ...extractZodIssues(queryParseResult, "query"),
       ...extractZodIssues(bodyParseResult, "body"),

@@ -4,7 +4,7 @@ import type { Result } from "./result.ts";
 
 export async function parseBody(
   carrier: Request | Response
-): Promise<Result<any, { text: string }>> {
+): Promise<Result<any, string, { text: string }>> {
   // TODO this should be caught, too
   const text = await carrier.text();
 
@@ -17,7 +17,7 @@ export async function parseBody(
     return {
       type: "error",
       error: `Tried to parse json, received:\n\n${text}`,
-      metadata: { text },
+      text,
     };
   }
 }

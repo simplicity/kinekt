@@ -176,8 +176,8 @@ export type Client<
         body: ValidationErrors;
       };
     }
-  | ErrorResult<"body-parse-error", string>
-  | ErrorResult<"network-error", any>
+  | ErrorResult<"body-parse-error", { text: string }>
+  | ErrorResult<"network-error", { cause: string }>
 >;
 
 export type Endpoint<

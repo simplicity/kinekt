@@ -90,7 +90,7 @@ export function createClient<
       return {
         type: "error",
         error: "network-error",
-        metadata: fetchResult.error,
+        cause: fetchResult.error,
       };
     }
 
@@ -110,7 +110,7 @@ export function createClient<
         return {
           type: "error",
           error: "body-parse-error",
-          metadata: bodyParseResult.metadata.text,
+          text: bodyParseResult.text,
         };
       }
     }
