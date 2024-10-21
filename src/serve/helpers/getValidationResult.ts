@@ -50,19 +50,10 @@ function extractZodIssues(
   }));
 }
 
-async function validate(
+export async function getValidationResult(
   request: Request,
-  routeDefinition: RouteDefinition<
-    any,
-    any,
-    any,
-    z.ZodType,
-    z.ZodType,
-    z.ZodType,
-    any
-  >,
-  params: any,
-  query: any
+  matchingRoute: MatchingRoute,
+  queryString: string
 ): Promise<
   Result<
     {
@@ -73,12 +64,27 @@ async function validate(
     Array<{ message: string; issue: ZodIssue }>
   >
 > {
+  const queryParams = Object.fromEntries(
+    new URLSearchParams(queryString).entries()
+  );
+
+  const query =
+    Object.values(queryParams).length === 0 ? undefined : queryParams;
+
   const paramsParseResult =
-    routeDefinition.requestParamsSchema.safeParse(params);
+    matchingRoute.routeHandler.routeDefinition.requestParamsSchema.safeParse(
+      matchingRoute.params
+    );
 
-  const queryParseResult = routeDefinition.requestQuerySchema.safeParse(query);
+  const queryParseResult =
+    matchingRoute.routeHandler.routeDefinition.requestQuerySchema.safeParse(
+      query
+    );
 
-  const bodyParseResult = await getBody(request, routeDefinition);
+  const bodyParseResult = await getBody(
+    request,
+    matchingRoute.routeHandler.routeDefinition
+  );
 
   if (
     bodyParseResult.success &&
@@ -103,22 +109,4 @@ async function validate(
       ...extractZodIssues(bodyParseResult, "body"),
     ],
   };
-}
-
-export function getValidationResult(
-  request: Request,
-  matchingRoute: MatchingRoute,
-  queryString: string
-) {
-  const queryParams = Object.fromEntries(
-    new URLSearchParams(queryString).entries()
-  );
-
-  return validate(
-    request,
-    matchingRoute.routeHandler.routeDefinition,
-    matchingRoute.params,
-    // TODO not great
-    Object.values(queryParams).length === 0 ? undefined : queryParams
-  );
 }
