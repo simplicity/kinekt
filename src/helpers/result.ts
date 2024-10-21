@@ -1,14 +1,16 @@
 export type OkResult<Value> = { type: "ok"; value: Value };
 
 // TODO awesome!
-export type ErrorResult<ErrorMetadata = undefined> =
-  ErrorMetadata extends undefined
-    ? { type: "error"; error: string }
-    : { type: "error"; error: string; metadata: ErrorMetadata };
+export type ErrorResult<
+  Error extends string,
+  ErrorMetadata = undefined
+> = ErrorMetadata extends undefined
+  ? { type: "error"; error: Error }
+  : { type: "error"; error: Error; metadata: ErrorMetadata };
 
 export type Result<Value, ErrorMetadata = undefined> =
   | OkResult<Value>
-  | ErrorResult<ErrorMetadata>;
+  | ErrorResult<string, ErrorMetadata>;
 
 // TODO naming - look at how this is done e.g. in https://gigobyte.github.io/purify/getting-started
 export function fallback<Value, Fallback>(

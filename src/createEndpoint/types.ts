@@ -1,5 +1,6 @@
 import { z, type ZodIssue } from "npm:zod";
 import type { BasePipelineContext, Pipeline } from "../createPipeline/types.ts";
+import type { ErrorResult } from "../helpers/result.ts";
 
 export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
@@ -175,16 +176,8 @@ export type Client<
         body: ValidationErrors;
       };
     }
-  | {
-      type: "error";
-      error: "Failed to parse body";
-      metadata: string;
-    } // TODO: would be better with an explicit type like ExplicitErrorResult<"Failed to parse body"> - maybe there should be an error code, too
-  | {
-      type: "error";
-      error: "Failed to make network call";
-      metadata: any;
-    }
+  | ErrorResult<"body-parse-error", string>
+  | ErrorResult<"network-error", any>
 >;
 
 export type Endpoint<

@@ -89,7 +89,7 @@ export function createClient<
     if (fetchResult.type === "error") {
       return {
         type: "error",
-        error: "Failed to make network call",
+        error: "network-error",
         metadata: fetchResult.error,
       };
     }
@@ -109,7 +109,7 @@ export function createClient<
       case "error": {
         return {
           type: "error",
-          error: "Failed to parse body",
+          error: "body-parse-error",
           metadata: bodyParseResult.metadata.text,
         };
       }
