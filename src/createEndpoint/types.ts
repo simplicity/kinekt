@@ -162,6 +162,7 @@ export type Client<
 }) => Promise<
   | {
       [Code in ResC]: {
+        // TODO wrap this in a OkResult
         type: "ok";
         value: {
           code: Code;
