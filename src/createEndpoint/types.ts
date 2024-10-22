@@ -1,6 +1,6 @@
 import { z, type ZodIssue } from "npm:zod";
 import type { BasePipelineContext, Pipeline } from "../createPipeline/types.ts";
-import type { ErrorResult } from "../helpers/result.ts";
+import type { ErrorResult, OkResult } from "../helpers/result.ts";
 
 export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
@@ -40,7 +40,12 @@ export type ExtractPathParams<Url extends EndpointDeclarationBase> =
 export type ExtractQueryParams<Url extends EndpointDeclarationBase> =
   ExtractQuery<SplitPathAndQuery<Url>[2]>;
 
-export type StatusCode = 200 | 401 | 422;
+//prettier-ignore
+export type StatusCode = | 100 | 101 | 102 
+                         | 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 
+                         | 300 | 301 | 302 | 303 | 304 | 305 | 307 | 308 
+                         | 401 | 402 | 403 | 404 | 405 | 406 | 407 | 408 | 409 | 410 | 411 | 412 | 413 | 414 | 415 | 416 | 417 | 418 | 419 | 420 | 421 | 422 | 423 | 424 | 428 | 429 | 431 | 451 
+                         | 500 | 501 | 502 | 503 | 504 | 505 | 507 | 511;
 
 type RouteDefinitionDefaults<
   EndpointDeclaration extends EndpointDeclarationBase,
@@ -161,22 +166,15 @@ export type Client<
   body: z.infer<ReqB>;
 }) => Promise<
   | {
-      [Code in ResC]: {
-        // TODO wrap this in a OkResult
-        type: "ok";
-        value: {
-          code: Code;
-          body: z.infer<ResB[Code]>;
-        };
-      };
+      [Code in ResC]: OkResult<{
+        code: Code;
+        body: z.infer<ResB[Code]>;
+      }>;
     }[ResC]
-  | {
-      type: "ok";
-      value: {
-        code: ValidationErrorStatusCode;
-        body: ValidationErrors;
-      };
-    }
+  | OkResult<{
+      code: ValidationErrorStatusCode;
+      body: ValidationErrors;
+    }>
   | ErrorResult<"body-parse-error", { text: string }>
   | ErrorResult<"network-error", { cause: string }>
 >;
