@@ -1,23 +1,20 @@
 // TODO do this with a middleware?
 
-import type { Result } from "./result.ts";
+import { errorResult, okResult, type Result } from "./result.ts";
 
 export async function parseBody(
   carrier: Request | Response
-): Promise<Result<any, string, { text: string }>> {
+): Promise<Result<any, "body-parse-error", { text: string }>> {
   // TODO this should be caught, too
   const text = await carrier.text();
 
   try {
-    return {
-      type: "ok",
-      value: JSON.parse(text),
-    };
+    return okResult(JSON.parse(text));
   } catch {
-    return {
-      type: "error",
-      error: `Tried to parse json, received:\n\n${text}`,
-      text,
-    };
+    return errorResult(
+      "body-parse-error",
+      "Tried to parse json, received text.",
+      { text }
+    );
   }
 }

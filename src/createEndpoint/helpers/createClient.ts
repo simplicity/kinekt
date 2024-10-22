@@ -2,7 +2,7 @@ import { z } from "npm:zod";
 import { parseBody } from "../../helpers/parseBody.ts";
 import { removeMethod } from "../../helpers/removeMethod.ts";
 import { removeQuery } from "../../helpers/removeQuery.ts";
-import { toResult } from "../../helpers/result.ts";
+import { errorResult, okResult, toResult } from "../../helpers/result.ts";
 import type {
   Client,
   EndpointDeclarationBase,
@@ -87,31 +87,24 @@ export function createClient<
     );
 
     if (fetchResult.type === "error") {
-      return {
-        type: "error",
-        error: "network-error",
-        cause: fetchResult.error,
-      };
+      return errorResult(
+        "network-error",
+        "Error encountered during fetch.",
+        fetchResult.metadata
+      );
     }
 
     const bodyParseResult = await parseBody(fetchResult.value);
 
     switch (bodyParseResult.type) {
       case "ok": {
-        return {
-          type: "ok",
-          value: {
-            code: fetchResult.value.status as ResC,
-            body: bodyParseResult.value,
-          },
-        };
+        return okResult({
+          code: fetchResult.value.status as ResC,
+          body: bodyParseResult.value,
+        });
       }
       case "error": {
-        return {
-          type: "error",
-          error: "body-parse-error",
-          text: bodyParseResult.text,
-        };
+        return bodyParseResult;
       }
     }
   };

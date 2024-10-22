@@ -4,7 +4,12 @@ import type {
   ValidationErrors,
 } from "../../createEndpoint/types.ts";
 import { parseBody } from "../../helpers/parseBody.ts";
-import { fallback_c, type Result } from "../../helpers/result.ts";
+import {
+  errorResult,
+  fallback_c,
+  okResult,
+  type Result,
+} from "../../helpers/result.ts";
 import type { MatchingRoute } from "../types.ts";
 
 async function getBody(
@@ -61,7 +66,7 @@ export async function getValidationResult(
       parsedQuery: any;
       parsedBody: any;
     },
-    string,
+    "validation-error",
     { validationErrors: ValidationErrors }
   >
 > {
@@ -92,23 +97,18 @@ export async function getValidationResult(
     queryParseResult.success &&
     paramsParseResult.success
   ) {
-    return {
-      type: "ok",
-      value: {
-        parsedParams: paramsParseResult.data,
-        parsedQuery: queryParseResult.data,
-        parsedBody: bodyParseResult.data,
-      },
-    };
+    return okResult({
+      parsedParams: paramsParseResult.data,
+      parsedQuery: queryParseResult.data,
+      parsedBody: bodyParseResult.data,
+    });
   }
 
-  return {
-    type: "error",
-    error: "validation failed",
+  return errorResult("validation-error", "Validation failed.", {
     validationErrors: [
       ...extractZodIssues(paramsParseResult, "params"),
       ...extractZodIssues(queryParseResult, "query"),
       ...extractZodIssues(bodyParseResult, "body"),
     ],
-  };
+  });
 }

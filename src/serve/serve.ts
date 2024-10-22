@@ -57,12 +57,15 @@ export function serve(
     );
 
     if (validationResult.type === "error") {
-      return new Response(JSON.stringify(validationResult.validationErrors), {
-        status: 400 as ValidationErrorStatusCode,
-        headers: {
-          "content-type": "application/json; charset=utf-8",
-        },
-      });
+      return new Response(
+        JSON.stringify(validationResult.metadata.validationErrors),
+        {
+          status: 400 as ValidationErrorStatusCode,
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+          },
+        }
+      );
     }
 
     const response = await matchingRoute.routeHandler.callback({

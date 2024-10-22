@@ -1,17 +1,25 @@
 export type OkResult<Value> = { type: "ok"; value: Value };
 
+type ErrorResultBase<Code extends string> = {
+  type: "error";
+  code: Code;
+  description: string;
+};
+
 export type ErrorResult<
-  Error extends string = string,
-  ErrorMetadata extends Record<string, unknown> | undefined = undefined
-> = ErrorMetadata extends undefined
-  ? { type: "error"; error: Error }
-  : { type: "error"; error: Error } & Omit<ErrorMetadata, "error">;
+  Code extends string,
+  Metadata extends
+    | Record<string | number | symbol, unknown>
+    | undefined = undefined
+> = Metadata extends undefined
+  ? ErrorResultBase<Code>
+  : ErrorResultBase<Code> & { metadata: Metadata };
 
 export type Result<
   Value,
-  Error extends string = string,
-  ErrorMetadata extends undefined | Record<string, any> = undefined
-> = OkResult<Value> | ErrorResult<Error, ErrorMetadata>;
+  Code extends string,
+  Metadata extends undefined | Record<string, any> = undefined
+> = OkResult<Value> | ErrorResult<Code, Metadata>;
 
 // TODO naming - look at how this is done e.g. in https://gigobyte.github.io/purify/getting-started
 export function fallback<Value, Fallback>(
@@ -33,13 +41,39 @@ export function fallback_c<Value, Fallback>(fallbackV: Fallback) {
   return (result: Result<Value, any>) => fallback(result, fallbackV);
 }
 
+export function okResult<Value>(value: Value): OkResult<Value> {
+  return {
+    type: "ok",
+    value,
+  };
+}
+
+export function errorResult<
+  Code extends string,
+  Metadata extends
+    | Record<string | number | symbol, unknown>
+    | undefined = undefined
+>(
+  code: Code,
+  description: string,
+  metadata: Metadata
+): ErrorResult<Code, Metadata> {
+  return {
+    type: "error",
+    code,
+    description,
+    ...(metadata === undefined ? {} : { metadata }),
+  } as ErrorResult<Code, Metadata>;
+}
+
 export function toResult<Value>(
   promise: Promise<Value>
-): Promise<Result<Value>> {
+): Promise<Result<Value, "rejected-promise", { cause: string }>> {
   return promise
-    .then((value) => ({ type: "ok" as const, value }))
-    .catch((error) => ({
-      type: "error",
-      error: error?.toString?.() ?? "unknown error",
-    }));
+    .then((value) => okResult(value))
+    .catch((error) =>
+      errorResult("rejected-promise", "A promise was rejected with an error.", {
+        cause: error?.toString?.() ?? "unknown error",
+      })
+    );
 }
