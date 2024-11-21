@@ -57,15 +57,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commander-js/extra-typings@npm:^12.1.0":
-  version: 12.1.0
-  resolution: "@commander-js/extra-typings@npm:12.1.0"
-  peerDependencies:
-    commander: ~12.1.0
-  checksum: 10c0/5d29eaa724b577e2a52a393ad54992924d2559931b8e493ab892477b7a4e878e475c6bf771260f8585d835f7d8e17ae4a2656c191e9595d210ae0b48291c0b3d
-  languageName: node
-  linkType: hard
-
 "@esbuild/aix-ppc64@npm:0.21.5":
   version: 0.21.5
   resolution: "@esbuild/aix-ppc64@npm:0.21.5"
@@ -1080,13 +1071,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^12.1.0":
-  version: 12.1.0
-  resolution: "commander@npm:12.1.0"
-  checksum: 10c0/6e1996680c083b3b897bfc1cfe1c58dfbcd9842fd43e1aaf8a795fbc237f65efcc860a3ef457b318e73f29a4f4a28f6403c3d653d021d960e4632dd45bde54a9
-  languageName: node
-  linkType: hard
-
 "concat-map@npm:0.0.1":
   version: 0.0.1
   resolution: "concat-map@npm:0.0.1"
@@ -1838,12 +1822,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "kinekt@workspace:."
   dependencies:
-    "@commander-js/extra-typings": "npm:^12.1.0"
     "@eslint/js": "npm:^9.12.0"
     "@types/eslint__js": "npm:^8.42.3"
     "@types/node": "npm:^22.7.4"
     "@vitest/coverage-v8": "npm:2.1.4"
-    commander: "npm:^12.1.0"
     eslint: "npm:^9.12.0"
     typescript: "npm:^5.6.2"
     typescript-eslint: "npm:^8.8.0"
