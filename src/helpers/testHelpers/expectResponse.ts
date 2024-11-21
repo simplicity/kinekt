@@ -2,7 +2,7 @@ import { expect } from "vitest";
 import {
   BasePipelineContextResponse,
   BasePipelineContextResponseSet,
-} from "../../createPipeline/types";
+} from "../../createPipeline/helpers/types";
 
 export function expectResponse<
   Type extends BasePipelineContextResponse["type"]

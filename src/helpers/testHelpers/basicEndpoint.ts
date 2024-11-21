@@ -3,13 +3,13 @@ import type {
   BasePipelineContextResponse,
   BasePipelineContextResponseSet,
   Middleware,
-} from "../../createPipeline/types";
+} from "../../createPipeline/helpers/types";
 import { checkAcceptHeaderMetadata } from "../../middlewares/checkAcceptHeader/helpers/metadata";
-import { CheckAcceptHeaderContextExtension } from "../../middlewares/checkAcceptHeader/types";
-import type { DeserializeContextExtension } from "../../middlewares/deserialize/types";
-import type { Method } from "../../types";
+import { CheckAcceptHeaderContextExtension } from "../../middlewares/checkAcceptHeader/helpers/types";
+import type { DeserializeContextExtension } from "../../middlewares/deserialize/helpers/types";
 import type { MimeType } from "../MimeType";
 import { routeMatchMetadata } from "../routeMatch";
+import type { Method } from "../types";
 
 type BasicEndpointParamsCb<PipelineContext> = (
   context: PipelineContext

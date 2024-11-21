@@ -1,5 +1,5 @@
-import type { BasePipelineContext } from "../../../createPipeline/types";
-import { FinalizeContextExtension } from "../../finalize/types";
+import type { BasePipelineContext } from "../../../createPipeline/helpers/types";
+import { FinalizeContextExtension } from "../../finalize/helpers/types";
 
 export function reply(
   context: BasePipelineContext

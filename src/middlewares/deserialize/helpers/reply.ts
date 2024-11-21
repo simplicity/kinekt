@@ -1,8 +1,8 @@
 import {
   type BasePipelineContext,
   BasePipelineContextResponseSet,
-} from "../../../createPipeline/types";
-import type { DeserializeContext, DeserializedBody } from "../types";
+} from "../../../createPipeline/helpers/types";
+import type { DeserializeContext, DeserializedBody } from "./types";
 
 export function reply(
   context: BasePipelineContext,

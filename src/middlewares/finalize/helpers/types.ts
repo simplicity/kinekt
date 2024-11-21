@@ -1,5 +1,5 @@
-import { BasePipelineContext } from "../../createPipeline/types";
-import { StatusCode } from "../../types";
+import { BasePipelineContext } from "../../../createPipeline/helpers/types";
+import { StatusCode } from "../../../helpers/types";
 
 export type FinalizedResponse = {
   type: "ok" | "error-occured" | "no-response-set" | "no-serialized-body-set";

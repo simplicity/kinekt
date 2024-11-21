@@ -1,4 +1,4 @@
-import { FinalizeContext } from "../../../middlewares/finalize/types";
+import { FinalizeContext } from "../../../middlewares/finalize/helpers/types";
 
 // TODO what to do with this?
 export const getLogStatement = async (context: FinalizeContext) => {

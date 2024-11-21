@@ -1,6 +1,6 @@
 import { HandleRequestResult } from "../../createRequestHandler/helpers/handleRequest/handleRequest";
+import { Logger, StatusCode } from "../../helpers/types";
 import { isFinalized } from "../../middlewares/finalize/helpers/isFinalized";
-import { Logger, StatusCode } from "../../types";
 
 export type CreateResponse<T, Arg = void> = (
   body: unknown,

@@ -1,5 +1,5 @@
 import { toResult } from "../../../helpers/result";
-import type { Method } from "../../../types";
+import type { Method } from "../../../helpers/types";
 import { determineMimeType } from "../determineMimeType";
 import { prepareBody } from "./helpers/prepareBody/prepareBody";
 

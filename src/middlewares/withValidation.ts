@@ -1,5 +1,8 @@
-import type { BasePipelineContext, Middleware } from "../createPipeline/types";
-import { ValidationErrors } from "./validatedEndpoint/types";
+import type {
+  BasePipelineContext,
+  Middleware,
+} from "../createPipeline/helpers/types";
+import { ValidationErrors } from "./validatedEndpoint/helpers/types";
 
 export type WithValidationContextExtension = {
   validationErrors: ValidationErrors;

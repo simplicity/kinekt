@@ -1,8 +1,8 @@
-import type { Middleware } from "../createPipeline/types";
+import type { Middleware } from "../createPipeline/helpers/types";
 import { consoleLogger } from "../helpers/consoleLogger";
 import { getDefaultLogStatement } from "../helpers/getDefaultLogStatement";
-import { Logger } from "../types";
-import { FinalizeContext } from "./finalize/types";
+import { Logger } from "../helpers/types";
+import { FinalizeContext } from "./finalize/helpers/types";
 
 export const logger = <PipelineContext extends FinalizeContext>(options?: {
   logger?: Logger;

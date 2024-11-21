@@ -1,10 +1,13 @@
-import type { Middleware } from "../../createPipeline/types";
+import type { Middleware } from "../../createPipeline/helpers/types";
 import { abort } from "../../helpers/abort";
-import { CheckAcceptHeaderContext } from "../checkAcceptHeader/types";
+import { CheckAcceptHeaderContext } from "../checkAcceptHeader/helpers/types";
 import { reply } from "./helpers/reply";
 import { serializeJson } from "./helpers/serializeJson";
+import type {
+  SerializeContext,
+  SerializeContextExtension,
+} from "./helpers/types";
 import { serializeUnknown } from "./serializeUnknown";
-import type { SerializeContext, SerializeContextExtension } from "./types";
 
 function handle(context: CheckAcceptHeaderContext): SerializeContext {
   if (context.response.type === "unset") {

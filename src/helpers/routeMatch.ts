@@ -1,4 +1,4 @@
-import type { Method } from "../types";
+import type { Method } from "./types";
 
 export type RouteMatchMatcher = { method: Method | "ANY"; path: string };
 

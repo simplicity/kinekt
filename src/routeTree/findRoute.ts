@@ -1,4 +1,4 @@
-import type { RouteTree, Segment, SegmentMatch } from "./types";
+import type { RouteTree, Segment, SegmentMatch } from "./helpers/types";
 
 function matchSegment(part: string, segment: Segment): SegmentMatch | null {
   switch (segment.type) {

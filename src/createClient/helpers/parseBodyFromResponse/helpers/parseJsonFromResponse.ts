@@ -1,6 +1,6 @@
 import { parseJsonFromText } from "../../../../helpers/parseJsonFromText";
 import { errorResult, type Result } from "../../../../helpers/result";
-import type { StatusCode } from "../../../../types";
+import type { StatusCode } from "../../../../helpers/types";
 
 export async function parseJsonFromResponse(
   response: Response

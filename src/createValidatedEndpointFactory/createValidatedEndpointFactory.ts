@@ -1,12 +1,10 @@
 import type { z } from "zod";
 import { ClientOptions, createClient } from "../createClient/createClient";
 import { createPipeline } from "../createPipeline/createPipeline";
-import type { BasePipelineContext, Pipeline } from "../createPipeline/types";
-import { isCheckAcceptHeaderMetadata } from "../middlewares/checkAcceptHeader/helpers/metadata";
-import { DeserializeContextExtension } from "../middlewares/deserialize/types";
-import type { RouteHandlerCallback } from "../middlewares/validatedEndpoint/types";
-import { validatedEndpoint } from "../middlewares/validatedEndpoint/validatedEndpoint";
-import { WithValidationContextExtension } from "../middlewares/withValidation";
+import type {
+  BasePipelineContext,
+  Pipeline,
+} from "../createPipeline/helpers/types";
 import type {
   EndpointDeclarationBase,
   ExtractPathParams,
@@ -14,8 +12,13 @@ import type {
   RouteDefinition,
   RouteDefinitionWithoutEndpointDeclaration,
   StatusCode,
-} from "../types";
-import type { Endpoint } from "./types";
+} from "../helpers/types";
+import { isCheckAcceptHeaderMetadata } from "../middlewares/checkAcceptHeader/helpers/metadata";
+import { DeserializeContextExtension } from "../middlewares/deserialize/helpers/types";
+import type { RouteHandlerCallback } from "../middlewares/validatedEndpoint/helpers/types";
+import { validatedEndpoint } from "../middlewares/validatedEndpoint/validatedEndpoint";
+import { WithValidationContextExtension } from "../middlewares/withValidation";
+import type { Endpoint } from "./helpers/types";
 
 export function createValidatedEndpointFactory<
   PrePipelineIn extends BasePipelineContext,

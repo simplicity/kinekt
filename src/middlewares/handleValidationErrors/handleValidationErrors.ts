@@ -1,14 +1,14 @@
 import type {
   BasePipelineContext,
   Middleware,
-} from "../../createPipeline/types";
-import type { StatusCode } from "../../types";
+} from "../../createPipeline/helpers/types";
+import type { StatusCode } from "../../helpers/types";
 import type { WithValidationContextExtension } from "../withValidation";
 import { reply } from "./helpers/reply";
 import {
   HandleValidationErrorsCustomMiddlewareResponse,
   ValidationErrorHandler,
-} from "./types";
+} from "./helpers/types";
 
 export const handleValidationErrors =
   <

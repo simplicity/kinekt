@@ -1,9 +1,9 @@
 import type {
   BasePipelineContext,
   BasePipelineContextResponseSet,
-} from "../../../createPipeline/types";
+} from "../../../createPipeline/helpers/types";
 import { MimeType } from "../../../helpers/MimeType";
-import { CheckAcceptHeaderContext } from "../types";
+import { CheckAcceptHeaderContext } from "./types";
 
 export function reply(
   context: BasePipelineContext,

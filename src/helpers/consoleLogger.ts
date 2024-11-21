@@ -1,4 +1,4 @@
-import { Logger } from "../types";
+import { Logger } from "./types";
 
 export const consoleLogger: Logger = {
   debug: (...args) => console.debug(...args),

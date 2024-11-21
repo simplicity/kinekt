@@ -1,5 +1,5 @@
-import { BasePipelineContextResponseSet } from "../../../createPipeline/types";
-import type { ValidatedEndpointContext, ValidationErrors } from "../types";
+import { BasePipelineContextResponseSet } from "../../../createPipeline/helpers/types";
+import type { ValidatedEndpointContext, ValidationErrors } from "./types";
 
 export function reply(
   context: ValidatedEndpointContext,

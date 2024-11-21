@@ -1,6 +1,9 @@
-import { BasePipelineContext, Middleware } from "../../createPipeline/types";
+import {
+  BasePipelineContext,
+  Middleware,
+} from "../../createPipeline/helpers/types";
 import { reply } from "./helpers/reply";
-import { AuthenticateContextExtension } from "./types";
+import { AuthenticateContextExtension } from "./helpers/types";
 
 export const authenticate = <
   In extends BasePipelineContext,

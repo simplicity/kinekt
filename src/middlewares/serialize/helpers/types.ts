@@ -1,7 +1,7 @@
 import type {
   BasePipelineContext,
   BasePipelineContextResponse,
-} from "../../createPipeline/types";
+} from "../../../createPipeline/helpers/types";
 
 export type SerializedBody =
   | {

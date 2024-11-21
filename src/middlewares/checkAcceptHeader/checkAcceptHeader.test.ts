@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BasePipelineContext } from "../../createPipeline/types";
+import { BasePipelineContext } from "../../createPipeline/helpers/types";
 import {
   createTestContext,
   CreateTestContextParams,

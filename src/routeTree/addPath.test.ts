@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { shuffle } from "../helpers/testHelpers/shuffle";
 import { addPath } from "./addPath";
-import { RouteTree } from "./types";
+import { RouteTree } from "./helpers/types";
 
 function createTree(paths: Array<string>) {
   const startAcc: RouteTree<string> = {

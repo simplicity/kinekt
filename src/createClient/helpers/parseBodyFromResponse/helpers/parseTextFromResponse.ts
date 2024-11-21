@@ -1,5 +1,5 @@
 import { errorResult, okResult, type Result } from "../../../../helpers/result";
-import type { StatusCode } from "../../../../types";
+import type { StatusCode } from "../../../../helpers/types";
 
 export async function parseTextFromResponse(
   response: Response

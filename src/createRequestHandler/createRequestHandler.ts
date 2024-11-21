@@ -1,4 +1,4 @@
-import { HasPipeline } from "../types";
+import { HasPipeline } from "../helpers/types";
 import { buildRouteTree } from "./helpers/buildRouteTree";
 import { handleRequest } from "./helpers/handleRequest/handleRequest";
 import type { HandleRequestParams } from "./helpers/handleRequest/types";

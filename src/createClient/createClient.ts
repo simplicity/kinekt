@@ -11,12 +11,12 @@ import type {
   ExtractQueryParams,
   RouteDefinition,
   StatusCode,
-} from "../types";
+} from "../helpers/types";
 import { buildPathString } from "./helpers/buildPathString";
 import { buildQueryString } from "./helpers/buildQueryString";
 import { doFetch } from "./helpers/doFetch/doFetch";
 import { parseBodyFromResponse } from "./helpers/parseBodyFromResponse/parseBodyFromResponse";
-import type { Client } from "./types";
+import type { Client } from "./helpers/types";
 
 export type ClientOptions = {
   baseUrl: string | null;

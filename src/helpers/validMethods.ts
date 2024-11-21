@@ -1,4 +1,4 @@
-import type { Method } from "../types";
+import type { Method } from "./types";
 
 export const validMethods: Array<Method> = [
   "GET",

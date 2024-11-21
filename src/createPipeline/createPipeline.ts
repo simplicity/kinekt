@@ -4,7 +4,7 @@ import type {
   Middleware,
   Pipeline,
   PipelineMetadata,
-} from "./types";
+} from "./helpers/types";
 
 type MiddlewareLike = {
   (context: BasePipelineContext): Promise<BasePipelineContext>;

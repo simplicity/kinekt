@@ -2,7 +2,7 @@ import type { z } from "zod";
 import {
   type BasePipelineContext,
   type Middleware,
-} from "../../createPipeline/types";
+} from "../../createPipeline/helpers/types";
 import { extractMethod } from "../../helpers/extractMethod";
 import { removeMethod } from "../../helpers/removeMethod";
 import { removeQuery } from "../../helpers/removeQuery";
@@ -13,14 +13,14 @@ import type {
   ExtractQueryParams,
   RouteDefinition,
   StatusCode,
-} from "../../types";
+} from "../../helpers/types";
 import { checkAcceptHeaderMetadata } from "../checkAcceptHeader/helpers/metadata";
-import type { DeserializeContextExtension } from "../deserialize/types";
+import type { DeserializeContextExtension } from "../deserialize/helpers/types";
 import type { WithValidationContextExtension } from "../withValidation";
 import { collectMimeTypes } from "./helpers/collectMimeTypes";
 import { getValidationResult } from "./helpers/getValidationResult";
 import { reply } from "./helpers/reply";
-import type { RouteHandlerCallback } from "./types";
+import type { RouteHandlerCallback } from "./helpers/types";
 
 export const validatedEndpoint = <
   PipelineContext extends BasePipelineContext &

@@ -1,6 +1,6 @@
-import type { BasePipelineContext } from "../../../createPipeline/types";
+import type { BasePipelineContext } from "../../../createPipeline/helpers/types";
 import { abort } from "../../../helpers/abort";
-import type { StatusCode } from "../../../types";
+import type { StatusCode } from "../../../helpers/types";
 
 export function reply(
   context: BasePipelineContext,

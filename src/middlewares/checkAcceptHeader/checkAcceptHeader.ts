@@ -1,7 +1,7 @@
 import type {
   BasePipelineContext,
   Middleware,
-} from "../../createPipeline/types";
+} from "../../createPipeline/helpers/types";
 import { abort } from "../../helpers/abort";
 import { isDefined } from "../../helpers/isDefined";
 import type { MimeType } from "../../helpers/MimeType";
@@ -11,7 +11,7 @@ import { reply } from "./helpers/reply";
 import {
   CheckAcceptHeaderContext,
   CheckAcceptHeaderContextExtension,
-} from "./types";
+} from "./helpers/types";
 
 function handle(context: BasePipelineContext): CheckAcceptHeaderContext {
   const supportedMimeTypes =

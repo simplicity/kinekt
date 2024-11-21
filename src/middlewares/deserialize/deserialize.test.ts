@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import type { BasePipelineContext } from "../../createPipeline/types";
+import type { BasePipelineContext } from "../../createPipeline/helpers/types";
 import { createTestContext } from "../../helpers/testHelpers/createTestContext";
 import { deserialize } from "./deserialize";
-import type { DeserializedBody } from "./types";
+import type { DeserializedBody } from "./helpers/types";
 
 const mw = deserialize();
 

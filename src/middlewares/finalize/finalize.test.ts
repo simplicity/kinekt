@@ -3,9 +3,9 @@ import {
   CreateTestContextParams,
   createTestContext,
 } from "../../helpers/testHelpers/createTestContext";
-import { SerializeContext, SerializedBody } from "../serialize/types";
+import { SerializeContext, SerializedBody } from "../serialize/helpers/types";
 import { finalize } from "./finalize";
-import { FinalizedResponse } from "./types";
+import { FinalizedResponse } from "./helpers/types";
 
 const mw = finalize();
 

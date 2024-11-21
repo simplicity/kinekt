@@ -1,12 +1,12 @@
 import type {
   BasePipelineContext,
   Middleware,
-} from "../../createPipeline/types";
+} from "../../createPipeline/helpers/types";
 import {
   RouteMatchMatcher,
   routeMatchMetadata,
 } from "../../helpers/routeMatch";
-import { FinalizeContextExtension } from "../finalize/types";
+import { FinalizeContextExtension } from "../finalize/helpers/types";
 import { reply } from "./helpers/reply";
 
 export const notFound = <

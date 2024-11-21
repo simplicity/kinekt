@@ -1,4 +1,4 @@
-import type { Method, StatusCode } from "../types";
+import type { Method, StatusCode } from "../../helpers/types";
 
 export type PipelineMetadata = Array<unknown>;
 

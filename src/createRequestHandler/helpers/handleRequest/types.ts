@@ -1,5 +1,5 @@
-import type { BasePipelineContextRequest } from "../../../createPipeline/types";
-import type { Method } from "../../../types";
+import type { BasePipelineContextRequest } from "../../../createPipeline/helpers/types";
+import type { Method } from "../../../helpers/types";
 import type { PipelineRouteTree } from "../buildRouteTree";
 
 export type HandleRequestParams = {

@@ -1,5 +1,5 @@
-import { BasePipelineContext } from "../../createPipeline/types";
-import type { MimeType } from "../../helpers/MimeType";
+import { BasePipelineContext } from "../../../createPipeline/helpers/types";
+import type { MimeType } from "../../../helpers/MimeType";
 
 export type CheckAcceptHeaderContextExtension = {
   supportedMimeType: MimeType | null;

@@ -1,9 +1,9 @@
 import type {
   BasePipelineContext,
   Pipeline,
-} from "../../../../createPipeline/types";
+} from "../../../../createPipeline/helpers/types";
+import type { Method } from "../../../../helpers/types";
 import { findRoute } from "../../../../routeTree/findRoute";
-import type { Method } from "../../../../types";
 import type { PipelineRouteTree } from "../../buildRouteTree";
 
 export function route(

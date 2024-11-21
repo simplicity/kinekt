@@ -1,4 +1,4 @@
-import type { BasePipelineContext } from "../../../../../createPipeline/types";
+import type { BasePipelineContext } from "../../../../../createPipeline/helpers/types";
 import type { FileData } from "../../../../../helpers/fileData";
 import { okResult } from "../../../../../helpers/result";
 

@@ -1,12 +1,15 @@
 import { z } from "zod";
-import type { Client } from "../createClient/types";
-import type { BasePipelineContext, Pipeline } from "../createPipeline/types";
+import type { Client } from "../../createClient/helpers/types";
+import type {
+  BasePipelineContext,
+  Pipeline,
+} from "../../createPipeline/helpers/types";
 import type {
   EndpointDeclarationBase,
   ExtractPathParams,
   ExtractQueryParams,
   StatusCode,
-} from "../types";
+} from "../../helpers/types";
 
 type ExtractCustomMiddlewareResponses<T> = {
   [K in keyof T]: K extends `${string}CustomMiddlewareResponse` ? T[K] : never;

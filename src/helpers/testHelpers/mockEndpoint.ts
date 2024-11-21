@@ -1,17 +1,17 @@
 import { vi } from "vitest";
 import { z } from "zod";
-import { BasePipelineContext } from "../../createPipeline/types";
+import { BasePipelineContext } from "../../createPipeline/helpers/types";
 import { createRequestHandler } from "../../createRequestHandler/createRequestHandler";
-import { Endpoint } from "../../createValidatedEndpointFactory/types";
+import { Endpoint } from "../../createValidatedEndpointFactory/helpers/types";
 import { CreateResponse, postProcess } from "../../serve/helpers/postProcess";
+import { consoleLogger } from "../consoleLogger";
 import {
   EndpointDeclarationBase,
   ExtractPathParams,
   ExtractQueryParams,
   Method,
   StatusCode,
-} from "../../types";
-import { consoleLogger } from "../consoleLogger";
+} from "../types";
 
 const createResponse: CreateResponse<Response, void> = (
   body,

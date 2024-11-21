@@ -1,9 +1,9 @@
 import { describe, it } from "vitest";
-import type { BasePipelineContext } from "../createPipeline/types";
+import type { BasePipelineContext } from "../createPipeline/helpers/types";
 import { createHandleRequestParams } from "../helpers/testHelpers/createHandleRequestParams";
 import { expectStatusCode } from "../helpers/testHelpers/expectStatusCode";
 import { handleRequestAndExpectOk } from "../helpers/testHelpers/handleRequestAndExpectOk";
-import { FinalizeContextExtension } from "../middlewares/finalize/types";
+import { FinalizeContextExtension } from "../middlewares/finalize/helpers/types";
 import { createRequestHandler } from "./createRequestHandler";
 import { createTestPipeline } from "./testHelpers/testPipeline";
 

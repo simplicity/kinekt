@@ -1,15 +1,15 @@
 import type { z } from "zod";
-import type { BasePipelineContext } from "../../createPipeline/types";
-import { Result } from "../../helpers/result";
+import type { BasePipelineContext } from "../../../createPipeline/helpers/types";
+import { Result } from "../../../helpers/result";
 import type {
   EndpointDeclarationBase,
   ExtractMethod,
   ExtractPathParams,
   ExtractQueryParams,
   StatusCode,
-} from "../../types";
-import { DeserializeContextExtension } from "../deserialize/types";
-import { WithValidationContextExtension } from "../withValidation";
+} from "../../../helpers/types";
+import { DeserializeContextExtension } from "../../deserialize/helpers/types";
+import { WithValidationContextExtension } from "../../withValidation";
 
 export type RouteHandlerCallback<
   EndpointDeclaration extends EndpointDeclarationBase,

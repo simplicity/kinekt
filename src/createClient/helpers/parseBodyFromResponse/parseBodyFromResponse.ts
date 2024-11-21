@@ -1,6 +1,6 @@
 import type { MimeType } from "../../../helpers/MimeType";
 import { errorResult, type Result } from "../../../helpers/result";
-import type { StatusCode } from "../../../types";
+import type { StatusCode } from "../../../helpers/types";
 import { parseJsonFromResponse } from "./helpers/parseJsonFromResponse";
 import { parseTextFromResponse } from "./helpers/parseTextFromResponse";
 

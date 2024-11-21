@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { BasePipelineContext } from "../../createPipeline/types";
+import { BasePipelineContext } from "../../createPipeline/helpers/types";
 import {
   CreateTestContextParams,
   createTestContext,
 } from "../../helpers/testHelpers/createTestContext";
-import { ValidationErrors } from "../validatedEndpoint/types";
+import { ValidationErrors } from "../validatedEndpoint/helpers/types";
 import { WithValidationContextExtension } from "../withValidation";
 import { handleValidationErrors } from "./handleValidationErrors";
 

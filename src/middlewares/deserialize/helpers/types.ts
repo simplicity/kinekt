@@ -1,7 +1,7 @@
 import type {
   BasePipelineContext,
   BasePipelineContextRequest,
-} from "../../createPipeline/types";
+} from "../../../createPipeline/helpers/types";
 
 export type DeserializedBody =
   | {

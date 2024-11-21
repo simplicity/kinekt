@@ -1,4 +1,4 @@
-import type { SupportedRequestMimeTypes } from "../../../../types";
+import type { SupportedRequestMimeTypes } from "../../../types";
 import { serializeToJson } from "./helpers/serializeToJson";
 import { serializeToMultiPartFormData } from "./helpers/serializeToMultiPartFormData";
 

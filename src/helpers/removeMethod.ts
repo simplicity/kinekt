@@ -1,4 +1,4 @@
-import type { EndpointDeclarationBase } from "../types";
+import type { EndpointDeclarationBase } from "./types";
 
 export function removeMethod(
   endpointDeclaration: EndpointDeclarationBase

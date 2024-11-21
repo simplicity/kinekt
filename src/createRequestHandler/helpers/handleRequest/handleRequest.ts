@@ -1,4 +1,4 @@
-import type { BasePipelineContext } from "../../../createPipeline/types";
+import type { BasePipelineContext } from "../../../createPipeline/helpers/types";
 import { type Result, errorResult, okResult } from "../../../helpers/result";
 import { route } from "./helpers/route";
 import type { HandleRequestParams } from "./types";

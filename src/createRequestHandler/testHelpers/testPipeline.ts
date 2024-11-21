@@ -1,16 +1,16 @@
 import { createPipeline } from "../../createPipeline/createPipeline";
-import type { BasePipelineContext } from "../../createPipeline/types";
+import type { BasePipelineContext } from "../../createPipeline/helpers/types";
 import {
   basicEndpoint,
   type BasicEndpointParams,
 } from "../../helpers/testHelpers/basicEndpoint";
+import { HasPipeline } from "../../helpers/types";
 import { checkAcceptHeader } from "../../middlewares/checkAcceptHeader/checkAcceptHeader";
-import { CheckAcceptHeaderContextExtension } from "../../middlewares/checkAcceptHeader/types";
+import { CheckAcceptHeaderContextExtension } from "../../middlewares/checkAcceptHeader/helpers/types";
 import { deserialize } from "../../middlewares/deserialize/deserialize";
-import type { DeserializeContextExtension } from "../../middlewares/deserialize/types";
+import type { DeserializeContextExtension } from "../../middlewares/deserialize/helpers/types";
 import { finalize } from "../../middlewares/finalize/finalize";
 import { serialize } from "../../middlewares/serialize/serialize";
-import { HasPipeline } from "../../types";
 
 export function createTestPipeline<
   PipelineContext extends BasePipelineContext &

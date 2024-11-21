@@ -6,8 +6,8 @@ import type {
   ExtractQueryParams,
   Method,
   RouteDefinition,
-} from "../../../types";
-import { ValidationError, ValidationResult } from "../types";
+} from "../../../helpers/types";
+import { ValidationError, ValidationResult } from "./types";
 
 const fakeSuccess: SafeParseReturnType<any, any> = {
   success: true,

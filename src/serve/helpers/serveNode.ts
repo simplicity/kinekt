@@ -1,7 +1,7 @@
 import * as http from "http";
 import { ServerResponse } from "http";
 import { createRequestHandler } from "../../createRequestHandler/createRequestHandler";
-import { HasPipeline, Logger, Method } from "../../types";
+import { HasPipeline, Logger, Method } from "../../helpers/types";
 import { CreateResponse, postProcess } from "./postProcess";
 
 const createResponse: CreateResponse<void, ServerResponse> = (

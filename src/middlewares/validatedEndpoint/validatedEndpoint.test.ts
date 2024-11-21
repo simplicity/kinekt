@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
-import { BasePipelineContext, Middleware } from "../../createPipeline/types";
+import {
+  BasePipelineContext,
+  Middleware,
+} from "../../createPipeline/helpers/types";
 import {
   createTestContext,
   CreateTestContextParams,
@@ -9,9 +12,9 @@ import { expectResponse } from "../../helpers/testHelpers/expectResponse";
 import {
   DeserializeContextExtension,
   DeserializedBody,
-} from "../deserialize/types";
+} from "../deserialize/helpers/types";
 import { WithValidationContextExtension } from "../withValidation";
-import { ValidatedEndpointContext, ValidationErrors } from "./types";
+import { ValidatedEndpointContext, ValidationErrors } from "./helpers/types";
 import { validatedEndpoint } from "./validatedEndpoint";
 
 function createCustomTestContext(

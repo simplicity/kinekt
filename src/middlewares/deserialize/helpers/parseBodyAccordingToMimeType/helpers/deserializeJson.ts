@@ -1,4 +1,4 @@
-import type { BasePipelineContext } from "../../../../../createPipeline/types";
+import type { BasePipelineContext } from "../../../../../createPipeline/helpers/types";
 import { parseJsonFromText } from "../../../../../helpers/parseJsonFromText";
 import { okResult } from "../../../../../helpers/result";
 

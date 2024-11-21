@@ -5,7 +5,7 @@ import { deserialize } from "../../../middlewares/deserialize/deserialize";
 import { finalize } from "../../../middlewares/finalize/finalize";
 import { handleValidationErrors } from "../../../middlewares/handleValidationErrors/handleValidationErrors";
 import { serialize } from "../../../middlewares/serialize/serialize";
-import { ValidationErrors } from "../../../middlewares/validatedEndpoint/types";
+import { ValidationErrors } from "../../../middlewares/validatedEndpoint/helpers/types";
 import { withValidation } from "../../../middlewares/withValidation";
 import { createValidatedEndpointFactory } from "../../createValidatedEndpointFactory";
 

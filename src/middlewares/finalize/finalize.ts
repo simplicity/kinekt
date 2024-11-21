@@ -1,7 +1,7 @@
-import type { Middleware } from "../../createPipeline/types";
-import type { SerializeContext } from "../serialize/types";
+import type { Middleware } from "../../createPipeline/helpers/types";
+import type { SerializeContext } from "../serialize/helpers/types";
 import { reply } from "./helpers/reply";
-import { FinalizeContext, FinalizeContextExtension } from "./types";
+import { FinalizeContext, FinalizeContextExtension } from "./helpers/types";
 
 function handle(context: SerializeContext): FinalizeContext {
   if (context.error.type === "error") {

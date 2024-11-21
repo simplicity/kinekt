@@ -1,13 +1,13 @@
 import type { z } from "zod";
-import type { MimeType } from "../helpers/MimeType";
-import type { ErrorResult, OkResult } from "../helpers/result";
+import type { MimeType } from "../../helpers/MimeType";
+import type { ErrorResult, OkResult } from "../../helpers/result";
 import type {
   EndpointDeclarationBase,
   ExtractMethod,
   ExtractPathParams,
   ExtractQueryParams,
   StatusCode,
-} from "../types";
+} from "../../helpers/types";
 
 export type Client<
   EndpointDeclaration extends EndpointDeclarationBase,

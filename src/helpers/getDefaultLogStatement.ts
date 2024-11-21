@@ -1,4 +1,4 @@
-import { FinalizeContext } from "../middlewares/finalize/types";
+import { FinalizeContext } from "../middlewares/finalize/helpers/types";
 
 export const getDefaultLogStatement = async (context: FinalizeContext) => {
   const endTime = performance.now();

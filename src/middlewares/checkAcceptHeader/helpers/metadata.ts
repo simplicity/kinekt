@@ -1,5 +1,5 @@
 import type { MimeType } from "../../../helpers/MimeType";
-import { CheckAcceptHeaderMetadata } from "../types";
+import { CheckAcceptHeaderMetadata } from "./types";
 
 export function isCheckAcceptHeaderMetadata(
   metadata: unknown

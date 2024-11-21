@@ -1,4 +1,4 @@
-import { type BasePipelineContext, type Middleware } from "../types";
+import { type BasePipelineContext, type Middleware } from "./types";
 
 function maybeWriteError(
   context: BasePipelineContext,

@@ -1,5 +1,5 @@
-import { BasePipelineContext } from "../../../createPipeline/types";
-import { AuthenticateContext } from "../types";
+import { BasePipelineContext } from "../../../createPipeline/helpers/types";
+import { AuthenticateContext } from "./types";
 
 export function reply(context: BasePipelineContext): AuthenticateContext {
   return {

@@ -1,11 +1,14 @@
 import {
   Middleware,
   type BasePipelineContext,
-} from "../../createPipeline/types";
+} from "../../createPipeline/helpers/types";
 import { getBodyForBodyParseResult } from "./helpers/getBodyForBodyParseResult";
 import { parseBodyAccordingToMimeType } from "./helpers/parseBodyAccordingToMimeType/parseBodyAccordingToMimeType";
 import { reply } from "./helpers/reply";
-import { DeserializeContext, DeserializeContextExtension } from "./types";
+import {
+  DeserializeContext,
+  DeserializeContextExtension,
+} from "./helpers/types";
 
 async function handle(
   context: BasePipelineContext

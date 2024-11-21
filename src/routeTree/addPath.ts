@@ -1,5 +1,5 @@
 import { abort } from "../helpers/abort";
-import type { RouteTree, Segment } from "./types";
+import type { RouteTree, Segment } from "./helpers/types";
 
 const variableNameRegex = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/;
 

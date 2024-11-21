@@ -1,4 +1,4 @@
-import { BasePipelineContext } from "../../createPipeline/types";
+import { BasePipelineContext } from "../../../createPipeline/helpers/types";
 
 type AuthenticateCustomMiddlewareResponse = {
   authenticateCustomMiddlewareResponse: {

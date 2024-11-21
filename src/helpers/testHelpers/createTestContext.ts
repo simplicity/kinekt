@@ -3,9 +3,9 @@ import type {
   BasePipelineContextError,
   BasePipelineContextResponseSet,
   PipelineMetadata,
-} from "../../createPipeline/types";
-import type { Method } from "../../types";
+} from "../../createPipeline/helpers/types";
 import type { MimeType } from "../MimeType";
+import type { Method } from "../types";
 
 export type CreateTestContextParams = {
   method?: Method;

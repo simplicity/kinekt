@@ -1,6 +1,6 @@
 import type { HandleRequestParamsWithoutRouteTree } from "../../createRequestHandler/createRequestHandler";
-import type { Method } from "../../types";
 import type { MimeType } from "../MimeType";
+import type { Method } from "../types";
 
 export function createHandleRequestParams(request?: {
   method?: Method;

@@ -1,5 +1,5 @@
 import { expect } from "vitest";
-import type { BasePipelineContext } from "../../createPipeline/types";
+import type { BasePipelineContext } from "../../createPipeline/helpers/types";
 import type { HandleRequestParamsWithoutRouteTree } from "../../createRequestHandler/createRequestHandler";
 import { handleRequest } from "../../createRequestHandler/createRequestHandler.test";
 

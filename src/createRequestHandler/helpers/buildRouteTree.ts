@@ -1,16 +1,16 @@
 import {
   type BasePipelineContext,
   type Pipeline,
-} from "../../createPipeline/types";
+} from "../../createPipeline/helpers/types";
 import { abort } from "../../helpers/abort";
 import {
   isRouteMatchMetadata,
   type RouteMatchMetadata,
 } from "../../helpers/routeMatch";
+import type { Method } from "../../helpers/types";
 import { validMethods } from "../../helpers/validMethods";
 import { addPath } from "../../routeTree/addPath";
-import type { RouteTree } from "../../routeTree/types";
-import type { Method } from "../../types";
+import type { RouteTree } from "../../routeTree/helpers/types";
 
 type RootPipelineRouteTree = RouteTree<
   Pipeline<BasePipelineContext, BasePipelineContext>

@@ -1,5 +1,5 @@
-import type { Method } from "../types";
 import { abort } from "./abort";
+import type { Method } from "./types";
 import { validMethods } from "./validMethods";
 
 function isMethod(method: unknown): method is Method {

@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import { Pipeline } from "./createPipeline/types";
+import { Pipeline } from "../createPipeline/helpers/types";
 
 export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 

@@ -1,5 +1,5 @@
 import { createRequestHandler } from "../../createRequestHandler/createRequestHandler";
-import type { HasPipeline, Logger, Method } from "../../types";
+import type { HasPipeline, Logger, Method } from "../../helpers/types";
 import { CreateResponse, postProcess } from "./postProcess";
 
 // TODO fix

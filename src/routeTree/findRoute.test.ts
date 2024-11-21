@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { addPath } from "./addPath";
 import { findRoute } from "./findRoute";
-import { RouteTree, SegmentMatch } from "./types";
+import { RouteTree, SegmentMatch } from "./helpers/types";
 
 function expectRouted(
   hostedPaths: Array<string>,

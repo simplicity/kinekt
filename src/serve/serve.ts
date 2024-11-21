@@ -1,5 +1,5 @@
 import { abort } from "../helpers/abort";
-import { HasPipeline, Logger } from "../types";
+import { HasPipeline, Logger } from "../helpers/types";
 import { serveDeno } from "./helpers/serveDeno";
 import { serveNode } from "./helpers/serveNode";
 

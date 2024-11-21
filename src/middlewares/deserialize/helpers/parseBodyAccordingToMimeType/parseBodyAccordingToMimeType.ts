@@ -1,4 +1,4 @@
-import type { BasePipelineContext } from "../../../../createPipeline/types";
+import type { BasePipelineContext } from "../../../../createPipeline/helpers/types";
 import { mimeTypes, type MimeType } from "../../../../helpers/MimeType";
 import {
   errorResult,
