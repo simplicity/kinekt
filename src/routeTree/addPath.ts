@@ -1,8 +1,6 @@
 import { abort } from "../helpers/abort";
 import type { RouteTree, Segment } from "./helpers/types";
 
-const variableNameRegex = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/;
-
 function createSegment(part: string): Segment {
   if (part === "") {
     return {
@@ -12,13 +10,6 @@ function createSegment(part: string): Segment {
 
   if (part.startsWith(":")) {
     const name = part.replace(":", "");
-
-    // TODO this check might not even be necessary
-    if (!variableNameRegex.test(name)) {
-      abort(
-        `Param segment ':${name}' is invalid. It must match the regex ${variableNameRegex}.`
-      );
-    }
 
     return {
       type: "param",

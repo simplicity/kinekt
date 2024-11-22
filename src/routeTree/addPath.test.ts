@@ -131,11 +131,4 @@ describe("addPath", () => {
       }
     );
   });
-
-  it("disallows certain param patterns", () => {
-    expectInvalidParamError("/:a*");
-    expectInvalidParamError("/:a:");
-    expectInvalidParamError("/:a-");
-    expectInvalidParamError("/:1");
-  });
 });
