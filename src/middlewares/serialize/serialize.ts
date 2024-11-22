@@ -38,6 +38,13 @@ function handle(context: CheckAcceptHeaderContext): SerializeContext {
         { type: "set", body: context.response.body }
       );
     }
+    case "text/plain": {
+      return reply(
+        context,
+        { "Content-Type": "text/plain" },
+        { type: "set", body: context.response.body }
+      );
+    }
     case null: {
       return reply(
         context,

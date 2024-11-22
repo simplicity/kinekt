@@ -41,7 +41,7 @@ describe("deserialize ", () => {
       createTestContext({
         method: "POST",
         contentType: "application/x-www-form-urlencoded",
-        text: `some=property`,
+        text: "some=property",
       }),
       {
         type: "set",
@@ -96,6 +96,19 @@ describe("deserialize ", () => {
       },
       headers: {},
     });
+  });
+
+  it("handles unset mime type", async () => {
+    await expectDeserializedBody(
+      createTestContext({
+        method: "POST",
+        text: "some text",
+      }),
+      {
+        type: "set",
+        body: "some text",
+      }
+    );
   });
 
   it("handles malformed json", async () => {

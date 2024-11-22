@@ -72,7 +72,7 @@ describe("serialize ", () => {
 
   it("defaults to text/plain when supportedMimeType is not set", async () => {
     // TODO think again about what the body should be here. E.g. in this case, "some value" might make more sense
-    await expectSerialization("some value", "", null, "text/plain" as any); // TODO get rid of any
+    await expectSerialization("some value", "", null, "text/plain");
   });
 
   it("always runs", async () => {

@@ -16,10 +16,12 @@ export async function parseBodyAccordingToMimeType(
   | Result<unknown, "json-parse-error", { text: string }>
   | ErrorResult<"unsupported-mime-type", { mimeType: string | undefined }>
 > {
-  // TODO test what happens when no Content-Type header is passed at all
-  const mimeType = context.request.getHeader("Content-Type")?.split(";").at(0);
+  const mimeType = (context.request
+    .getHeader("Content-Type")
+    ?.split(";")
+    .at(0) ?? "text/plain") as MimeType;
 
-  if (!mimeTypes.includes(mimeType as MimeType)) {
+  if (!mimeTypes.includes(mimeType)) {
     return errorResult(
       "unsupported-mime-type",
       `Unsupported MIME type '${mimeType}'`,
@@ -42,6 +44,9 @@ export async function parseBodyAccordingToMimeType(
       return deserializeMultipartFormData(context);
     }
     case "text/html": {
+      return deserializeText(context);
+    }
+    case "text/plain": {
       return deserializeText(context);
     }
   }

@@ -3,7 +3,8 @@ export type MimeType =
   | "application/json"
   | "application/x-www-form-urlencoded"
   | "multipart/form-data"
-  | "text/html";
+  | "text/html"
+  | "text/plain";
 
 export const mimeTypes: Array<MimeType> = [
   "*/*",
@@ -11,4 +12,5 @@ export const mimeTypes: Array<MimeType> = [
   "application/x-www-form-urlencoded",
   "multipart/form-data",
   "text/html",
+  "text/plain",
 ];
