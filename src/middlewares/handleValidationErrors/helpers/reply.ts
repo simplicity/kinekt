@@ -5,12 +5,6 @@ export function reply(
   context: BasePipelineContext,
   handlerResult: { statusCode: StatusCode; body: unknown }
 ): BasePipelineContext {
-  if (context.response.type === "set") {
-    // TODO here we throw. In validatedEndpoint, we return. What's the right approach?
-    //      and: we could directly set the error object instead of throwing
-    // abort("Response is already set.");
-  }
-
   return {
     ...context,
     response: {

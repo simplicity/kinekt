@@ -50,21 +50,4 @@ describe("handleValidationErrors ", () => {
       headers: { "Some-Header": "some value" },
     });
   });
-
-  // TODO probably remove this
-  // it("aborts if response is already set", async () => {
-  //   expect(() =>
-  //     mw(
-  //       createCustomTestContext({
-  //         response: {
-  //           type: "set",
-  //           body: null,
-  //           statusCode: 200,
-  //           headers: { "Some-Header": "some value" },
-  //         },
-  //         validationErrors: [{ message: "some message" }],
-  //       })
-  //     )
-  //   ).rejects.toThrowError("Response is already set.");
-  // });
 });
