@@ -60,8 +60,6 @@ const user = await getUser({ params: { id: "some-id" } });
 
 Kinekt uses middlewares which are combined into pipelines to handle requests. An incoming request will be transformed into a context object and passed through a given pipeline.
 
-In Kinekt, every endpoint is a pipeline. This gives you great flexibility when creating endpoints of varying kinds.
-
 ```TypeScript
 const pipeline = createPipeline(
   cors(),
