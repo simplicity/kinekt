@@ -50,13 +50,13 @@ const user = await getUser({ params: { id: "some-id" } });
 
 <hr>
 
-# What is Kinekt?
+# Kinekt - what is it and how does it work?
 
 - it is a stand-alone web framework with a custom middleware engine, which means you don't have to integrate it with another framework like expressjs
 - it is simple and modular, giving you freedom in how you organize your code
 - it is 100% typesafe all the way down to the middleware engine
 
-# Middlewares and Pipelines
+## Middlewares and Pipelines
 
 Like many other web frameworks, Kinekt uses middlewares which are combined into pipelines to handle requests. An incoming request will be transformed into a context object and passed through a given pipeline. In Kinekt, every endpoint is a pipeline. This gives you great flexibility when creating endpoints of varying kinds.
 
@@ -72,11 +72,11 @@ const pipeline = createPipeline(
 )
 ```
 
-# Efficient routing
+## Efficient routing
 
 Kinekt uses a route tree, compiled at startup, to efficiently dispatch incoming requests to the correct pipeline.
 
-# Type Safety
+## Type Safety
 
 Kinekt aims to be 100% Type Safe.
 
