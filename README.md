@@ -76,13 +76,13 @@ const result = await pipeline(context)
 
 ## Efficient routing
 
-Kinekt uses a route tree, compiled at startup, to efficiently dispatch incoming requests to the correct pipeline.
+Kinekt uses a route tree, compiled at startup, to efficiently dispatch incoming requests to the correct pipelines.
 
 ## Type Safety
 
 Kinekt aims to be 100% Type Safe.
 
-For example, adding an authenticate middleware to your pipeline will make a `user` property available on the pipeline context which you can then consume in a request handler:
+For example, adding an `authenticate()` middleware to your pipeline will make a `user` property available on the pipeline context which you can then consume in a request handler:
 
 ```TypeScript
 const pipeline = createPipeline(
