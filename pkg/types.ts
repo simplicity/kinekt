@@ -1,7 +1,7 @@
-export { FinalizeContext } from "../src/middlewares/finalize/types";
+export { Logger } from "../src/helpers/types";
+export { FinalizeContext } from "../src/middlewares/finalize/helpers/types";
 export {
   ValidationErrors,
   ValidationResult,
-} from "../src/middlewares/validatedEndpoint/types";
-export { Logger } from "../src/types";
+} from "../src/middlewares/validatedEndpoint/helpers/types";
 export * from "./main";
