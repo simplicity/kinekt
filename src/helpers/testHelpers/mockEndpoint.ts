@@ -3,7 +3,10 @@ import { z } from "zod";
 import { BasePipelineContext } from "../../createPipeline/helpers/types";
 import { createRequestHandler } from "../../createRequestHandler/createRequestHandler";
 import { Endpoint } from "../../createValidatedEndpointFactory/helpers/types";
-import { CreateResponse, postProcess } from "../../serve/helpers/postProcess";
+import {
+  CreateResponse,
+  postProcess,
+} from "../../createServer/helpers/postProcess";
 import { consoleLogger } from "../consoleLogger";
 import {
   EndpointDeclarationBase,

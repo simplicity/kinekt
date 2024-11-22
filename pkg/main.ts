@@ -13,4 +13,4 @@ export { logger } from "../src/middlewares/logger";
 export { notFound } from "../src/middlewares/notFound/notFound";
 export { serialize } from "../src/middlewares/serialize/serialize";
 export { withValidation } from "../src/middlewares/withValidation";
-export { serve } from "../src/serve/serve";
+export { createServer } from "../src/createServer/createServer";
