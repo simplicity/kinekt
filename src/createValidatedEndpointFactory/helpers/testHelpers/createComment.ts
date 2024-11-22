@@ -1,8 +1,6 @@
 import { z } from "zod";
 import { testPipeline } from "./testPipeline";
 
-// TODO clean this stuff up a bit (the folder)
-
 type Comment = {
   id: string;
   text: string;
