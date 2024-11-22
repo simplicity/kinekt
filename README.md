@@ -1,6 +1,7 @@
 <div align="center">
   <h1>Kinekt</h1>
   <h3>Type Safe Rest APIs Made Easy.</h3>
+  <h4>Pronounced like 'connect' but with an 'i'.</h4>
 
   <img src="https://github.com/simplicity/kinekt/actions/workflows/test.yml/badge.svg?branch=main" alt="Test Results">
   <br />
