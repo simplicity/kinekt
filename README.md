@@ -70,6 +70,8 @@ const pipeline = createPipeline(
   serialize(),
   finalize()
 )
+
+const result = await pipeline(context)
 ```
 
 ## Efficient routing
