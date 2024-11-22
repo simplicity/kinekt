@@ -72,6 +72,10 @@ const pipeline = createPipeline(
 )
 ```
 
+# Efficient routing
+
+Kinekt uses a route tree, compiled at startup, to efficiently dispatch incoming requests to the correct pipeline.
+
 # Type Safety
 
 Kinekt aims to be 100% Type Safe.
