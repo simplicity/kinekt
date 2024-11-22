@@ -34,6 +34,12 @@ describe("handleValidationErrors ", () => {
     const result = await mw(
       createCustomTestContext({
         validationErrors: [{ message: "some message" }],
+        response: {
+          type: "set",
+          body: null,
+          statusCode: 500,
+          headers: { "Some-Header": "some value" },
+        },
       })
     );
 
@@ -41,23 +47,24 @@ describe("handleValidationErrors ", () => {
       type: "set",
       statusCode: 400,
       body: [{ message: "some message" }],
-      headers: {},
+      headers: { "Some-Header": "some value" },
     });
   });
 
-  it("aborts if response is already set", async () => {
-    expect(() =>
-      mw(
-        createCustomTestContext({
-          response: {
-            type: "set",
-            body: null,
-            statusCode: 200,
-            headers: { "Some-Header": "some value" },
-          },
-          validationErrors: [{ message: "some message" }],
-        })
-      )
-    ).rejects.toThrowError("Response is already set.");
-  });
+  // TODO probably remove this
+  // it("aborts if response is already set", async () => {
+  //   expect(() =>
+  //     mw(
+  //       createCustomTestContext({
+  //         response: {
+  //           type: "set",
+  //           body: null,
+  //           statusCode: 200,
+  //           headers: { "Some-Header": "some value" },
+  //         },
+  //         validationErrors: [{ message: "some message" }],
+  //       })
+  //     )
+  //   ).rejects.toThrowError("Response is already set.");
+  // });
 });

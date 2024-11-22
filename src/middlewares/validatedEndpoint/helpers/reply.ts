@@ -8,8 +8,20 @@ export function reply(
 ): ValidatedEndpointContext {
   return {
     ...context,
-    // TODO here we have to make sure that headers will be merged ...? -> there's other places
-    ...(response ? { response } : {}),
+    ...(response
+      ? {
+          response: {
+            ...(context.response.type === "set" ? context.response : {}),
+            ...response,
+            headers: {
+              ...(context.response.type === "set"
+                ? context.response.headers
+                : {}),
+              ...response.headers,
+            },
+          },
+        }
+      : {}),
     validationErrors,
   };
 }

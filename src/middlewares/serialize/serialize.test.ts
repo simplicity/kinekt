@@ -8,25 +8,29 @@ const mw = serialize();
 async function expectSerialization(
   givenBody: unknown,
   expectedBody: unknown,
-  supportedMimeType: MimeType | null,
-  expectedSupportedMimeType = supportedMimeType
+  givenSupportedMimeType: MimeType | null,
+  expectedSupportedMimeType: MimeType,
+  additionalGivenHeaders: Record<string, string> = {}
 ) {
   const result = await mw({
     ...createTestContext({
       response: {
         type: "set",
         body: givenBody,
-        headers: {},
+        headers: additionalGivenHeaders,
         statusCode: 200,
       },
     }),
-    supportedMimeType,
+    supportedMimeType: givenSupportedMimeType,
   });
 
   expect(result.response).toEqual({
     type: "set",
     body: givenBody,
-    headers: { "Content-Type": expectedSupportedMimeType },
+    headers: {
+      ...additionalGivenHeaders,
+      "Content-Type": expectedSupportedMimeType,
+    },
     statusCode: 200,
     serializedBody: {
       type: "set",
@@ -36,8 +40,6 @@ async function expectSerialization(
 }
 
 describe("serialize ", () => {
-  // TODO test that headers are merged
-
   it("sets serialized body to not ready if response is unset", async () => {
     const result = await mw({
       ...createTestContext(),
@@ -54,6 +56,7 @@ describe("serialize ", () => {
     await expectSerialization(
       { some: "property" },
       `{\"some\":\"property\"}`,
+      "application/json",
       "application/json"
     );
   });
@@ -62,12 +65,27 @@ describe("serialize ", () => {
     await expectSerialization(
       { some: "property" },
       `{\"some\":\"property\"}`,
+      "application/json",
       "application/json"
     );
   });
 
   it("serializes text/html", async () => {
-    await expectSerialization("some value", "some value", "text/html");
+    await expectSerialization(
+      "some value",
+      "some value",
+      "text/html",
+      "text/html"
+    );
+  });
+
+  it("serializes text/plain", async () => {
+    await expectSerialization(
+      "some value",
+      "some value",
+      "text/plain",
+      "text/plain"
+    );
   });
 
   it("defaults to text/plain when supportedMimeType is not set and body is a string", async () => {
@@ -76,6 +94,16 @@ describe("serialize ", () => {
 
   it("defaults to text/plain when supportedMimeType is not set and body is not a string", async () => {
     await expectSerialization({}, "", null, "text/plain");
+  });
+
+  it("merges response headers", async () => {
+    await expectSerialization(
+      "some value",
+      "some value",
+      "text/plain",
+      "text/plain",
+      { "Some-Header": "some value" }
+    );
   });
 
   it("always runs", async () => {

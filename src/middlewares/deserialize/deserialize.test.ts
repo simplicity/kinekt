@@ -85,6 +85,7 @@ describe("deserialize ", () => {
     const result = await mw(
       createTestContext({ method: "POST", contentType: "unsupported" as any })
     );
+
     expect(result.request.deserializedBody).toEqual({ type: "unset" });
     expect(result.response).toEqual({
       type: "set",
@@ -119,6 +120,7 @@ describe("deserialize ", () => {
         text: "{",
       })
     );
+
     expect(result.request.deserializedBody).toEqual({ type: "unset" });
     expect(result.response).toEqual({
       type: "set",
@@ -129,6 +131,33 @@ describe("deserialize ", () => {
         message: "MIME type is valid, but received malformed content.",
       },
       headers: {},
+    });
+  });
+
+  it("merges request headers", async () => {
+    const result = await mw(
+      createTestContext({
+        method: "POST",
+        contentType: "unsupported" as any,
+        response: {
+          type: "set",
+          body: null,
+          statusCode: 500,
+          headers: { "Some-Header": "some value" },
+        },
+      })
+    );
+
+    expect(result.request.deserializedBody).toEqual({ type: "unset" });
+    expect(result.response).toEqual({
+      type: "set",
+      statusCode: 415,
+      body: {
+        type: "precheck-response-body",
+        id: "unsupported-mime-type",
+        message: "Unsupported MIME type 'unsupported'",
+      },
+      headers: { "Some-Header": "some value" },
     });
   });
 });

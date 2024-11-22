@@ -69,4 +69,29 @@ describe("checkAcceptHeader ", () => {
       statusCode: 406,
     });
   });
+
+  it("merges request headers", async () => {
+    const result = await mw(
+      createCustomTestContext({
+        accept: "text/html",
+        response: {
+          type: "set",
+          body: null,
+          statusCode: 500,
+          headers: { "Some-Header": "some value" },
+        },
+      })
+    );
+
+    expectResponse("set", result.response, {
+      body: {
+        id: "unsupported-mime-type",
+        message:
+          "Unable to satisfy requested MIME types [text/html]. Supported types: [application/json, application/x-www-form-urlencoded].",
+        type: "precheck-response-body",
+      },
+      headers: { "Some-Header": "some value" },
+      statusCode: 406,
+    });
+  });
 });

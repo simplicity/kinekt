@@ -15,6 +15,19 @@ export function reply(
       ...context.request,
       deserializedBody,
     },
-    ...(response ? { response } : {}),
+    ...(response
+      ? {
+          response: {
+            ...(context.response.type === "set" ? context.response : {}),
+            ...response,
+            headers: {
+              ...(context.response.type === "set"
+                ? context.response.headers
+                : {}),
+              ...response.headers,
+            },
+          },
+        }
+      : {}),
   };
 }

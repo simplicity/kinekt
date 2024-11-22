@@ -153,4 +153,31 @@ describe("deserialize ", () => {
       {}
     );
   });
+
+  it("merges response headers", async () => {
+    const mw = validatedEndpoint(
+      { endpointDeclaration: "GET /", response: { 200: z.void() } },
+      async () => ({ statusCode: 200, body: undefined })
+    );
+
+    const result = await mw(
+      createCustomTestContext({
+        method: "POST",
+        deserializedBody: { type: "set", body: undefined },
+        response: {
+          type: "set",
+          body: null,
+          statusCode: 500,
+          headers: { "Some-Header": "some value" },
+        },
+      })
+    );
+
+    expect(result.response).toEqual({
+      type: "set",
+      statusCode: 200,
+      body: undefined,
+      headers: { "Some-Header": "some value" },
+    });
+  });
 });
