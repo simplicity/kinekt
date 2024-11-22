@@ -3,7 +3,6 @@ import { errorResult, okResult } from "../../../helpers/result";
 import type {
   EndpointDeclarationBase,
   ExtractPathParams,
-  ExtractQueryParams,
   Method,
   RouteDefinition,
 } from "../../../helpers/types";
@@ -17,9 +16,8 @@ const fakeSuccess: SafeParseReturnType<any, any> = {
 async function getBody<
   EndpointDeclaration extends EndpointDeclarationBase,
   PathParams extends ExtractPathParams<EndpointDeclaration>,
-  QueryParams extends ExtractQueryParams<EndpointDeclaration>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
-  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
+  ReqQ extends z.ZodType | unknown,
   ReqB extends z.ZodType,
   ResB extends { [key: number]: z.ZodType }
 >(
@@ -28,7 +26,6 @@ async function getBody<
   routeDefinition: RouteDefinition<
     EndpointDeclaration,
     PathParams,
-    QueryParams,
     ReqP,
     ReqQ,
     ReqB,
@@ -69,9 +66,8 @@ function extractZodIssues(
 export async function getValidationResult<
   EndpointDeclaration extends EndpointDeclarationBase,
   PathParams extends ExtractPathParams<EndpointDeclaration>,
-  QueryParams extends ExtractQueryParams<EndpointDeclaration>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
-  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
+  ReqQ extends z.ZodType | unknown,
   ReqB extends z.ZodType,
   ResB extends { [key: number]: z.ZodType }
 >(
@@ -80,7 +76,6 @@ export async function getValidationResult<
   routeDefinition: RouteDefinition<
     EndpointDeclaration,
     PathParams,
-    QueryParams,
     ReqP,
     ReqQ,
     ReqB,
@@ -99,7 +94,7 @@ export async function getValidationResult<
     routeDefinition.params?.safeParse(params) ?? fakeSuccess;
 
   const queryParseResult =
-    routeDefinition.query?.safeParse(query) ?? fakeSuccess;
+    (routeDefinition.query as z.ZodType)?.safeParse(query) ?? fakeSuccess;
 
   const bodyParseResult = await getBody(body, method, routeDefinition);
 

@@ -10,7 +10,6 @@ import { routeMatchMetadata } from "../../helpers/routeMatch";
 import type {
   EndpointDeclarationBase,
   ExtractPathParams,
-  ExtractQueryParams,
   RouteDefinition,
   StatusCode,
 } from "../../helpers/types";
@@ -28,9 +27,8 @@ export const validatedEndpoint = <
     WithValidationContextExtension,
   EndpointDeclaration extends EndpointDeclarationBase,
   PathParams extends ExtractPathParams<EndpointDeclaration>,
-  QueryParams extends ExtractQueryParams<EndpointDeclaration>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
-  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
+  ReqQ extends z.ZodType | unknown,
   ReqB extends z.ZodType,
   ResB extends { [key: number]: z.ZodType },
   ResC extends keyof ResB & StatusCode
@@ -38,7 +36,6 @@ export const validatedEndpoint = <
   routeDefinition: RouteDefinition<
     EndpointDeclaration,
     PathParams,
-    QueryParams,
     ReqP,
     ReqQ,
     ReqB,
@@ -47,7 +44,6 @@ export const validatedEndpoint = <
   callback: RouteHandlerCallback<
     EndpointDeclaration,
     PathParams,
-    QueryParams,
     ReqP,
     ReqQ,
     ReqB,

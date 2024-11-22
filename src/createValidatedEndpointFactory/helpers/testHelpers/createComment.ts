@@ -15,7 +15,7 @@ function zodBooleanFromString() {
 }
 
 export const createComment = testPipeline.createEndpoint(
-  "POST /posts/:postId/comments?anonymous", // TODO it is not possible to make query params optional
+  "POST /posts/:postId/comments",
 
   {
     params: z.object({ postId: z.string() }),

@@ -49,16 +49,15 @@ export type StatusCode = | 100 | 101 | 102
 export type RouteDefinition<
   EndpointDeclaration extends EndpointDeclarationBase,
   PathParams extends ExtractPathParams<EndpointDeclaration>,
-  QueryParams extends ExtractQueryParams<EndpointDeclaration>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
-  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
+  ReqQ extends z.ZodType | unknown,
   ReqB extends z.ZodType,
   ResB extends { [key: number]: z.ZodType }
 > = {
   endpointDeclaration: EndpointDeclaration;
   response: ResB;
+  query?: ReqQ;
 } & (PathParams extends void ? { params?: z.ZodVoid } : { params: ReqP }) &
-  (QueryParams extends void ? { query?: z.ZodVoid } : { query: ReqQ }) &
   (ExtractMethod<EndpointDeclaration> extends "GET"
     ? { body?: z.ZodVoid }
     : { body: ReqB });
@@ -66,15 +65,14 @@ export type RouteDefinition<
 export type RouteDefinitionWithoutEndpointDeclaration<
   EndpointDeclaration extends EndpointDeclarationBase,
   PathParams extends ExtractPathParams<EndpointDeclaration>,
-  QueryParams extends ExtractQueryParams<EndpointDeclaration>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
-  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
+  ReqQ extends z.ZodType | unknown,
   ReqB extends z.ZodType,
   ResB extends { [key: number]: z.ZodType }
 > = {
   response: ResB;
+  query?: ReqQ;
 } & (PathParams extends void ? { params?: z.ZodVoid } : { params: ReqP }) &
-  (QueryParams extends void ? { query?: z.ZodVoid } : { query: ReqQ }) &
   (ExtractMethod<EndpointDeclaration> extends "GET"
     ? { body?: z.ZodVoid }
     : { body: ReqB });
