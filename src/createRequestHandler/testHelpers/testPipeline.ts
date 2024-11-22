@@ -19,7 +19,7 @@ export function createTestPipeline<
 >(params: BasicEndpointParams<PipelineContext>): HasPipeline {
   return {
     pipeline: createPipeline(
-      checkAcceptHeader(),
+      checkAcceptHeader(), // TODO when commenting this, we should get an error for serialize()
       deserialize(),
       basicEndpoint(params),
       serialize(),

@@ -13,7 +13,7 @@ describe("createValidatedEndpointFactory", () => {
   it("allows to create a 'createComment' endpoint", async () => {
     expect(
       await mockEndpoint(createComment)({
-        params: { postId: "some-post-id" }, // TODO result is weird when we send "ostId: ..."
+        params: { postId: "some-post-id" },
         query: { anonymous: false },
         body: { text: "some text" },
       })

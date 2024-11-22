@@ -5,6 +5,7 @@ import { serveNode } from "./helpers/serveNode";
 
 declare const Deno: any;
 
+// TODO use spread to pass endpoints - perhaps needs a "createServer" helper
 export async function serve(endpoints: Array<HasPipeline>, logger: Logger) {
   if (typeof Deno !== "undefined" && Deno.version && Deno.version.deno) {
     serveDeno(endpoints, logger);

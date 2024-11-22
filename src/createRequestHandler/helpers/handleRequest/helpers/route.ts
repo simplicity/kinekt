@@ -22,7 +22,6 @@ export function route(
     return null;
   }
 
-  // TODO we need a test which tests that params and query are always empty objects instead of undefined, in order for the validation errors to be good
   const params = findRouteResult.segmentMatches.reduce(
     (acc, item) => ({
       ...acc,
