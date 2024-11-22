@@ -8,7 +8,6 @@ import { errorResult, okResult } from "../helpers/result";
 import type {
   EndpointDeclarationBase,
   ExtractPathParams,
-  ExtractQueryParams,
   RouteDefinition,
   StatusCode,
 } from "../helpers/types";
@@ -26,9 +25,8 @@ export type ClientOptions = {
 export function createClient<
   EndpointDeclaration extends EndpointDeclarationBase,
   PathParams extends ExtractPathParams<EndpointDeclaration>,
-  QueryParams extends ExtractQueryParams<EndpointDeclaration>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
-  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
+  ReqQ extends z.ZodType | unknown,
   ReqB extends z.ZodType,
   ResB extends { [key: number]: z.ZodType },
   ResC extends keyof ResB & StatusCode
@@ -36,7 +34,6 @@ export function createClient<
   routeDefinition: RouteDefinition<
     EndpointDeclaration,
     PathParams,
-    QueryParams,
     ReqP,
     ReqQ,
     ReqB,
@@ -49,7 +46,6 @@ export function createClient<
 ): Client<
   EndpointDeclaration,
   PathParams,
-  QueryParams,
   ReqP,
   ReqQ,
   ReqB,

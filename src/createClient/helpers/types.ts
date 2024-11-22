@@ -5,16 +5,14 @@ import type {
   EndpointDeclarationBase,
   ExtractMethod,
   ExtractPathParams,
-  ExtractQueryParams,
   StatusCode,
 } from "../../helpers/types";
 
 export type Client<
   EndpointDeclaration extends EndpointDeclarationBase,
   PathParams extends ExtractPathParams<EndpointDeclaration>,
-  QueryParams extends ExtractQueryParams<EndpointDeclaration>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
-  ReqQ extends QueryParams extends void ? z.ZodVoid : z.ZodType<QueryParams>,
+  ReqQ extends z.ZodType | unknown,
   ReqB extends z.ZodType,
   ResB extends { [key: number]: z.ZodType },
   ResC extends keyof ResB & StatusCode,
@@ -27,12 +25,12 @@ export type Client<
     : {
         params: z.infer<ReqP>;
       }) &
-    (ReqQ extends z.ZodVoid
+    (ReqQ extends z.ZodType
       ? {
-          query?: void;
+          query: z.infer<ReqQ>;
         }
       : {
-          query: z.infer<ReqQ>;
+          query?: void;
         }) &
     (ExtractMethod<EndpointDeclaration> extends "GET"
       ? {
