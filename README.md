@@ -5,10 +5,7 @@
 
   <img src="https://github.com/simplicity/kinekt/actions/workflows/test.yml/badge.svg?branch=main" alt="Test Results">
   <br />
-
 </div>
-
-<hr>
 
 Define an endpoint as follows:
 
@@ -17,8 +14,13 @@ export const getUser = app.createEndpoint(
   "GET /users/:id",
 
   {
-    params: z.object({ id: z.string() }),
-    response: { 200: z.custom<User>() },
+    params: z.object({
+      id: z.string()
+    }),
+
+    response: {
+      200: z.custom<User>()
+    },
   },
 
   async ({ params }) => {
@@ -118,7 +120,7 @@ export const createComment = testPipeline.createEndpoint(
   },
 
   async ({ params, query, body, context }) => {
-    // You must return bodies to their matching status codes
+    // You must return bodies and status codes as declared in the response schemas
 
     if (query.anonymous === true) {
       return {
