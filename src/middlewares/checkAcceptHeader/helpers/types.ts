@@ -12,7 +12,3 @@ export type CheckAcceptHeaderMetadata = {
   type: "reply-with-metadata";
   mimeTypes: Array<MimeType>;
 };
-
-export type CheckAcceptHeaderMiddlewareContext = {
-  supportedMimeTypes: Array<MimeType>;
-};
