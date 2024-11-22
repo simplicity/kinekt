@@ -1,5 +1,13 @@
 import { isPrecheckResponseBody } from "../../helpers/precheckResponseBody";
 
 export function serializeUnknown(body: unknown) {
-  return isPrecheckResponseBody(body) ? body.message : "";
+  if (isPrecheckResponseBody(body)) {
+    return body.message;
+  }
+
+  if (typeof body === "string") {
+    return body;
+  }
+
+  return "";
 }

@@ -70,9 +70,12 @@ describe("serialize ", () => {
     await expectSerialization("some value", "some value", "text/html");
   });
 
-  it("defaults to text/plain when supportedMimeType is not set", async () => {
-    // TODO think again about what the body should be here. E.g. in this case, "some value" might make more sense
-    await expectSerialization("some value", "", null, "text/plain");
+  it("defaults to text/plain when supportedMimeType is not set and body is a string", async () => {
+    await expectSerialization("some value", "some value", null, "text/plain");
+  });
+
+  it("defaults to text/plain when supportedMimeType is not set and body is not a string", async () => {
+    await expectSerialization({}, "", null, "text/plain");
   });
 
   it("always runs", async () => {
