@@ -21,10 +21,6 @@ export type ClientOptions = {
   baseUrl: string | null;
 };
 
-// TODO when we forget to serve an endpoint and use the client to call it, we get
-// a strange error message:
-// Could not parse body due to unsupported mime type 'undefined'
-
 export function createClient<
   EndpointDeclaration extends EndpointDeclarationBase,
   PathParams extends ExtractPathParams<EndpointDeclaration>,
