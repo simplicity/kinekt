@@ -36,7 +36,7 @@ export async function serveNode(endpoints: Array<HasPipeline>, logger: Logger) {
       path,
       query: query ?? "",
       getHeader: (name) => {
-        const result = request.headers[name];
+        const result = request.headers[name.toLowerCase()];
         if (result === undefined) {
           return null;
         } else if (result instanceof Array) {
