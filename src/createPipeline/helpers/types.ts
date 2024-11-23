@@ -44,6 +44,8 @@ export type Middleware<In extends BasePipelineContext, Out extends In = In> = {
   (context: In): Promise<Out>;
   collectMetadata?: () => PipelineMetadata;
   alwaysRun?: true;
+  // TODO maybe introduce an "explain" function, which can be called by `process` during debugging
+  // to log what the mw is doing
 };
 
 export type Pipeline<In extends BasePipelineContext, Out extends In> = {
