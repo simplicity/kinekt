@@ -1,7 +1,7 @@
 {
   "name": "kinekt",
   "packageManager": "yarn@4.5.0",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "MIT",
   "main": "./dist/main.mjs",
   "types": "./dist/pkg/types.d.ts",
