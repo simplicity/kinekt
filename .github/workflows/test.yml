@@ -23,13 +23,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: latest
-          cache: "yarn"
+          cache: "npm"
 
       - name: Install dependencies
-        run: yarn install
+        run: npm install
 
       - name: Ensure type safety
-        run: yarn build
+        run: npm run build
 
       - name: Run tests
-        run: yarn test
+        run: npm run test
