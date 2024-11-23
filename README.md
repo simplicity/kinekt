@@ -109,33 +109,31 @@ export const getUser = app.createEndpoint(
 When creating validated endpoints, you can accurately declare each aspect of your contract and the compiler will take care of warning you about any violations:
 
 ```TypeScript
-export const createComment = testPipeline.createEndpoint(
-  "POST /posts/:postId/comments",
-  //             ^---- by using a param segment, you are forced to use a `params` schema containing `postId`
+export const createUser = testPipeline.createEndpoint(
+  "POST /organization/:organizationId/users",
+  //                        ^---- by using a param segment, you are forced to use a `params` schema containing `organizationId`
 
   // ^---- by using POST method here, you are forced to declare a body schema
 
   {
-    params: z.object({ postId: z.string() }), //              <- params schema
-    query: z.object({ anonymous: zodBooleanFromString() }),
-    body: z.object({ text: z.string() }), //                  <- body schema
+    params: z.object({ organizationId: z.string() }), //        <- params schema
+    query: z.object({ private: zodBooleanFromString() }),
+    body: z.object({ email: z.string() }), //                   <- body schema
 
     response: {
       // You must explicitly declare which bodies are returned for which status codes
-      200: z.custom<Comment>(),
-      422: z.object({ error: z.string() }),
+      200: z.custom<User>(),
+      409: z.custom<{ message: string }>(),
     },
   },
 
   async ({ params, query, body, context }) => {
     // You must return bodies and status codes as declared in the response schemas
 
-    if (query.anonymous === true) {
+    if (body.email === "existing@email.com") {
       return {
-        statusCode: 422,
-        body: {
-          error: "Anonymous creation is not yet supported",
-        },
+        statusCode: 409,
+        body: { message: "User with this email already exists" },
       };
     }
 
@@ -143,9 +141,9 @@ export const createComment = testPipeline.createEndpoint(
       statusCode: 200,
       body: {
         id: "some-id",
-        text: body.text,
-        postId: params.postId,
-        createdBy: context.user,
+        email: body.email,
+        organizationId: params.organizationId,
+        private: query.private,
       },
     };
   }
