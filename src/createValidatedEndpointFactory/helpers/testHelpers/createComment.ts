@@ -12,6 +12,7 @@ function zodBooleanFromString() {
   return z.enum(["true", "false"]).transform((value) => value === "true");
 }
 
+// TODO change to getUser and use 409 status
 export const createComment = testPipeline.createEndpoint(
   "POST /posts/:postId/comments",
 

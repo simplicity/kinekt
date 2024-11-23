@@ -18,8 +18,12 @@ export function postProcess<T, Arg>(
   if (result.type === "error") {
     switch (result.code) {
       case "no-route-found": {
-        logger.error("No route found to serve request.");
-        return createResponse(null, 500, undefined, arg);
+        return createResponse(
+          "No route found to serve request.",
+          500,
+          undefined,
+          arg
+        );
       }
     }
   }
@@ -29,8 +33,7 @@ export function postProcess<T, Arg>(
   }
 
   if (!isFinalized(result.value)) {
-    logger.error("Pipeline was not finalized.");
-    return createResponse(null, 500, undefined, arg);
+    return createResponse("Pipeline was not finalized.", 500, undefined, arg);
   }
 
   return createResponse(

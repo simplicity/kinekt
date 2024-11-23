@@ -1,12 +1,14 @@
 import { vi } from "vitest";
 import { z } from "zod";
+import { createPipeline } from "../../createPipeline/createPipeline";
 import { BasePipelineContext } from "../../createPipeline/helpers/types";
 import { createRequestHandler } from "../../createRequestHandler/createRequestHandler";
-import { Endpoint } from "../../createValidatedEndpointFactory/helpers/types";
 import {
   CreateResponse,
   postProcess,
 } from "../../createServer/helpers/postProcess";
+import { Endpoint } from "../../createValidatedEndpointFactory/helpers/types";
+import { notFound } from "../../middlewares/notFound/notFound";
 import { consoleLogger } from "../consoleLogger";
 import {
   EndpointDeclarationBase,
@@ -14,6 +16,8 @@ import {
   Method,
   StatusCode,
 } from "../types";
+
+const notFoundEndpoint = { pipeline: createPipeline(notFound()) };
 
 const createResponse: CreateResponse<Response, void> = (
   body,
@@ -42,7 +46,9 @@ export function mockEndpoint<
     ReqB,
     ResB,
     ResC
-  >
+  >,
+  // TODO params vs options
+  options?: { dontServe?: true; serveNotFound?: true }
 ): Endpoint<
   PipelineIn,
   PipelineOut,
@@ -57,21 +63,24 @@ export function mockEndpoint<
   global.fetch = vi.fn(
     async (
       fullUrl: string | URL | globalThis.Request,
-      options?: RequestInit
+      requestInit?: RequestInit
     ) => {
-      const body = options?.body as unknown;
+      const body = requestInit?.body as unknown;
 
       const headers = {
-        ...options?.headers,
+        ...requestInit?.headers,
         ...(body instanceof FormData
           ? { "Content-Type": "multipart/form-data" }
           : {}),
       } as Record<string, string>;
 
-      const handleRequest = createRequestHandler([endpoint]);
+      const handleRequest = createRequestHandler([
+        ...(options?.dontServe ? [] : [endpoint]),
+        ...(options?.serveNotFound ? [notFoundEndpoint] : []),
+      ]);
 
       const url = new URL(fullUrl as string);
-      const method = options?.method as Method;
+      const method = requestInit?.method as Method;
 
       const result = await handleRequest({
         method,

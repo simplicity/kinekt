@@ -82,4 +82,22 @@ describe("createValidatedEndpointFactory", () => {
       value: { statusCode: 200, body: { someField: "some text" } },
     });
   });
+
+  it("doesn't return an error when endpoint is not served but `notFound` middleware is present", async () => {
+    expect(
+      await mockEndpoint(getHtml, { dontServe: true, serveNotFound: true })({})
+    ).toEqual({
+      type: "ok",
+      value: { statusCode: 404, body: "" },
+    });
+  });
+
+  it("returns an error when endpoint is not served", async () => {
+    expect(await mockEndpoint(getHtml, { dontServe: true })({})).toEqual({
+      type: "error",
+      code: "internal-server-error",
+      description: "Internal Server Error",
+      metadata: { cause: "No route found to serve request." },
+    });
+  });
 });
