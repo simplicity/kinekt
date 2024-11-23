@@ -21,7 +21,6 @@ export type ClientOptions = {
   baseUrl: string | null;
 };
 
-// TODO test
 export function createClient<
   EndpointDeclaration extends EndpointDeclarationBase,
   PathParams extends ExtractPathParams<EndpointDeclaration>,
