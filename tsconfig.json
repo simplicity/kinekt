@@ -1,17 +1,28 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true,
+    // Enable strict type-checking options
     "strict": true,
     "strictNullChecks": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
+
+    // Specify the output directory for compiled files
     "outDir": "dist",
+
+    // Generate TypeScript declaration files and source maps
     "declaration": true,
     "declarationMap": true,
-    "lib": ["ESNext", "dom", "dom.iterable"],
-    "target": "ES6",
+
+    // Module and target settings
+    "module": "ESNext",
     "moduleResolution": "Bundler",
-    "module": "ESNext"
+    "target": "ES6",
+
+    // Include standard libraries and DOM support
+    "lib": ["ESNext", "dom", "dom.iterable"],
+
+    // Allow default imports for CommonJS modules
+    "esModuleInterop": true
   },
   "include": ["src/**/*.ts", "test/**/*.ts"]
 }
