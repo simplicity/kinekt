@@ -2,7 +2,7 @@ import { afterEach } from "node:test";
 import { describe, expect, it, vi } from "vitest";
 import { createFileData } from "../helpers/fileData";
 import { mockEndpoint } from "../helpers/testHelpers/mockEndpoint";
-import { createComment } from "./helpers/testHelpers/createComment";
+import { createUser } from "./helpers/testHelpers/createUser";
 import { getHtml } from "./helpers/testHelpers/getHtml";
 import { multipartUpload } from "./helpers/testHelpers/multipartUpload";
 import { urlEncodedUpload } from "./helpers/testHelpers/urlEncodedUpload";
@@ -12,10 +12,10 @@ describe("createValidatedEndpointFactory", () => {
 
   it("allows to create a 'createComment' endpoint", async () => {
     expect(
-      await mockEndpoint(createComment)({
-        params: { postId: "some-post-id" },
-        query: { anonymous: false },
-        body: { text: "some text" },
+      await mockEndpoint(createUser)({
+        params: { organizationId: "some-organization-id" },
+        query: { private: false },
+        body: { email: "some@email.com" },
       })
     ).toEqual({
       type: "ok",
@@ -23,24 +23,24 @@ describe("createValidatedEndpointFactory", () => {
         statusCode: 200,
         body: {
           id: "some-id",
-          text: "some text",
-          postId: "some-post-id",
-          createdBy: "stuffs",
+          email: "some@email.com",
+          organizationId: "some-organization-id",
+          private: false,
         },
       },
     });
 
     expect(
-      await mockEndpoint(createComment)({
-        params: { postId: "some-post-id" },
-        query: { anonymous: true },
-        body: { text: "some text" },
+      await mockEndpoint(createUser)({
+        params: { organizationId: "some-organization-id" },
+        query: { private: false },
+        body: { email: "existing@email.com" },
       })
     ).toEqual({
       type: "ok",
       value: {
-        statusCode: 422,
-        body: { error: "Anonymous creation is not yet supported" },
+        statusCode: 409,
+        body: { message: "User with this email already exists" },
       },
     });
   });
