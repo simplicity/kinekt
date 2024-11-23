@@ -39,7 +39,7 @@ describe("finalize ", () => {
       }),
       {
         type: "error-occured",
-        body: null,
+        body: "Error occured.",
         statusCode: 500,
         headers: {},
       }
@@ -49,7 +49,7 @@ describe("finalize ", () => {
   it("handles unset response", async () => {
     await expectFinalizedResponse(createCustomTestContext(), {
       type: "no-response-set",
-      body: null,
+      body: "No response set.",
       statusCode: 500,
       headers: {},
     });
@@ -62,7 +62,7 @@ describe("finalize ", () => {
       }),
       {
         type: "no-serialized-body-set",
-        body: null,
+        body: "No serialized body set.",
         statusCode: 500,
         headers: {},
       }

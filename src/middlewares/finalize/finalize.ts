@@ -7,7 +7,7 @@ function handle(context: SerializeContext): FinalizeContext {
   if (context.error.type === "error") {
     return reply(context, {
       type: "error-occured",
-      body: null,
+      body: "Error occured.",
       statusCode: 500,
       headers: {},
     });
@@ -16,7 +16,7 @@ function handle(context: SerializeContext): FinalizeContext {
   if (context.response.type === "unset") {
     return reply(context, {
       type: "no-response-set",
-      body: null,
+      body: "No response set.",
       statusCode: 500,
       headers: {},
     });
@@ -25,7 +25,7 @@ function handle(context: SerializeContext): FinalizeContext {
   if (context.response.serializedBody?.type === "unset") {
     return reply(context, {
       type: "no-serialized-body-set",
-      body: null,
+      body: "No serialized body set.",
       statusCode: 500,
       headers: {},
     });
