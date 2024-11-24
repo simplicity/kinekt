@@ -1,6 +1,7 @@
 import { createRequestHandler } from "../../createRequestHandler/createRequestHandler";
-import type { HasPipeline, Logger, Method } from "../../helpers/types";
+import type { HasPipeline, Method } from "../../helpers/types";
 import { CreateResponse, postProcess } from "./postProcess";
+import { CreateServerParams } from "./types";
 
 // TODO fix
 declare const Deno: any;
@@ -11,10 +12,17 @@ const createResponse: CreateResponse<Response, void> = (
   headers
 ) => new Response(body as BodyInit, { status: statusCode, headers });
 
-export function serveDeno(endpoints: Array<HasPipeline>, logger: Logger) {
+export function serveDeno(
+  endpoints: Array<HasPipeline>,
+  params: CreateServerParams
+) {
   const handleRequest = createRequestHandler(endpoints);
 
   Deno.serve(
+    {
+      port: params.port,
+      hostname: params.hostname,
+    },
     async (
       // TODO  fix
       request: Request
@@ -32,7 +40,7 @@ export function serveDeno(endpoints: Array<HasPipeline>, logger: Logger) {
         readFormData: () => request.formData(),
       });
 
-      return postProcess(result, createResponse, undefined, logger);
+      return postProcess(result, createResponse, undefined, params.logger);
     }
   );
 }

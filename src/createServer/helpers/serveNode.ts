@@ -1,8 +1,9 @@
 import * as http from "http";
 import { ServerResponse } from "http";
 import { createRequestHandler } from "../../createRequestHandler/createRequestHandler";
-import { HasPipeline, Logger, Method } from "../../helpers/types";
+import { HasPipeline, Method } from "../../helpers/types";
 import { CreateResponse, postProcess } from "./postProcess";
+import { CreateServerParams } from "./types";
 
 const createResponse: CreateResponse<void, ServerResponse> = (
   body,
@@ -20,7 +21,10 @@ const createResponse: CreateResponse<void, ServerResponse> = (
   response.end(body);
 };
 
-export async function serveNode(endpoints: Array<HasPipeline>, logger: Logger) {
+export async function serveNode(
+  endpoints: Array<HasPipeline>,
+  params: CreateServerParams
+) {
   const handleRequest = createRequestHandler(endpoints);
 
   const server = http.createServer(async (request, response) => {
@@ -57,11 +61,10 @@ export async function serveNode(endpoints: Array<HasPipeline>, logger: Logger) {
       readFormData: () => null as any,
     });
 
-    return postProcess(result, createResponse, response, logger);
+    return postProcess(result, createResponse, response, params.logger);
   });
 
-  const port = 3000;
-  server.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}/`);
+  server.listen(params.port, params.hostname, () => {
+    console.log(`Server running at http://${params.hostname}:${params.port}/`);
   });
 }
