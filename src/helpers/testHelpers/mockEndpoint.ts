@@ -47,8 +47,7 @@ export function mockEndpoint<
     ResB,
     ResC
   >,
-  // TODO params vs options
-  options?: { dontServe?: true; serveNotFound?: true }
+  params?: { dontServe?: true; serveNotFound?: true }
 ): Endpoint<
   PipelineIn,
   PipelineOut,
@@ -75,8 +74,8 @@ export function mockEndpoint<
       } as Record<string, string>;
 
       const handleRequest = createRequestHandler([
-        ...(options?.dontServe ? [] : [endpoint]),
-        ...(options?.serveNotFound ? [notFoundEndpoint] : []),
+        ...(params?.dontServe ? [] : [endpoint]),
+        ...(params?.serveNotFound ? [notFoundEndpoint] : []),
       ]);
 
       const url = new URL(fullUrl as string);

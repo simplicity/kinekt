@@ -17,7 +17,7 @@ import { doFetch } from "./helpers/doFetch/doFetch";
 import { parseBodyFromResponse } from "./helpers/parseBodyFromResponse/parseBodyFromResponse";
 import type { Client } from "./helpers/types";
 
-export type ClientOptions = {
+export type ClientParams = {
   baseUrl: string | null;
 };
 
@@ -40,7 +40,7 @@ export function createClient<
   >,
   params: {
     acceptHeader: MimeType;
-    globalOptions: ClientOptions;
+    clientParams: ClientParams;
   }
 ): Client<
   EndpointDeclaration,
@@ -59,7 +59,7 @@ export function createClient<
     const pathString = buildPathString(props.params, path);
     const queryString = buildQueryString(props.query);
 
-    const url = `${params.globalOptions.baseUrl}${pathString}${queryString}`;
+    const url = `${params.clientParams.baseUrl}${pathString}${queryString}`;
 
     const fetchResult = await doFetch(
       url,

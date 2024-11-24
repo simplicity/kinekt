@@ -4,12 +4,12 @@ import { getDefaultLogStatement } from "../helpers/getDefaultLogStatement";
 import { Logger } from "../helpers/types";
 import { FinalizeContext } from "./finalize/helpers/types";
 
-export const logger = <PipelineContext extends FinalizeContext>(options?: {
+export const logger = <PipelineContext extends FinalizeContext>(params?: {
   logger?: Logger;
   getLogStatement?: (context: FinalizeContext) => Promise<string>;
 }): Middleware<PipelineContext, PipelineContext> => {
-  const logger = options?.logger ?? consoleLogger;
-  const getLogStatement = options?.getLogStatement ?? getDefaultLogStatement;
+  const logger = params?.logger ?? consoleLogger;
+  const getLogStatement = params?.getLogStatement ?? getDefaultLogStatement;
 
   const middleware: Middleware<PipelineContext, PipelineContext> = async (
     context

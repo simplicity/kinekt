@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import { ClientOptions, createClient } from "../createClient/createClient";
+import { ClientParams, createClient } from "../createClient/createClient";
 import { createPipeline } from "../createPipeline/createPipeline";
 import type {
   BasePipelineContext,
@@ -31,7 +31,7 @@ export function createValidatedEndpointFactory<
     Pipeline<PrePipelineOut, PostPipelineOut>
   ]
 ) {
-  const globalOptions: ClientOptions = {
+  const clientParams: ClientParams = {
     baseUrl: null,
   };
 
@@ -102,7 +102,7 @@ export function createValidatedEndpointFactory<
 
       const endpoint = createClient(routeDefinition, {
         acceptHeader,
-        globalOptions,
+        clientParams,
       }) as Endpoint<
         PrePipelineIn,
         PostPipelineOut,
@@ -119,8 +119,8 @@ export function createValidatedEndpointFactory<
 
       return endpoint;
     },
-    setGlobalClientOptions: (options: Partial<ClientOptions>) => {
-      Object.assign(globalOptions, options);
+    setGlobalClientParams: (partialClientParams: Partial<ClientParams>) => {
+      Object.assign(clientParams, partialClientParams);
     },
   };
 }

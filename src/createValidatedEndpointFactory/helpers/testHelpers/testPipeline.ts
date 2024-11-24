@@ -27,4 +27,4 @@ export const testPipeline = createValidatedEndpointFactory(
   )
 );
 
-testPipeline.setGlobalClientOptions({ baseUrl: "https://some-test-domain.ch" });
+testPipeline.setGlobalClientParams({ baseUrl: "https://some-test-domain.ch" });
