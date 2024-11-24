@@ -1,7 +1,9 @@
-import { IncomingMessage, ServerResponse } from "http";
+import {
+  BasePipelineContext,
+  Middleware,
+} from "../../createPipeline/helpers/types";
 import { isSimpleHeader } from "./helpers/isSimpleHeader";
 import { matchOrigin } from "./helpers/matchOrigin";
-import { putCorsHeaders } from "./helpers/putCorsHeaders";
 import { CorsOptions } from "./helpers/types";
 
 const DEFAULT_OPTIONS: Required<Omit<CorsOptions, "origins">> = {
@@ -14,11 +16,10 @@ const DEFAULT_OPTIONS: Required<Omit<CorsOptions, "origins">> = {
   passthroughNonCorsRequests: false,
 };
 
-function handleCorsRequest(
-  req: IncomingMessage,
-  res: ServerResponse,
+function handle(
+  context: BasePipelineContext,
   options: CorsOptions
-): boolean {
+): BasePipelineContext {
   const {
     origins,
     allowMethods,
@@ -30,20 +31,29 @@ function handleCorsRequest(
     passthroughNonCorsRequests,
   } = { ...DEFAULT_OPTIONS, ...options };
 
-  const originHeader = req.headers.origin;
+  // TODO how to deal with upper/lower case in headers?
+  const originHeader = context.request.getHeader("origin");
 
   if (!originHeader) {
-    if (passthroughNonCorsRequests) return false;
-    return true;
+    // TODO what to do here?
+    // if (passthroughNonCorsRequests) return false;
+    // return true;
+
+    return context;
   }
 
   const isPreflight =
-    req.method === "OPTIONS" && req.headers["access-control-request-method"];
-  const headers: Record<string, string | undefined> = {};
+    // TODO avoid cast
+    (context.request.method as "OPTIONS") === "OPTIONS" &&
+    context.request.getHeader("access-control-request-method") !== null;
 
   if (!matchOrigin(originHeader, origins)) {
-    return true;
+    // return true;
+    // TODO what to do here?
+    return context;
   }
+
+  const headers: Record<string, string> = {};
 
   headers["Access-Control-Allow-Origin"] = origins === "*" ? "*" : originHeader;
 
@@ -53,7 +63,7 @@ function handleCorsRequest(
 
   if (
     allowPrivateNetwork &&
-    req.headers["access-control-request-private-network"]
+    context.request.getHeader("access-control-request-private-network") !== null
   ) {
     headers["Access-Control-Allow-Private-Network"] = "true";
   }
@@ -63,8 +73,13 @@ function handleCorsRequest(
   }
 
   if (isPreflight) {
-    const requestedMethod = req.headers["access-control-request-method"];
-    const requestedHeaders = req.headers["access-control-request-headers"];
+    const requestedMethod = context.request.getHeader(
+      "access-control-request-method"
+    );
+
+    const requestedHeaders = context.request.getHeader(
+      "access-control-request-headers"
+    );
 
     if (allowMethods === "ALL") {
       headers["Access-Control-Allow-Methods"] = requestedMethod as string;
@@ -83,6 +98,7 @@ function handleCorsRequest(
       const requested = (requestedHeaders as string)
         .split(",")
         .map((h) => h.trim().toLowerCase());
+
       headers["Access-Control-Allow-Headers"] = requested
         .filter(
           (header) => isSimpleHeader(header) || allowHeaders.includes(header)
@@ -94,14 +110,26 @@ function handleCorsRequest(
       headers["Access-Control-Max-Age"] = maxAge.toString();
     }
 
-    putCorsHeaders(res, headers);
-    res.writeHead(200);
-    res.end();
-    return true;
+    // putCorsHeaders(res, headers);
+    // res.writeHead(200);
+    // res.end();
+    // return true;
+
+    // TODO put the headers
+    return context;
   }
 
-  putCorsHeaders(res, headers);
-  return false;
+  // putCorsHeaders(res, headers);
+  // return false;
+  // TODO put the headers
+  return context;
 }
 
-export { CorsOptions, handleCorsRequest };
+export const deserialize = <In extends BasePipelineContext, Out extends In>(
+  options: CorsOptions
+): Middleware<In, Out> => {
+  const middleware: Middleware<In, Out> = async (context) =>
+    handle(context, options) as Out;
+
+  return middleware;
+};
