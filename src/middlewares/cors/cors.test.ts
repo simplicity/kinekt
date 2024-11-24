@@ -61,6 +61,7 @@ describe("cors", () => {
   });
 
   it("denies non-matching origins", async () => {
+    // TODO is this correct?
     expectResponseUnset(
       await run(
         { origins: ["http://foo.com"] },
