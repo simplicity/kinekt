@@ -3,7 +3,7 @@ export type Origin =
   | RegExp
   | ((origin: string | undefined) => boolean);
 
-export type CorsOptions = {
+export type CorsParams = {
   origins: Origin[] | "*";
   allowMethods?: string[] | "ALL";
   allowHeaders?: string[] | "ALL";

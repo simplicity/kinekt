@@ -4,9 +4,10 @@ import {
 } from "../../createPipeline/helpers/types";
 import { isSimpleHeader } from "./helpers/isSimpleHeader";
 import { matchOrigin } from "./helpers/matchOrigin";
-import { CorsOptions } from "./helpers/types";
+import { reply } from "./helpers/reply";
+import { CorsParams } from "./helpers/types";
 
-const DEFAULT_OPTIONS: Required<Omit<CorsOptions, "origins">> = {
+const DEFAULT_OPTIONS: Required<Omit<CorsParams, "origins">> = {
   allowMethods: ["PUT", "PATCH", "DELETE"],
   allowHeaders: [],
   allowCredentials: false,
@@ -18,7 +19,7 @@ const DEFAULT_OPTIONS: Required<Omit<CorsOptions, "origins">> = {
 
 function handle(
   context: BasePipelineContext,
-  options: CorsOptions
+  params: CorsParams
 ): BasePipelineContext {
   const {
     origins,
@@ -29,10 +30,10 @@ function handle(
     exposeHeaders,
     maxAge,
     passthroughNonCorsRequests,
-  } = { ...DEFAULT_OPTIONS, ...options };
+  } = { ...DEFAULT_OPTIONS, ...params };
 
   // TODO how to deal with upper/lower case in headers?
-  const originHeader = context.request.getHeader("origin");
+  const originHeader = context.request.getHeader("Origin");
 
   if (!originHeader) {
     // TODO what to do here?
@@ -41,11 +42,6 @@ function handle(
 
     return context;
   }
-
-  const isPreflight =
-    // TODO avoid cast
-    (context.request.method as "OPTIONS") === "OPTIONS" &&
-    context.request.getHeader("access-control-request-method") !== null;
 
   if (!matchOrigin(originHeader, origins)) {
     // return true;
@@ -72,13 +68,18 @@ function handle(
     headers["Access-Control-Expose-Headers"] = exposeHeaders.join(",");
   }
 
+  const isPreflight =
+    // TODO avoid cast
+    (context.request.method as "OPTIONS") === "OPTIONS" &&
+    context.request.getHeader("Access-Control-Request-Method") !== null;
+
   if (isPreflight) {
     const requestedMethod = context.request.getHeader(
-      "access-control-request-method"
+      "Access-Control-Request-Method"
     );
 
     const requestedHeaders = context.request.getHeader(
-      "access-control-request-headers"
+      "Access-Control-Request-Headers"
     );
 
     if (allowMethods === "ALL") {
@@ -95,9 +96,11 @@ function handle(
     if (allowHeaders === "ALL") {
       headers["Access-Control-Allow-Headers"] = requestedHeaders as string;
     } else if (requestedHeaders) {
-      const requested = (requestedHeaders as string)
-        .split(",")
-        .map((h) => h.trim().toLowerCase());
+      const requested = (requestedHeaders as string).split(",").map(
+        (h) => h.trim()
+        // TODO here we'd have to deal with lower case too
+        // .toLowerCase()
+      );
 
       headers["Access-Control-Allow-Headers"] = requested
         .filter(
@@ -116,20 +119,20 @@ function handle(
     // return true;
 
     // TODO put the headers
-    return context;
+    return reply(context, headers);
   }
 
   // putCorsHeaders(res, headers);
   // return false;
   // TODO put the headers
-  return context;
+  return reply(context, headers);
 }
 
-export const deserialize = <In extends BasePipelineContext, Out extends In>(
-  options: CorsOptions
+export const cors = <In extends BasePipelineContext, Out extends In>(
+  params: CorsParams
 ): Middleware<In, Out> => {
   const middleware: Middleware<In, Out> = async (context) =>
-    handle(context, options) as Out;
+    handle(context, params) as Out;
 
   return middleware;
 };
