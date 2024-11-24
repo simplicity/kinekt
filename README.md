@@ -1,7 +1,7 @@
 <div align="center">
   <h1>Kinekt</h1>
   <h3>Type Safe Rest APIs Made Easy.</h3>
-  <h4>Pronounced like <i>connect</i> but with an i.</h4>
+  <h4>Pronounced like 'connect' but with an i.</h4>
 
   <img src="https://github.com/simplicity/kinekt/actions/workflows/test.yml/badge.svg?branch=main" alt="Test Results">
   <br />
@@ -16,13 +16,8 @@ export const getUser = app.createEndpoint(
   "GET /users/:id",
 
   {
-    params: z.object({
-      id: z.string()
-    }),
-
-    response: {
-      200: z.custom<User>()
-    },
+    params: z.object({ id: z.string() }),
+    response: { 200: z.custom<User>() },
   },
 
   async ({ params }) => {
@@ -36,13 +31,14 @@ export const getUser = app.createEndpoint(
 );
 ```
 
-Serve it, e.g. in node:
+Serve it:
 
 ```TypeScript
-serve([getUser, ...otherEndpoints]);
+const serve = createServer({port: 3000, hostname: "localhost"});
+serve(getUser, ...otherEndpoints);
 ```
 
-Use the auto-generated client:
+Use it through the auto-generated client:
 
 ```TypeScript
 const user = await getUser({ params: { id: "some-id" } });
@@ -99,7 +95,9 @@ export const getUser = app.createEndpoint(
   // ...
 
   async ({ context }) => {
-    const currentUser = context.user; // <-- the compiler gives an error if the authenticate middleware is not present in the pipeline
+    const currentUser = context.user; // <-- the compiler gives an error if the
+                                      //     authenticate middleware is not
+                                      //     present in the pipeline.
 
     // ...
   }
@@ -111,25 +109,29 @@ When creating validated endpoints, you can accurately declare each aspect of you
 ```TypeScript
 export const createUser = testPipeline.createEndpoint(
   "POST /organization/:organizationId/users",
-  //                        ^---- by using a param segment, you are forced to use a `params` schema containing `organizationId`
+  //                        ^---- by using a param segment, you are forced to
+  //                              use a `params` schema containing
+  //                              `organizationId` (see below).
 
   // ^---- by using POST method here, you are forced to declare a body schema
+  //       (see below).
 
   {
-    params: z.object({ organizationId: z.string() }), //        <- params schema
+    params: z.object({ organizationId: z.string() }), //    <- params schema
     query: z.object({ private: zodBooleanFromString() }),
-    body: z.object({ email: z.string() }), //                   <- body schema
+    body: z.object({ email: z.string() }), //               <- body schema
 
     response: {
-      // You must explicitly declare which bodies are returned for which status codes
+      // You must explicitly declare which bodies are returned for which status
+      // codes.
       200: z.custom<User>(),
       409: z.custom<{ message: string }>(),
     },
   },
 
   async ({ params, query, body, context }) => {
-    // You must return bodies and status codes as declared in the response schemas
-
+    // You must return bodies and status codes as declared in the response
+    // schemas.
     if (body.email === "existing@email.com") {
       return {
         statusCode: 409,
