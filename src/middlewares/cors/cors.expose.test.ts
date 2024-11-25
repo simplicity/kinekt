@@ -14,4 +14,17 @@ describe("cors", () => {
       }
     );
   });
+
+  it("does not set Access-Control-Expose-Headers in preflight response", async () => {
+    await runCorsTest(
+      { origins: "*", exposeHeaders: ["X-One", "X-Two"] },
+      { isPreflight: true },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "PUT,PATCH,DELETE,GET,HEAD,POST",
+        },
+      }
+    );
+  });
 });

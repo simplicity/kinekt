@@ -6,7 +6,7 @@ import { CorsParams } from "../types";
 type RunMiddlewareParams = {
   origin?: string;
   isPreflight?: boolean;
-  requestMethod?: string;
+  requestMethod?: string; // TODO type more specifically?
   requestHeaders?: string;
 };
 

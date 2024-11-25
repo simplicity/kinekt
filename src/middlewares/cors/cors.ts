@@ -46,11 +46,11 @@ function handle(
     ...writeOriginHeader(params, originHeader),
     ...writeVaryHeader(params),
     ...writeCredentialsHeader(params),
-    ...writePrivateNetworkHeader(params, context),
-    ...writeExposeHeadersHeader(params),
+    ...(isPreflight && writePrivateNetworkHeader(params, context)),
     ...(isPreflight && writeMethodsHeader(params, context)),
     ...(isPreflight && writeHeadersHeader(params, context)),
     ...(isPreflight && writeMaxAgeHeader(params)),
+    ...(!isPreflight && writeExposeHeadersHeader(params)),
   };
 
   // TODO add tests for non-preflights
