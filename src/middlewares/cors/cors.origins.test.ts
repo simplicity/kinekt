@@ -7,10 +7,20 @@ async function runOriginTest(
   origin: string | undefined,
   expected: string
 ) {
-  // TODO what about preflight?
-  await runCorsTest({ origins }, origin ? { origin } : {}, {
-    headers: { "Access-Control-Allow-Origin": expected },
-  });
+  await runCorsTest(
+    { origins },
+    {
+      // TODO what about non-preflight?
+      isPreflight: true,
+      ...(origin ? { origin } : {}),
+    },
+    {
+      headers: {
+        "Access-Control-Allow-Methods": "PUT,PATCH,DELETE,GET,HEAD,POST",
+        "Access-Control-Allow-Origin": expected,
+      },
+    }
+  );
 }
 
 describe("cors origins", () => {
@@ -22,12 +32,11 @@ describe("cors origins", () => {
     );
   });
 
-  // TODO fix
-  it.skip("doesn't add origin when it isn't allowed", async () => {
-    await runOriginTest(
-      ["http://beispiel.com"],
-      undefined,
-      "http://example.com"
+  it("doesn't add origin when it isn't allowed", async () => {
+    await runCorsTest(
+      { origins: ["http://beispiel.com"] },
+      { isPreflight: true },
+      { headers: {} }
     );
   });
 

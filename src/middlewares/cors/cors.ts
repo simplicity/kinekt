@@ -45,7 +45,27 @@ function handle(
     return context;
   }
 
+  const isPreflight =
+    // TODO avoid cast
+    (context.request.method as "OPTIONS") === "OPTIONS" &&
+    // TODO is this check really correct? Isn't it automatically a preflight, if method is OPTION?
+    //      -> absence of this header simply means that it is an invalid preflight request
+    context.request.getHeader("Access-Control-Request-Method") !== null;
+
   if (!matchOrigin(originHeader, origins)) {
+    if (isPreflight) {
+      return {
+        ...context,
+        // TODO should we halt?
+        response: {
+          type: "set",
+          body: null,
+          statusCode: 200,
+          headers: {},
+        },
+      };
+    }
+
     // return true;
     // TODO what to do here?
     return context;
@@ -70,11 +90,6 @@ function handle(
   if (exposeHeaders.length > 0) {
     headers["Access-Control-Expose-Headers"] = exposeHeaders.join(",");
   }
-
-  const isPreflight =
-    // TODO avoid cast
-    (context.request.method as "OPTIONS") === "OPTIONS" &&
-    context.request.getHeader("Access-Control-Request-Method") !== null;
 
   if (isPreflight) {
     // TODO what if this is not provided? -> it would be an invalid preflight
