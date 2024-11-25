@@ -10,7 +10,6 @@ async function runMethodTest(
   await runCorsTest(
     { origins: "*", ...(allowMethods ? { allowMethods } : {}) },
     {
-      // TODO what about non-preflight?
       isPreflight: true,
       requestMethod,
     },
@@ -20,6 +19,12 @@ async function runMethodTest(
         "Access-Control-Allow-Methods": expected,
       },
     }
+  );
+
+  await runCorsTest(
+    { origins: "*", ...(allowMethods ? { allowMethods } : {}) },
+    { requestMethod },
+    { headers: { "Access-Control-Allow-Origin": "*" } }
   );
 }
 

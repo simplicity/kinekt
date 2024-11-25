@@ -7,15 +7,8 @@ async function runHeaderTest(
   expected: string
 ) {
   await runCorsTest(
-    {
-      origins: "*",
-      allowHeaders,
-    },
-    {
-      // TODO what about non-preflight?
-      isPreflight: true,
-      requestHeaders,
-    },
+    { origins: "*", allowHeaders },
+    { isPreflight: true, requestHeaders },
     {
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -24,18 +17,24 @@ async function runHeaderTest(
       },
     }
   );
+
+  await runCorsTest(
+    { origins: "*", allowHeaders },
+    { requestHeaders },
+    { headers: { "Access-Control-Allow-Origin": "*" } }
+  );
 }
 
 describe("cors headers", () => {
-  it("adds allowed headers", async () => {
+  it("allows headers if configured", async () => {
     await runHeaderTest(["X-One", "X-Two"], "X-One, X-Two", "X-One,X-Two");
   });
 
-  it("doesn't add headers when they aren't allowed", async () => {
+  it("doesn't allow headers if not configured", async () => {
     await runHeaderTest(["X-One"], "X-One, X-Two", "X-One");
   });
 
-  it("adds all headers with allowHeaders set to ALL", async () => {
+  it("allows all headers if allowHeaders is set to ALL", async () => {
     await runHeaderTest("ALL", "X-One, X-Two", "X-One, X-Two"); // TODO shouldn't the space after , be gone?
   });
 });

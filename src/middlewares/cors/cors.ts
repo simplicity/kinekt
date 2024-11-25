@@ -134,18 +134,9 @@ function handle(
       headers["Access-Control-Max-Age"] = maxAge.toString();
     }
 
-    // putCorsHeaders(res, headers);
-    // res.writeHead(200);
-    // res.end();
-    // return true;
-
-    // TODO put the headers
     return reply(context, headers);
   }
 
-  // putCorsHeaders(res, headers);
-  // return false;
-  // TODO put the headers
   return reply(context, headers);
 }
 
