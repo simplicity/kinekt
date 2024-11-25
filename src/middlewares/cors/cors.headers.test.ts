@@ -29,6 +29,6 @@ describe("cors headers", () => {
   });
 
   it("allows all headers if allowHeaders is set to ALL", async () => {
-    await runHeaderTest("ALL", "X-One, X-Two", "X-One, X-Two"); // TODO shouldn't the space after , be gone?
+    await runHeaderTest("ALL", "X-One,X-Two", "X-One,X-Two");
   });
 });
