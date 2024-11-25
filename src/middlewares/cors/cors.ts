@@ -116,8 +116,6 @@ function handle(
     if (params.maxAge > 0) {
       headers["Access-Control-Max-Age"] = params.maxAge.toString();
     }
-
-    return reply(context, headers);
   }
 
   // TODO add tests for non-preflights
