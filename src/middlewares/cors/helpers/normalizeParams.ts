@@ -30,6 +30,5 @@ export function normalizeParams(params: CorsParams): NormalizedCorsParams {
     allowPrivateNetwork: params.allowPrivateNetwork ?? false,
     exposeHeaders: (params.exposeHeaders ?? []).join(","),
     maxAge: params.maxAge ?? 0,
-    passthroughNonCorsRequests: params.passthroughNonCorsRequests ?? false,
   };
 }

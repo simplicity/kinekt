@@ -36,20 +36,9 @@ function handle(
 
   if (!matchOrigin(originHeader, params.origins)) {
     if (isPreflight) {
-      return {
-        ...context,
-        // TODO should we halt?
-        response: {
-          type: "set",
-          body: null,
-          statusCode: 200,
-          headers: {},
-        },
-      };
+      return reply(context, {});
     }
 
-    // return true;
-    // TODO what to do here?
     return context;
   }
 

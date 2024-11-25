@@ -11,7 +11,6 @@ export type CorsParams = {
   allowPrivateNetwork?: boolean;
   exposeHeaders?: string[];
   maxAge?: number;
-  passthroughNonCorsRequests?: boolean;
 };
 
 export type NormalizedCorsParams = {
@@ -22,5 +21,4 @@ export type NormalizedCorsParams = {
   allowPrivateNetwork: boolean;
   exposeHeaders: string;
   maxAge: number;
-  passthroughNonCorsRequests: boolean;
 };
