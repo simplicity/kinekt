@@ -10,7 +10,6 @@ async function runOriginTest(
   await runCorsTest(
     { origins },
     {
-      // TODO what about non-preflight?
       isPreflight: true,
       ...(origin ? { origin } : {}),
     },
@@ -20,6 +19,12 @@ async function runOriginTest(
         "Access-Control-Allow-Origin": expected,
       },
     }
+  );
+
+  await runCorsTest(
+    { origins },
+    { ...(origin ? { origin } : {}) },
+    { headers: { "Access-Control-Allow-Origin": expected } }
   );
 }
 
