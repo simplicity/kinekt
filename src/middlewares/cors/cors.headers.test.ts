@@ -7,19 +7,19 @@ describe("cors headers", () => {
       {
         origins: "*",
         allowMethods: ["PUT"],
-        allowHeaders: ["X-Foo", "X-Bar"],
+        allowHeaders: ["X-One", "X-Two"],
       },
       {
         isPreflight: true,
         origin: "http://example.com",
         requestMethod: "PUT",
-        requestHeaders: "X-Foo, X-Bar",
+        requestHeaders: "X-One, X-Two",
       },
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "PUT,GET,HEAD,POST",
-          "Access-Control-Allow-Headers": "X-Foo,X-Bar",
+          "Access-Control-Allow-Headers": "X-One,X-Two",
         },
       }
     );
@@ -30,19 +30,19 @@ describe("cors headers", () => {
       {
         origins: "*",
         allowMethods: ["PUT"],
-        allowHeaders: ["X-Foo"],
+        allowHeaders: ["X-One"],
       },
       {
         isPreflight: true,
         origin: "http://example.com",
         requestMethod: "PUT",
-        requestHeaders: "X-Foo, X-Bar",
+        requestHeaders: "X-One, X-Two",
       },
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "PUT,GET,HEAD,POST",
-          "Access-Control-Allow-Headers": "X-Foo",
+          "Access-Control-Allow-Headers": "X-One",
         },
       }
     );
