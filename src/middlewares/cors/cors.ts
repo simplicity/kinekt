@@ -137,6 +137,7 @@ function handle(
     return reply(context, headers);
   }
 
+  // TODO add tests for non-preflights
   return reply(context, headers);
 }
 
