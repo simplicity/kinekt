@@ -77,10 +77,12 @@ function handle(
     context.request.getHeader("Access-Control-Request-Method") !== null;
 
   if (isPreflight) {
+    // TODO what if this is not provided? -> it would be an invalid preflight
     const requestedMethod = context.request.getHeader(
       "Access-Control-Request-Method"
     );
 
+    // TODO what if this is not provided? -> it is actually optional
     const requestedHeaders = context.request.getHeader(
       "Access-Control-Request-Headers"
     );
