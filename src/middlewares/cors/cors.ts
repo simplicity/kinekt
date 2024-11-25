@@ -32,10 +32,7 @@ function handle(
 
   const isPreflight =
     // TODO avoid cast
-    (context.request.method as "OPTIONS") === "OPTIONS" &&
-    // TODO is this check really correct? Isn't it automatically a preflight, if method is OPTION?
-    //      -> absence of this header simply means that it is an invalid preflight request
-    context.request.getHeader("Access-Control-Request-Method") !== null;
+    (context.request.method as "OPTIONS") === "OPTIONS";
 
   if (!matchOrigin(originHeader, params.origins)) {
     if (isPreflight) {
