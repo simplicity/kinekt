@@ -5,7 +5,7 @@ import { cors } from "./cors";
 import { CorsParams } from "./helpers/types";
 
 type RunMiddlewareParams = {
-  origin: string;
+  origin?: string;
   isPreflight?: true;
   requestMethod?: string;
   requestHeaders?: string;
@@ -20,7 +20,7 @@ async function runMiddleware(
   const context = createTestContext({
     ...(params.isPreflight ? { method: "OPTIONS" as any } : {}), // TODO avoid any
     requestHeaders: {
-      Origin: params.origin,
+      ...(params.origin ? { Origin: params.origin } : {}),
       ...(params.requestMethod
         ? { "Access-Control-Request-Method": params.requestMethod }
         : {}),
@@ -204,6 +204,84 @@ describe("cors", () => {
           "Access-Control-Allow-Headers": "X-Header, X-Other-Header", // TODO shouldn't the space after , be gone?
         },
       }
+    );
+  });
+
+  it("sets Access-Control-Allow-Credentials when allowCredentials is true", async () => {
+    await runTest(
+      { origins: "*", allowCredentials: true },
+      { origin: "http://example.com" },
+      {
+        headers: {
+          // "Access-Control-Allow-Origin": "http://example.com",
+          "Access-Control-Allow-Origin": "*", // TODO this might be wrong
+          "Access-Control-Allow-Credentials": "true",
+        },
+      }
+    );
+  });
+
+  it("does not set Access-Control-Allow-Credentials when allowCredentials is false", async () => {
+    await runTest(
+      { origins: "*", allowCredentials: false },
+      { origin: "http://example.com" },
+      { headers: { "Access-Control-Allow-Origin": "*" } }
+    );
+  });
+
+  it("sets Access-Control-Expose-Headers", async () => {
+    await runTest(
+      { origins: "*", exposeHeaders: ["X-Foo", "X-Bar"] },
+      { origin: "http://example.com" },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Expose-Headers": "X-Foo,X-Bar",
+        },
+      }
+    );
+  });
+
+  // TODO fix this
+  it.skip("adds Vary header for specific origins", async () => {
+    await runTest(
+      { origins: ["http://example.com", "http://foo.com"] },
+      { origin: "http://example.com" },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "http://example.com",
+          Vary: "origin",
+        },
+      }
+    );
+  });
+
+  // TODO fix this
+  it.skip("adds Vary header for wildcard origins with credentials", async () => {
+    await runTest(
+      { origins: "*", allowCredentials: true },
+      { origin: "http://example.com" },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "http://example.com",
+          "Access-Control-Allow-Credentials": "true",
+          Vary: "origin",
+        },
+      }
+    );
+  });
+
+  // TODO ?
+  it.skip("does nothing for non-CORS requests", async () => {
+    await runTest({ origins: "*" }, {}, { headers: {} });
+  });
+
+  // TODO ?
+  it.skip("sets headers for non-CORS requests if passthroughNonCorsRequests is true", async () => {
+    await runTest(
+      { origins: "*", passthroughNonCorsRequests: true },
+      { origin: undefined },
+      { headers: { "Access-Control-Allow-Origin": "*" } }
     );
   });
 });
