@@ -2,7 +2,7 @@ import { describe, it } from "vitest";
 import { runCorsTest } from "./helpers/testHelpers/runCorsTest";
 
 describe("cors allow-credentials", () => {
-  it("sets Access-Control-Allow-Credentials when allowCredentials is true", async () => {
+  it("sets Access-Control-Allow-Credentials when allowCredentials is true, and also sets the Vary header", async () => {
     await runCorsTest(
       { origins: "*", allowCredentials: true },
       {},
@@ -16,7 +16,7 @@ describe("cors allow-credentials", () => {
     );
   });
 
-  it("does not set Access-Control-Allow-Credentials when allowCredentials is false", async () => {
+  it("does not set Access-Control-Allow-Credentials when allowCredentials is false, and doesn't set the Vary header", async () => {
     await runCorsTest(
       { origins: "*", allowCredentials: false },
       {},
