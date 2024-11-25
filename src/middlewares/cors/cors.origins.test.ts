@@ -7,6 +7,10 @@ async function runOriginTest(
   origin: string | undefined,
   expected: string
 ) {
+  // TODO maybe re-use the same code that is used in the implementation to determine this
+  const vary =
+    origins === "*" || origins.length === 1 ? undefined : { Vary: "origin" };
+
   await runCorsTest(
     { origins },
     {
@@ -17,6 +21,7 @@ async function runOriginTest(
       headers: {
         "Access-Control-Allow-Methods": "PUT,PATCH,DELETE,GET,HEAD,POST",
         "Access-Control-Allow-Origin": expected,
+        ...vary,
       },
     }
   );
@@ -24,7 +29,12 @@ async function runOriginTest(
   await runCorsTest(
     { origins },
     { ...(origin ? { origin } : {}) },
-    { headers: { "Access-Control-Allow-Origin": expected } }
+    {
+      headers: {
+        "Access-Control-Allow-Origin": expected,
+        ...vary,
+      },
+    }
   );
 }
 

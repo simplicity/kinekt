@@ -2,8 +2,7 @@ import { describe, it } from "vitest";
 import { runCorsTest } from "./helpers/testHelpers/runCorsTest";
 
 describe("cors", () => {
-  // TODO fix this
-  it.skip("adds Vary header for specific origins", async () => {
+  it("adds Vary header when multiple origins are configured", async () => {
     await runCorsTest(
       { origins: ["http://example.com", "http://foo.com"] },
       {},
@@ -16,8 +15,19 @@ describe("cors", () => {
     );
   });
 
-  // TODO fix this
-  it.skip("adds Vary header for wildcard origins with credentials", async () => {
+  it("doesn't add Vary header when only one origin is configured", async () => {
+    await runCorsTest(
+      { origins: ["http://example.com"] },
+      {},
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "http://example.com",
+        },
+      }
+    );
+  });
+
+  it("add Vary header when wildcard origin is configured and allowCredentials is set to true", async () => {
     await runCorsTest(
       { origins: "*", allowCredentials: true },
       {},
@@ -28,6 +38,14 @@ describe("cors", () => {
           Vary: "origin",
         },
       }
+    );
+  });
+
+  it("doesn't add Vary header when wildcard origin is configured and allowCredentials is set to false", async () => {
+    await runCorsTest(
+      { origins: "*" },
+      {},
+      { headers: { "Access-Control-Allow-Origin": "*" } }
     );
   });
 });

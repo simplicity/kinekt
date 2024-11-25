@@ -24,7 +24,7 @@ function handle(
   params: CorsParams
 ): BasePipelineContext {
   const {
-    origins,
+    origins, // TODO what happens when this is empty?
     allowMethods,
     allowHeaders,
     allowCredentials,
@@ -75,6 +75,13 @@ function handle(
 
   headers["Access-Control-Allow-Origin"] =
     origins === "*" && allowCredentials === false ? "*" : originHeader;
+
+  const originVaries =
+    origins === "*" ? (allowCredentials ? true : false) : origins.length > 1;
+
+  if (originVaries) {
+    headers["Vary"] = "origin";
+  }
 
   if (allowCredentials) {
     headers["Access-Control-Allow-Credentials"] = "true";
