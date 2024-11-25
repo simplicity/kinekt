@@ -8,8 +8,7 @@ describe("cors allow-credentials", () => {
       { origin: "http://example.com" },
       {
         headers: {
-          // "Access-Control-Allow-Origin": "http://example.com",
-          "Access-Control-Allow-Origin": "*", // TODO this might be wrong
+          "Access-Control-Allow-Origin": "http://example.com",
           "Access-Control-Allow-Credentials": "true",
         },
       }

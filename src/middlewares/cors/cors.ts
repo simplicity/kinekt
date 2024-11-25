@@ -51,7 +51,8 @@ function handle(
 
   const headers: Record<string, string> = {};
 
-  headers["Access-Control-Allow-Origin"] = origins === "*" ? "*" : originHeader;
+  headers["Access-Control-Allow-Origin"] =
+    origins === "*" && allowCredentials === false ? "*" : originHeader;
 
   if (allowCredentials) {
     headers["Access-Control-Allow-Credentials"] = "true";

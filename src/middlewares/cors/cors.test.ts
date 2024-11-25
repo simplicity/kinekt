@@ -1,6 +1,8 @@
 import { describe, it } from "vitest";
 import { runCorsTest } from "./helpers/testHelpers/runCorsTest";
 
+// TODO test that headers are merged
+
 describe("cors", () => {
   // TODO ?
   it.skip("does nothing for non-CORS requests", async () => {
