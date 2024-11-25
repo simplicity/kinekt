@@ -39,7 +39,7 @@ export function createTestContext(
       path: params?.path ?? "/",
       params: params?.params ?? {},
       query: params?.query ?? "",
-      getHeader: (name) => headers[name],
+      getHeader: (name) => headers[name] ?? null,
       readText: async () => params?.text ?? "",
       readFormData: async () => params?.formData ?? new FormData(),
     },

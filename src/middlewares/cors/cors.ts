@@ -6,6 +6,14 @@ import { matchOrigin } from "./helpers/matchOrigin";
 import { normalizeParams } from "./helpers/normalizeParams";
 import { reply } from "./helpers/reply";
 import { CorsParams, NormalizedCorsParams } from "./helpers/types";
+import { writeCredentialsHeader } from "./helpers/writeCredentialsHeader";
+import { writeExposeHeadersHeader } from "./helpers/writeExposeHeadersHeader";
+import { writeHeadersHeader } from "./helpers/writeHeadersHeader";
+import { writeMaxAgeHeader } from "./helpers/writeMaxAgeHeader";
+import { writeMethodsHeader } from "./helpers/writeMethodsHeader";
+import { writeOriginHeader } from "./helpers/writeOriginHeader";
+import { writePrivateNetworkHeader } from "./helpers/writePrivateNetworkHeader";
+import { writeVaryHeader } from "./helpers/writeVaryHeader";
 
 function handle(
   context: BasePipelineContext,
@@ -48,75 +56,16 @@ function handle(
     return context;
   }
 
-  const headers: Record<string, string> = {};
-
-  headers["Access-Control-Allow-Origin"] =
-    params.origins === "*" && params.allowCredentials === false
-      ? "*"
-      : originHeader;
-
-  const originVaries =
-    params.origins === "*"
-      ? params.allowCredentials
-        ? true
-        : false
-      : params.origins.length > 1;
-
-  if (originVaries) {
-    headers["Vary"] = "origin";
-  }
-
-  if (params.allowCredentials) {
-    headers["Access-Control-Allow-Credentials"] = "true";
-  }
-
-  if (
-    params.allowPrivateNetwork &&
-    context.request.getHeader("access-control-request-private-network") !== null
-  ) {
-    headers["Access-Control-Allow-Private-Network"] = "true";
-  }
-
-  if (params.exposeHeaders !== "") {
-    headers["Access-Control-Expose-Headers"] = params.exposeHeaders;
-  }
-
-  if (isPreflight) {
-    // TODO what if this is not provided? -> it would be an invalid preflight
-    const requestedMethod = context.request.getHeader(
-      "Access-Control-Request-Method"
-    );
-
-    // TODO what if this is not provided? -> it is actually optional
-    const requestedHeaders = context.request.getHeader(
-      "Access-Control-Request-Headers"
-    );
-
-    if (params.allowMethods.type === "all") {
-      headers["Access-Control-Allow-Methods"] = requestedMethod as string;
-    } else {
-      headers["Access-Control-Allow-Methods"] = params.allowMethods.methods;
-    }
-
-    if (params.allowHeaders === "ALL") {
-      headers["Access-Control-Allow-Headers"] = requestedHeaders as string;
-    } else if (requestedHeaders) {
-      const requested = (requestedHeaders as string).split(",").map(
-        (h) => h.trim()
-        // TODO here we'd have to deal with lower case too
-        // .toLowerCase()
-      );
-
-      headers["Access-Control-Allow-Headers"] = requested
-        .filter((header) => params.allowHeaders.includes(header))
-        .join(",");
-    }
-
-    // TODO test this
-    if (params.maxAge > 0) {
-      headers["Access-Control-Max-Age"] = params.maxAge.toString();
-    }
-  }
+  const headers: Record<string, string> = {
+    ...writeOriginHeader(params, originHeader),
+    ...writeVaryHeader(params),
+    ...writeCredentialsHeader(params),
+    ...writePrivateNetworkHeader(params, context),
+    ...writeExposeHeadersHeader(params),
+    ...(isPreflight && writeMethodsHeader(params, context)),
+    ...(isPreflight && writeHeadersHeader(params, context)),
+    ...(isPreflight && writeMaxAgeHeader(params)),
+  };
 
   // TODO add tests for non-preflights
   return reply(context, headers);
