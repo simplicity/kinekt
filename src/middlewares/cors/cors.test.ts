@@ -4,14 +4,16 @@ import { createTestContext } from "../../helpers/testHelpers/createTestContext";
 import { cors } from "./cors";
 import { CorsParams } from "./helpers/types";
 
-async function run(
+type RunMiddlewareParams = {
+  origin: string;
+  isPreflight?: true;
+  requestMethod?: string;
+  requestHeaders?: string;
+};
+
+async function runMiddleware(
   corsParams: CorsParams,
-  params: {
-    origin: string;
-    isPreflight?: true;
-    requestMethod?: string;
-    requestHeaders?: string;
-  }
+  params: RunMiddlewareParams
 ) {
   const mw = cors(corsParams);
 
@@ -31,39 +33,38 @@ async function run(
   return mw(context);
 }
 
-function expectResponseSet(
-  result: BasePipelineContext,
-  params: { headers: Record<string, string> }
-) {
-  expect(result.response).toEqual({
-    type: "set",
-    statusCode: 200,
-    body: null,
-    headers: params.headers,
-  });
-}
-
 function expectResponseUnset(result: BasePipelineContext) {
   expect(result.response).toEqual({ type: "unset" });
 }
 
+async function runTest(
+  corsParams: CorsParams,
+  params: RunMiddlewareParams,
+  expectation: { headers: Record<string, string> }
+) {
+  const result = await runMiddleware(corsParams, params);
+
+  expect(result.response).toEqual({
+    type: "set",
+    statusCode: 200,
+    body: null,
+    headers: expectation.headers,
+  });
+}
+
 describe("cors", () => {
   it("allows matching origins", async () => {
-    expectResponseSet(
-      await run(
-        { origins: ["http://example.com", "http://foo.com"] },
-        { origin: "http://example.com" }
-      ),
-      {
-        headers: { "Access-Control-Allow-Origin": "http://example.com" },
-      }
+    await runTest(
+      { origins: ["http://example.com", "http://foo.com"] },
+      { origin: "http://example.com" },
+      { headers: { "Access-Control-Allow-Origin": "http://example.com" } }
     );
   });
 
   it("denies non-matching origins", async () => {
     // TODO is this correct?
     expectResponseUnset(
-      await run(
+      await runMiddleware(
         { origins: ["http://foo.com"] },
         { origin: "http://example.com" }
       )
@@ -71,36 +72,29 @@ describe("cors", () => {
   });
 
   it("allows wildcard origins", async () => {
-    expectResponseSet(
-      await run({ origins: "*" }, { origin: "http://example.com" }),
-      {
-        headers: { "Access-Control-Allow-Origin": "*" },
-      }
+    await runTest(
+      { origins: "*" },
+      { origin: "http://example.com" },
+      { headers: { "Access-Control-Allow-Origin": "*" } }
     );
   });
 
   it("handles regex origins", async () => {
-    expectResponseSet(
-      await run(
-        { origins: [/example\.com$/, /foo\.com$/] },
-        { origin: "http://sub.example.com" }
-      ),
-      {
-        headers: { "Access-Control-Allow-Origin": "http://sub.example.com" },
-      }
+    await runTest(
+      { origins: [/example\.com$/, /foo\.com$/] },
+      { origin: "http://sub.example.com" },
+      { headers: { "Access-Control-Allow-Origin": "http://sub.example.com" } }
     );
   });
 
   it("allows preflight requests with valid methods", async () => {
-    expectResponseSet(
-      await run(
-        { origins: "*", allowMethods: ["PUT", "PATCH"] },
-        {
-          isPreflight: true,
-          origin: "http://example.com",
-          requestMethod: "PUT",
-        }
-      ),
+    await runTest(
+      { origins: "*", allowMethods: ["PUT", "PATCH"] },
+      {
+        isPreflight: true,
+        origin: "http://example.com",
+        requestMethod: "PUT",
+      },
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -111,15 +105,13 @@ describe("cors", () => {
   });
 
   it("denies preflight requests with invalid methods", async () => {
-    expectResponseSet(
-      await run(
-        { origins: "*", allowMethods: ["GET"] },
-        {
-          isPreflight: true,
-          origin: "http://example.com",
-          requestMethod: "PUT",
-        }
-      ),
+    await runTest(
+      { origins: "*", allowMethods: ["GET"] },
+      {
+        isPreflight: true,
+        origin: "http://example.com",
+        requestMethod: "PUT",
+      },
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -130,20 +122,18 @@ describe("cors", () => {
   });
 
   it("allows preflight requests with valid headers", async () => {
-    expectResponseSet(
-      await run(
-        {
-          origins: "*",
-          allowMethods: ["PUT"],
-          allowHeaders: ["X-Foo", "X-Bar"],
-        },
-        {
-          isPreflight: true,
-          origin: "http://example.com",
-          requestMethod: "PUT",
-          requestHeaders: "X-Foo, X-Bar",
-        }
-      ),
+    await runTest(
+      {
+        origins: "*",
+        allowMethods: ["PUT"],
+        allowHeaders: ["X-Foo", "X-Bar"],
+      },
+      {
+        isPreflight: true,
+        origin: "http://example.com",
+        requestMethod: "PUT",
+        requestHeaders: "X-Foo, X-Bar",
+      },
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -155,20 +145,18 @@ describe("cors", () => {
   });
 
   it("denies preflight requests with invalid headers", async () => {
-    expectResponseSet(
-      await run(
-        {
-          origins: "*",
-          allowMethods: ["PUT"],
-          allowHeaders: ["X-Foo"],
-        },
-        {
-          isPreflight: true,
-          origin: "http://example.com",
-          requestMethod: "PUT",
-          requestHeaders: "X-Foo, X-Bar",
-        }
-      ),
+    await runTest(
+      {
+        origins: "*",
+        allowMethods: ["PUT"],
+        allowHeaders: ["X-Foo"],
+      },
+      {
+        isPreflight: true,
+        origin: "http://example.com",
+        requestMethod: "PUT",
+        requestHeaders: "X-Foo, X-Bar",
+      },
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -180,15 +168,13 @@ describe("cors", () => {
   });
 
   it("allows all methods with allowMethods set to ALL", async () => {
-    expectResponseSet(
-      await run(
-        { origins: "*", allowMethods: "ALL" },
-        {
-          isPreflight: true,
-          origin: "http://example.com",
-          requestMethod: "ANYMETHOD",
-        }
-      ),
+    await runTest(
+      { origins: "*", allowMethods: "ALL" },
+      {
+        isPreflight: true,
+        origin: "http://example.com",
+        requestMethod: "ANYMETHOD",
+      },
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -199,20 +185,18 @@ describe("cors", () => {
   });
 
   it("allows all headers with allowHeaders set to ALL", async () => {
-    expectResponseSet(
-      await run(
-        {
-          origins: "*",
-          allowMethods: ["PUT"],
-          allowHeaders: "ALL",
-        },
-        {
-          isPreflight: true,
-          origin: "http://example.com",
-          requestMethod: "PUT",
-          requestHeaders: "X-Header, X-Other-Header",
-        }
-      ),
+    await runTest(
+      {
+        origins: "*",
+        allowMethods: ["PUT"],
+        allowHeaders: "ALL",
+      },
+      {
+        isPreflight: true,
+        origin: "http://example.com",
+        requestMethod: "PUT",
+        requestHeaders: "X-Header, X-Other-Header",
+      },
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
