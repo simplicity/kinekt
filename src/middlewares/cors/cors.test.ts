@@ -1,60 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { BasePipelineContext } from "../../createPipeline/helpers/types";
-import { createTestContext } from "../../helpers/testHelpers/createTestContext";
-import { cors } from "./cors";
-import { CorsParams } from "./helpers/types";
-
-type RunMiddlewareParams = {
-  origin?: string;
-  isPreflight?: true;
-  requestMethod?: string;
-  requestHeaders?: string;
-};
-
-async function runMiddleware(
-  corsParams: CorsParams,
-  params: RunMiddlewareParams
-) {
-  const mw = cors(corsParams);
-
-  const context = createTestContext({
-    ...(params.isPreflight ? { method: "OPTIONS" as any } : {}), // TODO avoid any
-    requestHeaders: {
-      ...(params.origin ? { Origin: params.origin } : {}),
-      ...(params.requestMethod
-        ? { "Access-Control-Request-Method": params.requestMethod }
-        : {}),
-      ...(params.requestHeaders
-        ? { "Access-Control-Request-Headers": params.requestHeaders }
-        : {}),
-    },
-  });
-
-  return mw(context);
-}
+import { runCorsTest, runMiddleware } from "./helpers/testHelpers/runCorsTest";
 
 function expectResponseUnset(result: BasePipelineContext) {
   expect(result.response).toEqual({ type: "unset" });
 }
 
-async function runTest(
-  corsParams: CorsParams,
-  params: RunMiddlewareParams,
-  expectation: { headers: Record<string, string> }
-) {
-  const result = await runMiddleware(corsParams, params);
-
-  expect(result.response).toEqual({
-    type: "set",
-    statusCode: 200,
-    body: null,
-    headers: expectation.headers,
-  });
-}
-
 describe("cors", () => {
   it("allows matching origins", async () => {
-    await runTest(
+    await runCorsTest(
       { origins: ["http://example.com", "http://foo.com"] },
       { origin: "http://example.com" },
       { headers: { "Access-Control-Allow-Origin": "http://example.com" } }
@@ -72,7 +26,7 @@ describe("cors", () => {
   });
 
   it("allows wildcard origins", async () => {
-    await runTest(
+    await runCorsTest(
       { origins: "*" },
       { origin: "http://example.com" },
       { headers: { "Access-Control-Allow-Origin": "*" } }
@@ -80,7 +34,7 @@ describe("cors", () => {
   });
 
   it("handles regex origins", async () => {
-    await runTest(
+    await runCorsTest(
       { origins: [/example\.com$/, /foo\.com$/] },
       { origin: "http://sub.example.com" },
       { headers: { "Access-Control-Allow-Origin": "http://sub.example.com" } }
@@ -88,7 +42,7 @@ describe("cors", () => {
   });
 
   it("allows preflight requests with valid methods", async () => {
-    await runTest(
+    await runCorsTest(
       { origins: "*", allowMethods: ["PUT", "PATCH"] },
       {
         isPreflight: true,
@@ -105,7 +59,7 @@ describe("cors", () => {
   });
 
   it("denies preflight requests with invalid methods", async () => {
-    await runTest(
+    await runCorsTest(
       { origins: "*", allowMethods: ["GET"] },
       {
         isPreflight: true,
@@ -122,7 +76,7 @@ describe("cors", () => {
   });
 
   it("allows preflight requests with valid headers", async () => {
-    await runTest(
+    await runCorsTest(
       {
         origins: "*",
         allowMethods: ["PUT"],
@@ -145,7 +99,7 @@ describe("cors", () => {
   });
 
   it("denies preflight requests with invalid headers", async () => {
-    await runTest(
+    await runCorsTest(
       {
         origins: "*",
         allowMethods: ["PUT"],
@@ -168,7 +122,7 @@ describe("cors", () => {
   });
 
   it("allows all methods with allowMethods set to ALL", async () => {
-    await runTest(
+    await runCorsTest(
       { origins: "*", allowMethods: "ALL" },
       {
         isPreflight: true,
@@ -185,7 +139,7 @@ describe("cors", () => {
   });
 
   it("allows all headers with allowHeaders set to ALL", async () => {
-    await runTest(
+    await runCorsTest(
       {
         origins: "*",
         allowMethods: ["PUT"],
@@ -208,7 +162,7 @@ describe("cors", () => {
   });
 
   it("sets Access-Control-Allow-Credentials when allowCredentials is true", async () => {
-    await runTest(
+    await runCorsTest(
       { origins: "*", allowCredentials: true },
       { origin: "http://example.com" },
       {
@@ -222,7 +176,7 @@ describe("cors", () => {
   });
 
   it("does not set Access-Control-Allow-Credentials when allowCredentials is false", async () => {
-    await runTest(
+    await runCorsTest(
       { origins: "*", allowCredentials: false },
       { origin: "http://example.com" },
       { headers: { "Access-Control-Allow-Origin": "*" } }
@@ -230,7 +184,7 @@ describe("cors", () => {
   });
 
   it("sets Access-Control-Expose-Headers", async () => {
-    await runTest(
+    await runCorsTest(
       { origins: "*", exposeHeaders: ["X-Foo", "X-Bar"] },
       { origin: "http://example.com" },
       {
@@ -244,7 +198,7 @@ describe("cors", () => {
 
   // TODO fix this
   it.skip("adds Vary header for specific origins", async () => {
-    await runTest(
+    await runCorsTest(
       { origins: ["http://example.com", "http://foo.com"] },
       { origin: "http://example.com" },
       {
@@ -258,7 +212,7 @@ describe("cors", () => {
 
   // TODO fix this
   it.skip("adds Vary header for wildcard origins with credentials", async () => {
-    await runTest(
+    await runCorsTest(
       { origins: "*", allowCredentials: true },
       { origin: "http://example.com" },
       {
@@ -273,12 +227,12 @@ describe("cors", () => {
 
   // TODO ?
   it.skip("does nothing for non-CORS requests", async () => {
-    await runTest({ origins: "*" }, {}, { headers: {} });
+    await runCorsTest({ origins: "*" }, {}, { headers: {} });
   });
 
   // TODO ?
   it.skip("sets headers for non-CORS requests if passthroughNonCorsRequests is true", async () => {
-    await runTest(
+    await runCorsTest(
       { origins: "*", passthroughNonCorsRequests: true },
       { origin: undefined },
       { headers: { "Access-Control-Allow-Origin": "*" } }
