@@ -13,3 +13,14 @@ export type CorsParams = {
   maxAge?: number;
   passthroughNonCorsRequests?: boolean;
 };
+
+export type NormalizedCorsParams = {
+  origins: Origin[] | "*";
+  allowMethods: { type: "all" } | { type: "specific"; methods: string };
+  allowHeaders: string[] | "ALL";
+  allowCredentials: boolean;
+  allowPrivateNetwork: boolean;
+  exposeHeaders: string;
+  maxAge: number;
+  passthroughNonCorsRequests: boolean;
+};

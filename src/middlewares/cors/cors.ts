@@ -2,38 +2,15 @@ import {
   BasePipelineContext,
   Middleware,
 } from "../../createPipeline/helpers/types";
-import { isSimpleHeader } from "./helpers/isSimpleHeader";
 import { matchOrigin } from "./helpers/matchOrigin";
+import { normalizeParams } from "./helpers/normalizeParams";
 import { reply } from "./helpers/reply";
-import { CorsParams } from "./helpers/types";
-
-const DEFAULT_OPTIONS: Required<Omit<CorsParams, "origins">> = {
-  allowMethods: ["PUT", "PATCH", "DELETE"],
-  allowHeaders: [],
-  allowCredentials: false,
-  allowPrivateNetwork: false,
-  exposeHeaders: [],
-  maxAge: 0,
-  passthroughNonCorsRequests: false,
-};
-
-const simpleMethods = ["GET", "HEAD", "POST"];
+import { CorsParams, NormalizedCorsParams } from "./helpers/types";
 
 function handle(
   context: BasePipelineContext,
-  params: CorsParams
+  params: NormalizedCorsParams
 ): BasePipelineContext {
-  const {
-    origins, // TODO what happens when this is empty?
-    allowMethods,
-    allowHeaders,
-    allowCredentials,
-    allowPrivateNetwork,
-    exposeHeaders,
-    maxAge,
-    passthroughNonCorsRequests,
-  } = { ...DEFAULT_OPTIONS, ...params };
-
   // TODO how to deal with upper/lower case in headers?
   const originHeader = context.request.getHeader("Origin");
 
@@ -52,7 +29,7 @@ function handle(
     //      -> absence of this header simply means that it is an invalid preflight request
     context.request.getHeader("Access-Control-Request-Method") !== null;
 
-  if (!matchOrigin(originHeader, origins)) {
+  if (!matchOrigin(originHeader, params.origins)) {
     if (isPreflight) {
       return {
         ...context,
@@ -74,28 +51,34 @@ function handle(
   const headers: Record<string, string> = {};
 
   headers["Access-Control-Allow-Origin"] =
-    origins === "*" && allowCredentials === false ? "*" : originHeader;
+    params.origins === "*" && params.allowCredentials === false
+      ? "*"
+      : originHeader;
 
   const originVaries =
-    origins === "*" ? (allowCredentials ? true : false) : origins.length > 1;
+    params.origins === "*"
+      ? params.allowCredentials
+        ? true
+        : false
+      : params.origins.length > 1;
 
   if (originVaries) {
     headers["Vary"] = "origin";
   }
 
-  if (allowCredentials) {
+  if (params.allowCredentials) {
     headers["Access-Control-Allow-Credentials"] = "true";
   }
 
   if (
-    allowPrivateNetwork &&
+    params.allowPrivateNetwork &&
     context.request.getHeader("access-control-request-private-network") !== null
   ) {
     headers["Access-Control-Allow-Private-Network"] = "true";
   }
 
-  if (exposeHeaders.length > 0) {
-    headers["Access-Control-Expose-Headers"] = exposeHeaders.join(",");
+  if (params.exposeHeaders !== "") {
+    headers["Access-Control-Expose-Headers"] = params.exposeHeaders;
   }
 
   if (isPreflight) {
@@ -109,19 +92,13 @@ function handle(
       "Access-Control-Request-Headers"
     );
 
-    if (allowMethods === "ALL") {
+    if (params.allowMethods.type === "all") {
       headers["Access-Control-Allow-Methods"] = requestedMethod as string;
     } else {
-      headers["Access-Control-Allow-Methods"] = [
-        // TODO this filtering could be done somewhere else
-        ...allowMethods.filter((method) => !simpleMethods.includes(method)),
-        ...simpleMethods,
-      ]
-        .map((m) => m.toUpperCase())
-        .join(",");
+      headers["Access-Control-Allow-Methods"] = params.allowMethods.methods;
     }
 
-    if (allowHeaders === "ALL") {
+    if (params.allowHeaders === "ALL") {
       headers["Access-Control-Allow-Headers"] = requestedHeaders as string;
     } else if (requestedHeaders) {
       const requested = (requestedHeaders as string).split(",").map(
@@ -131,15 +108,13 @@ function handle(
       );
 
       headers["Access-Control-Allow-Headers"] = requested
-        .filter(
-          (header) => isSimpleHeader(header) || allowHeaders.includes(header)
-        )
+        .filter((header) => params.allowHeaders.includes(header))
         .join(",");
     }
 
     // TODO test this
-    if (maxAge > 0) {
-      headers["Access-Control-Max-Age"] = maxAge.toString();
+    if (params.maxAge > 0) {
+      headers["Access-Control-Max-Age"] = params.maxAge.toString();
     }
 
     return reply(context, headers);
@@ -152,8 +127,10 @@ function handle(
 export const cors = <In extends BasePipelineContext, Out extends In>(
   params: CorsParams
 ): Middleware<In, Out> => {
+  const normalizedCorsParams = normalizeParams(params);
+
   const middleware: Middleware<In, Out> = async (context) =>
-    handle(context, params) as Out;
+    handle(context, normalizedCorsParams) as Out;
 
   return middleware;
 };
