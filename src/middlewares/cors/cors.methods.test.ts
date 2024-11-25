@@ -23,15 +23,15 @@ async function runMethodTest(
 }
 
 describe("cors methods", () => {
-  it("adds methods allowed by default to Access-Control-Allow-Methods", async () => {
+  it("adds methods allowed by default", async () => {
     await runMethodTest(undefined, "PUT", "PUT,PATCH,DELETE,GET,HEAD,POST");
   });
 
-  it("adds allowed methods to Access-Control-Allow-Methods", async () => {
+  it("adds allowed methods", async () => {
     await runMethodTest(["PUT", "PATCH"], "PUT", "PUT,PATCH,GET,HEAD,POST");
   });
 
-  it("doesn't add methods to Access-Control-Allow-Methods when they aren't allowed", async () => {
+  it("doesn't add methods when they aren't allowed", async () => {
     await runMethodTest(["GET"], "PUT", "GET,HEAD,POST");
   });
 
