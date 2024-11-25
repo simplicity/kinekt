@@ -137,6 +137,7 @@ function handle(
         .join(",");
     }
 
+    // TODO test this
     if (maxAge > 0) {
       headers["Access-Control-Max-Age"] = maxAge.toString();
     }
