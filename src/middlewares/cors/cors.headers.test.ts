@@ -12,6 +12,7 @@ async function runHeaderTest(
       allowHeaders,
     },
     {
+      // TODO what about non-preflight?
       isPreflight: true,
       requestHeaders,
     },

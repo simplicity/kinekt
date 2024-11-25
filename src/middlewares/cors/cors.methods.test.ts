@@ -10,6 +10,7 @@ async function runMethodTest(
   await runCorsTest(
     { origins: "*", ...(allowMethods ? { allowMethods } : {}) },
     {
+      // TODO what about non-preflight?
       isPreflight: true,
       requestMethod,
     },
