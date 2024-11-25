@@ -17,6 +17,8 @@ const DEFAULT_OPTIONS: Required<Omit<CorsParams, "origins">> = {
   passthroughNonCorsRequests: false,
 };
 
+const simpleMethods = ["GET", "HEAD", "POST"];
+
 function handle(
   context: BasePipelineContext,
   params: CorsParams
@@ -87,8 +89,9 @@ function handle(
       headers["Access-Control-Allow-Methods"] = requestedMethod as string;
     } else {
       headers["Access-Control-Allow-Methods"] = [
-        ...allowMethods,
-        ...["GET", "HEAD", "POST"],
+        // TODO this filtering could be done somewhere else
+        ...allowMethods.filter((method) => !simpleMethods.includes(method)),
+        ...simpleMethods,
       ]
         .map((m) => m.toUpperCase())
         .join(",");
