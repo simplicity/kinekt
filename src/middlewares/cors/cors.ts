@@ -23,10 +23,6 @@ function handle(
   const originHeader = context.request.getHeader("Origin");
 
   if (!originHeader) {
-    // TODO what to do here?
-    // if (passthroughNonCorsRequests) return false;
-    // return true;
-
     return context;
   }
 
