@@ -6,19 +6,16 @@ describe("cors headers", () => {
     await runCorsTest(
       {
         origins: "*",
-        allowMethods: ["PUT"],
         allowHeaders: ["X-One", "X-Two"],
       },
       {
         isPreflight: true,
-        origin: "http://example.com",
-        requestMethod: "PUT",
         requestHeaders: "X-One, X-Two",
       },
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "PUT,GET,HEAD,POST",
+          "Access-Control-Allow-Methods": "PUT,PATCH,DELETE,GET,HEAD,POST",
           "Access-Control-Allow-Headers": "X-One,X-Two",
         },
       }
@@ -29,19 +26,16 @@ describe("cors headers", () => {
     await runCorsTest(
       {
         origins: "*",
-        allowMethods: ["PUT"],
         allowHeaders: ["X-One"],
       },
       {
         isPreflight: true,
-        origin: "http://example.com",
-        requestMethod: "PUT",
         requestHeaders: "X-One, X-Two",
       },
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "PUT,GET,HEAD,POST",
+          "Access-Control-Allow-Methods": "PUT,PATCH,DELETE,GET,HEAD,POST",
           "Access-Control-Allow-Headers": "X-One",
         },
       }
@@ -52,19 +46,16 @@ describe("cors headers", () => {
     await runCorsTest(
       {
         origins: "*",
-        allowMethods: ["PUT"],
         allowHeaders: "ALL",
       },
       {
         isPreflight: true,
-        origin: "http://example.com",
-        requestMethod: "PUT",
         requestHeaders: "X-Header, X-Other-Header",
       },
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "PUT,GET,HEAD,POST",
+          "Access-Control-Allow-Methods": "PUT,PATCH,DELETE,GET,HEAD,POST",
           "Access-Control-Allow-Headers": "X-Header, X-Other-Header", // TODO shouldn't the space after , be gone?
         },
       }

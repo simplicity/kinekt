@@ -11,7 +11,6 @@ async function runMethodTest(
     { origins: "*", ...(allowMethods ? { allowMethods } : {}) },
     {
       isPreflight: true,
-      origin: "http://example.com",
       requestMethod,
     },
     {

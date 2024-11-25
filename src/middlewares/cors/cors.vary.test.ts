@@ -6,7 +6,7 @@ describe("cors", () => {
   it.skip("adds Vary header for specific origins", async () => {
     await runCorsTest(
       { origins: ["http://example.com", "http://foo.com"] },
-      { origin: "http://example.com" },
+      {},
       {
         headers: {
           "Access-Control-Allow-Origin": "http://example.com",
@@ -20,7 +20,7 @@ describe("cors", () => {
   it.skip("adds Vary header for wildcard origins with credentials", async () => {
     await runCorsTest(
       { origins: "*", allowCredentials: true },
-      { origin: "http://example.com" },
+      {},
       {
         headers: {
           "Access-Control-Allow-Origin": "http://example.com",

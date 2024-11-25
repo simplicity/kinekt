@@ -5,7 +5,7 @@ describe("cors", () => {
   it("sets Access-Control-Expose-Headers", async () => {
     await runCorsTest(
       { origins: "*", exposeHeaders: ["X-One", "X-Two"] },
-      { origin: "http://example.com" },
+      {},
       {
         headers: {
           "Access-Control-Allow-Origin": "*",

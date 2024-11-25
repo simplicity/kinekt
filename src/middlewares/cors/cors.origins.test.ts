@@ -10,7 +10,7 @@ describe("cors origins", () => {
   it("allows matching origins", async () => {
     await runCorsTest(
       { origins: ["http://example.com", "http://foo.com"] },
-      { origin: "http://example.com" },
+      {},
       { headers: { "Access-Control-Allow-Origin": "http://example.com" } }
     );
   });
@@ -18,17 +18,14 @@ describe("cors origins", () => {
   it("denies non-matching origins", async () => {
     // TODO is this correct?
     expectResponseUnset(
-      await runMiddleware(
-        { origins: ["http://foo.com"] },
-        { origin: "http://example.com" }
-      )
+      await runMiddleware({ origins: ["http://foo.com"] }, {})
     );
   });
 
   it("allows wildcard origins", async () => {
     await runCorsTest(
       { origins: "*" },
-      { origin: "http://example.com" },
+      {},
       { headers: { "Access-Control-Allow-Origin": "*" } }
     );
   });
