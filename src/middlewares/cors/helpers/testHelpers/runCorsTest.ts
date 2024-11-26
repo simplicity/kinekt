@@ -33,7 +33,7 @@ async function runMiddleware(
   const mw = cors(corsParams);
 
   const context = createTestContext({
-    ...(params.isPreflight ? { method: "OPTIONS" as any } : {}), // TODO avoid any
+    ...(params.isPreflight ? { method: "OPTIONS" } : {}),
     requestHeaders: {
       ...(params.requestMethod === null
         ? {}

@@ -25,9 +25,7 @@ function handle(
     return context;
   }
 
-  const isPreflight =
-    // TODO avoid cast
-    (context.request.method as "OPTIONS") === "OPTIONS";
+  const isPreflight = context.request.method === "OPTIONS";
 
   if (!matchOrigin(originHeader, params.origins)) {
     if (isPreflight) {

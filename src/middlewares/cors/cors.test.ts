@@ -22,7 +22,7 @@ describe("cors", () => {
 
   it("sets a response if origin doesn't match and request is a preflight request", async () => {
     const context = createTestContext({
-      method: "OPTIONS" as any, // TODO avoid cast
+      method: "OPTIONS",
       requestHeaders: { origin: "http://beispiel.com" },
     });
 

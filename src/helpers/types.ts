@@ -1,9 +1,12 @@
 import type { z } from "zod";
 import { Pipeline } from "../createPipeline/helpers/types";
 
-export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS";
 
-export type EndpointDeclarationBase = `${Method} /${string}`;
+export type EndpointDeclarationBase = `${Exclude<
+  Method,
+  "OPTIONS"
+>} /${string}`;
 
 type ExtractParams<Path extends string> = Path extends ""
   ? void

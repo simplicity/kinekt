@@ -61,6 +61,7 @@ const startAcc: PipelineRouteTree = {
   PATCH: root,
   PUT: root,
   DELETE: root,
+  OPTIONS: root, // TODO how do we route these?
 };
 
 function addForAllPipelines(pipelines: Array<Pipeline<any, any>>) {

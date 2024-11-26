@@ -26,7 +26,7 @@ export const createUser = testPipeline.createEndpoint(
     },
   },
 
-  async ({ params, query, body, context }) => {
+  async ({ params, query, body }) => {
     if (body.email === "existing@email.com") {
       return {
         statusCode: 409,
