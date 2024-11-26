@@ -15,8 +15,8 @@ async function runMethodTest(
     },
     {
       headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": expected,
+        "access-control-allow-origin": "*",
+        "access-control-allow-methods": expected,
       },
     }
   );

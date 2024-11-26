@@ -69,7 +69,7 @@ export function mockEndpoint<
       const headers = {
         ...requestInit?.headers,
         ...(body instanceof FormData
-          ? { "Content-Type": "multipart/form-data" }
+          ? { "content-type": "multipart/form-data" }
           : {}),
       } as Record<string, string>;
 

@@ -15,9 +15,9 @@ async function runOriginTest(
     },
     {
       headers: {
-        "Access-Control-Allow-Methods": "GET,HEAD,POST,PUT,PATCH,DELETE",
-        "Access-Control-Allow-Origin": expected,
-        Vary: IGNORE_HEADER,
+        "access-control-allow-methods": "GET,HEAD,POST,PUT,PATCH,DELETE",
+        "access-control-allow-origin": expected,
+        vary: IGNORE_HEADER,
       },
     }
   );
@@ -27,8 +27,8 @@ async function runOriginTest(
     { ...(origin ? { origin } : {}) },
     {
       headers: {
-        "Access-Control-Allow-Origin": expected,
-        Vary: IGNORE_HEADER,
+        "access-control-allow-origin": expected,
+        vary: IGNORE_HEADER,
       },
     }
   );

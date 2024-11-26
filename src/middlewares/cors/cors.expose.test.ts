@@ -8,7 +8,7 @@ describe("cors", () => {
       {},
       {
         headers: {
-          "Access-Control-Allow-Origin": "*",
+          "access-control-allow-origin": "*",
           "Access-Control-Expose-Headers": "X-One,X-Two",
         },
       }
@@ -21,8 +21,8 @@ describe("cors", () => {
       { isPreflight: true },
       {
         headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,HEAD,POST,PUT,PATCH,DELETE",
+          "access-control-allow-origin": "*",
+          "access-control-allow-methods": "GET,HEAD,POST,PUT,PATCH,DELETE",
         },
       }
     );

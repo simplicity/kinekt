@@ -12,7 +12,7 @@ describe("cors", () => {
 
   it("does nothing if origin doesn't match and request isn't a preflight", async () => {
     const context = createTestContext({
-      requestHeaders: { Origin: "http://beispiel.com" },
+      requestHeaders: { origin: "http://beispiel.com" },
     });
 
     expect(await cors({ origins: ["http://example.com"] })(context)).toEqual(
@@ -23,7 +23,7 @@ describe("cors", () => {
   it("sets a response if origin doesn't match and request is a preflight request", async () => {
     const context = createTestContext({
       method: "OPTIONS" as any, // TODO avoid cast
-      requestHeaders: { Origin: "http://beispiel.com" },
+      requestHeaders: { origin: "http://beispiel.com" },
     });
 
     const result = await cors({ origins: ["http://example.com"] })(context);

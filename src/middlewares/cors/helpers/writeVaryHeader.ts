@@ -11,5 +11,5 @@ function originVaries(params: NormalizedCorsParams) {
 export function writeVaryHeader(
   params: NormalizedCorsParams
 ): Record<string, string> {
-  return originVaries(params) ? { Vary: "origin" } : {};
+  return originVaries(params) ? { vary: "origin" } : {};
 }

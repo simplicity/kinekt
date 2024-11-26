@@ -28,8 +28,8 @@ export function createTestContext(
 ): BasePipelineContext {
   const headers: Record<string, string> = {
     ...params?.requestHeaders,
-    ...(params?.contentType ? { "Content-Type": params.contentType } : {}),
-    ...(params?.accept ? { Accept: params.accept } : {}),
+    ...(params?.contentType ? { "content-type": params.contentType } : {}),
+    ...(params?.accept ? { accept: params.accept } : {}),
   };
 
   return {

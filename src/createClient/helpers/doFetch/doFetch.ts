@@ -19,8 +19,8 @@ export async function doFetch(
       headers: {
         ...(mimeType === "multipart/form-data" || mimeType === null
           ? {}
-          : { "Content-Type": mimeType }),
-        Accept: acceptHeader,
+          : { "content-type": mimeType }),
+        accept: acceptHeader,
       },
       method,
       ...(mimeType === null

@@ -17,7 +17,7 @@ export async function parseBodyAccordingToMimeType(
   | ErrorResult<"unsupported-mime-type", { mimeType: string | undefined }>
 > {
   const mimeType = (context.request
-    .getHeader("Content-Type")
+    .getHeader("content-type")
     ?.split(";")
     .at(0) ?? "text/plain") as MimeType;
 

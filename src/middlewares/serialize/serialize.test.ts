@@ -29,7 +29,7 @@ async function expectSerialization(
     body: givenBody,
     headers: {
       ...additionalGivenHeaders,
-      "Content-Type": expectedSupportedMimeType,
+      "content-type": expectedSupportedMimeType,
     },
     statusCode: 200,
     serializedBody: {

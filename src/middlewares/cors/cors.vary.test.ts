@@ -2,50 +2,50 @@ import { describe, it } from "vitest";
 import { runCorsTest } from "./helpers/testHelpers/runCorsTest";
 
 describe("cors", () => {
-  it("adds Vary header when multiple origins are configured", async () => {
+  it("adds vary header when multiple origins are configured", async () => {
     await runCorsTest(
       { origins: ["http://example.com", "http://foo.com"] },
       {},
       {
         headers: {
-          "Access-Control-Allow-Origin": "http://example.com",
-          Vary: "origin",
+          "access-control-allow-origin": "http://example.com",
+          vary: "origin",
         },
       }
     );
   });
 
-  it("doesn't add Vary header when only one origin is configured", async () => {
+  it("doesn't add vary header when only one origin is configured", async () => {
     await runCorsTest(
       { origins: ["http://example.com"] },
       {},
       {
         headers: {
-          "Access-Control-Allow-Origin": "http://example.com",
+          "access-control-allow-origin": "http://example.com",
         },
       }
     );
   });
 
-  it("add Vary header when wildcard origin is configured and allowCredentials is set to true", async () => {
+  it("add vary header when wildcard origin is configured and allowCredentials is set to true", async () => {
     await runCorsTest(
       { origins: "*", allowCredentials: true },
       {},
       {
         headers: {
-          "Access-Control-Allow-Origin": "http://example.com",
+          "access-control-allow-origin": "http://example.com",
           "Access-Control-Allow-Credentials": "true",
-          Vary: "origin",
+          vary: "origin",
         },
       }
     );
   });
 
-  it("doesn't add Vary header when wildcard origin is configured and allowCredentials is set to false", async () => {
+  it("doesn't add vary header when wildcard origin is configured and allowCredentials is set to false", async () => {
     await runCorsTest(
       { origins: "*" },
       {},
-      { headers: { "Access-Control-Allow-Origin": "*" } }
+      { headers: { "access-control-allow-origin": "*" } }
     );
   });
 });

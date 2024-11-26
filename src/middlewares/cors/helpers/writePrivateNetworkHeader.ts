@@ -8,6 +8,6 @@ export function writePrivateNetworkHeader(
 ): Record<string, string> {
   return params.allowPrivateNetwork &&
     context.request.getHeader("access-control-request-private-network") !== null
-    ? { "Access-Control-Allow-Private-Network": "true" }
+    ? { "access-control-allow-private-network": "true" }
     : {};
 }

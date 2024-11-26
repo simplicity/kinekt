@@ -35,10 +35,10 @@ export async function runMiddleware(
   const context = createTestContext({
     ...(params.isPreflight ? { method: "OPTIONS" as any } : {}), // TODO avoid any
     requestHeaders: {
-      "Access-Control-Request-Method": params.requestMethod ?? "PUT",
-      Origin: params.origin ?? "http://example.com",
+      "access-control-request-method": params.requestMethod ?? "PUT",
+      origin: params.origin ?? "http://example.com",
       ...(params.requestHeaders
-        ? { "Access-Control-Request-Headers": params.requestHeaders }
+        ? { "access-control-request-headers": params.requestHeaders }
         : {}),
     },
   });

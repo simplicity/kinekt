@@ -14,7 +14,7 @@ export function createHandleRequestParams(request?: {
 }): HandleRequestParamsWithoutRouteTree {
   const headers: Record<string, string> = {
     ...request?.headers,
-    ...(request?.contentType ? { "Content-Type": request?.contentType } : {}),
+    ...(request?.contentType ? { "content-type": request?.contentType } : {}),
   };
 
   return {

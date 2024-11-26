@@ -6,7 +6,7 @@ export function writeHeadersHeader(
   context: BasePipelineContext
 ): Record<string, string> {
   const requestedHeaders = context.request.getHeader(
-    "Access-Control-Request-Headers"
+    "access-control-request-headers"
   );
 
   if (requestedHeaders === null) {
@@ -14,7 +14,7 @@ export function writeHeadersHeader(
   }
 
   return {
-    "Access-Control-Allow-Headers":
+    "access-control-allow-headers":
       params.allowHeaders.type === "all"
         ? requestedHeaders
         : params.allowHeaders.headers,

@@ -5,7 +5,7 @@ export function writeOriginHeader(
   originHeader: string
 ): Record<string, string> {
   return {
-    "Access-Control-Allow-Origin":
+    "access-control-allow-origin":
       params.origins === "*" && params.allowCredentials === false
         ? "*"
         : originHeader,

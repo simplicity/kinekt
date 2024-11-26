@@ -11,9 +11,9 @@ async function runHeaderTest(
     { isPreflight: true, ...(requestHeaders ? { requestHeaders } : {}) },
     {
       headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,HEAD,POST,PUT,PATCH,DELETE",
-        ...(expected ? { "Access-Control-Allow-Headers": expected } : {}),
+        "access-control-allow-origin": "*",
+        "access-control-allow-methods": "GET,HEAD,POST,PUT,PATCH,DELETE",
+        ...(expected ? { "access-control-allow-headers": expected } : {}),
       },
     }
   );

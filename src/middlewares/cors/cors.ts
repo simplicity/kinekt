@@ -19,8 +19,7 @@ function handle(
   context: BasePipelineContext,
   params: NormalizedCorsParams
 ): BasePipelineContext {
-  // TODO how to deal with upper/lower case in headers?
-  const originHeader = context.request.getHeader("Origin");
+  const originHeader = context.request.getHeader("origin");
 
   if (!originHeader) {
     return context;

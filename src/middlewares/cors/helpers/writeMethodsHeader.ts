@@ -6,7 +6,7 @@ export function writeMethodsHeader(
   context: BasePipelineContext
 ): Record<string, string> {
   const requestedMethod = context.request.getHeader(
-    "Access-Control-Request-Method"
+    "access-control-request-method"
   );
 
   // TODO test this
@@ -15,7 +15,7 @@ export function writeMethodsHeader(
   }
 
   return {
-    "Access-Control-Allow-Methods":
+    "access-control-allow-methods":
       params.allowMethods.type === "all"
         ? requestedMethod
         : params.allowMethods.methods,
