@@ -4,7 +4,7 @@ import { runCorsTest } from "./helpers/testHelpers/runCorsTest";
 
 async function runMethodTest(
   allowMethods: "ALL" | Array<Method> | undefined,
-  requestMethod: Method,
+  requestMethod: Method | null,
   expected: string
 ) {
   await runCorsTest(
@@ -16,27 +16,28 @@ async function runMethodTest(
     {
       headers: {
         "access-control-allow-origin": "*",
-        "access-control-allow-methods": expected,
+        ...(requestMethod === null
+          ? {}
+          : { "access-control-allow-methods": expected }),
       },
     }
   );
 }
 
 describe("cors methods", () => {
-  it("allows methods by default", async () => {
+  it("lists all valid http method by default if no configuration is given", async () => {
     await runMethodTest(undefined, "PUT", "GET,HEAD,POST,PUT,PATCH,DELETE");
   });
 
-  it("allows methods if configured", async () => {
+  it("lists configured methods and defaults if configuration is given", async () => {
     await runMethodTest(["PUT", "PATCH"], "PUT", "GET,HEAD,POST,PUT,PATCH");
   });
 
-  it("doesn't allow methods if not configured", async () => {
-    await runMethodTest(["GET"], "PUT", "GET,HEAD,POST");
+  it("doesn't list anything if request header isn't sent", async () => {
+    await runMethodTest(["PUT", "PATCH"], null, "GET,HEAD,POST,PUT,PATCH");
   });
 
   it("allows all methods with allowMethods set to ALL", async () => {
-    // TODO is this really correct?
     await runMethodTest("ALL", "ANYMETHOD" as any, "ANYMETHOD");
   });
 });

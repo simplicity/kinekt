@@ -1,5 +1,6 @@
 import { expect } from "vitest";
 import { createTestContext } from "../../../../helpers/testHelpers/createTestContext";
+import { Method } from "../../../../helpers/types";
 import { cors } from "../../cors";
 import { CorsParams } from "../types";
 
@@ -21,7 +22,7 @@ function mirrorIgnoredHeader(
 type RunMiddlewareParams = {
   origin?: string;
   isPreflight?: boolean;
-  requestMethod?: string; // TODO type more specifically?
+  requestMethod?: Method | null;
   requestHeaders?: string;
 };
 
@@ -34,7 +35,9 @@ async function runMiddleware(
   const context = createTestContext({
     ...(params.isPreflight ? { method: "OPTIONS" as any } : {}), // TODO avoid any
     requestHeaders: {
-      "access-control-request-method": params.requestMethod ?? "PUT",
+      ...(params.requestMethod === null
+        ? {}
+        : { "access-control-request-method": params.requestMethod ?? "PUT" }),
       origin: params.origin ?? "http://example.com",
       ...(params.requestHeaders
         ? { "access-control-request-headers": params.requestHeaders }
