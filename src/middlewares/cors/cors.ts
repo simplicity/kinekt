@@ -39,7 +39,7 @@ function handle(
     ...writeOriginHeader(params, originHeader),
     ...writeVaryHeader(params),
     ...writeCredentialsHeader(params),
-    ...(isPreflight && writePrivateNetworkHeader(params, context)),
+    ...(isPreflight && writePrivateNetworkHeader(params)),
     ...(isPreflight && writeMethodsHeader(params, context)),
     ...(isPreflight && writeHeadersHeader(params, context)),
     ...(isPreflight && writeMaxAgeHeader(params)),

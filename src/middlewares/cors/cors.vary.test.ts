@@ -1,7 +1,7 @@
 import { describe, it } from "vitest";
 import { runCorsTest } from "./helpers/testHelpers/runCorsTest";
 
-describe("cors", () => {
+describe("cors vary", () => {
   it("adds vary header when multiple origins are configured", async () => {
     await runCorsTest(
       { origins: ["http://example.com", "http://foo.com"] },
