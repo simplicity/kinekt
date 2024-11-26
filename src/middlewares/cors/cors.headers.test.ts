@@ -3,32 +3,36 @@ import { runCorsTest } from "./helpers/testHelpers/runCorsTest";
 
 async function runHeaderTest(
   allowHeaders: string[] | "ALL" | undefined,
-  requestHeaders: string,
-  expected: string
+  requestHeaders: string | null,
+  expected: string | null
 ) {
   await runCorsTest(
     { origins: "*", allowHeaders },
-    { isPreflight: true, requestHeaders },
+    { isPreflight: true, ...(requestHeaders ? { requestHeaders } : {}) },
     {
       headers: {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "PUT,PATCH,DELETE,GET,HEAD,POST",
-        "Access-Control-Allow-Headers": expected,
+        "Access-Control-Allow-Methods": "GET,HEAD,POST,PUT,PATCH,DELETE",
+        ...(expected ? { "Access-Control-Allow-Headers": expected } : {}),
       },
     }
   );
 }
 
 describe("cors headers", () => {
-  it("allows headers if configured", async () => {
-    await runHeaderTest(["X-One", "X-Two"], "X-One, X-Two", "X-One,X-Two");
+  it("lists all the headers that have been configured regardless of the request header", async () => {
+    await runHeaderTest(
+      ["X-One", "X-Two", "X-Three"],
+      "X-One, X-Two, X-Four",
+      "X-One,X-Two,X-Three"
+    );
   });
 
-  it("doesn't allow headers if not configured", async () => {
-    await runHeaderTest(["X-One"], "X-One, X-Two", "X-One");
+  it("mirrors the request header when ALL is configured", async () => {
+    await runHeaderTest("ALL", "whatever", "whatever");
   });
 
-  it("allows all headers if allowHeaders is set to ALL", async () => {
-    await runHeaderTest("ALL", "X-One,X-Two", "X-One,X-Two");
+  it("doesn't list anything if request header isn't sent", async () => {
+    await runHeaderTest("ALL", null, null);
   });
 });

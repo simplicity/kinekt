@@ -19,7 +19,7 @@ async function runOriginTest(
     },
     {
       headers: {
-        "Access-Control-Allow-Methods": "PUT,PATCH,DELETE,GET,HEAD,POST",
+        "Access-Control-Allow-Methods": "GET,HEAD,POST,PUT,PATCH,DELETE",
         "Access-Control-Allow-Origin": expected,
         ...vary,
       },

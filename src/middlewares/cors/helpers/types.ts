@@ -16,7 +16,7 @@ export type CorsParams = {
 export type NormalizedCorsParams = {
   origins: Origin[] | "*";
   allowMethods: { type: "all" } | { type: "specific"; methods: string };
-  allowHeaders: string[] | "ALL";
+  allowHeaders: { type: "all" } | { type: "specific"; headers: string };
   allowCredentials: boolean;
   allowPrivateNetwork: boolean;
   exposeHeaders: string;

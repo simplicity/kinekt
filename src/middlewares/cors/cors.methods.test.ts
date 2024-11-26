@@ -24,11 +24,11 @@ async function runMethodTest(
 
 describe("cors methods", () => {
   it("allows methods by default", async () => {
-    await runMethodTest(undefined, "PUT", "PUT,PATCH,DELETE,GET,HEAD,POST");
+    await runMethodTest(undefined, "PUT", "GET,HEAD,POST,PUT,PATCH,DELETE");
   });
 
   it("allows methods if configured", async () => {
-    await runMethodTest(["PUT", "PATCH"], "PUT", "PUT,PATCH,GET,HEAD,POST");
+    await runMethodTest(["PUT", "PATCH"], "PUT", "GET,HEAD,POST,PUT,PATCH");
   });
 
   it("doesn't allow methods if not configured", async () => {

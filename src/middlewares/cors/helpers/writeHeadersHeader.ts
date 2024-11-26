@@ -5,7 +5,6 @@ export function writeHeadersHeader(
   params: NormalizedCorsParams,
   context: BasePipelineContext
 ): Record<string, string> {
-  // TODO what if this is not provided? -> it is actually optional
   const requestedHeaders = context.request.getHeader(
     "Access-Control-Request-Headers"
   );
@@ -16,16 +15,8 @@ export function writeHeadersHeader(
 
   return {
     "Access-Control-Allow-Headers":
-      params.allowHeaders === "ALL"
+      params.allowHeaders.type === "all"
         ? requestedHeaders
-        : requestedHeaders
-            .split(",")
-            .map(
-              (h) => h.trim()
-              // TODO here we'd have to deal with lower case too
-              // .toLowerCase()
-            )
-            .filter((header) => params.allowHeaders.includes(header))
-            .join(","),
+        : params.allowHeaders.headers,
   };
 }

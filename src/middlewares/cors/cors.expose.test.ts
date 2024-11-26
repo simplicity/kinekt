@@ -22,7 +22,7 @@ describe("cors", () => {
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "PUT,PATCH,DELETE,GET,HEAD,POST",
+          "Access-Control-Allow-Methods": "GET,HEAD,POST,PUT,PATCH,DELETE",
         },
       }
     );
