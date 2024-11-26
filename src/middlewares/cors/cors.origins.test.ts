@@ -1,5 +1,5 @@
 import { describe, it } from "vitest";
-import { runCorsTest } from "./helpers/testHelpers/runCorsTest";
+import { IGNORE_HEADER, runCorsTest } from "./helpers/testHelpers/runCorsTest";
 import { Origin } from "./helpers/types";
 
 async function runOriginTest(
@@ -7,10 +7,6 @@ async function runOriginTest(
   origin: string | undefined,
   expected: string
 ) {
-  // TODO maybe re-use the same code that is used in the implementation to determine this
-  const vary =
-    origins === "*" || origins.length === 1 ? undefined : { Vary: "origin" };
-
   await runCorsTest(
     { origins },
     {
@@ -21,7 +17,7 @@ async function runOriginTest(
       headers: {
         "Access-Control-Allow-Methods": "GET,HEAD,POST,PUT,PATCH,DELETE",
         "Access-Control-Allow-Origin": expected,
-        ...vary,
+        Vary: IGNORE_HEADER,
       },
     }
   );
@@ -32,7 +28,7 @@ async function runOriginTest(
     {
       headers: {
         "Access-Control-Allow-Origin": expected,
-        ...vary,
+        Vary: IGNORE_HEADER,
       },
     }
   );

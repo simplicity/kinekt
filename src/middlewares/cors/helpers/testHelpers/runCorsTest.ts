@@ -3,6 +3,21 @@ import { createTestContext } from "../../../../helpers/testHelpers/createTestCon
 import { cors } from "../../cors";
 import { CorsParams } from "../types";
 
+export const IGNORE_HEADER = "<ignore-header>";
+
+function mirrorIgnoredHeader(
+  source: Record<string, string>,
+  target: Record<string, string>
+) {
+  return Object.entries(target).reduce(
+    (acc, [key, value]) => ({
+      ...acc,
+      ...(value === IGNORE_HEADER ? { [key]: source[key] } : { [key]: value }),
+    }),
+    {} satisfies Record<string, string>
+  );
+}
+
 type RunMiddlewareParams = {
   origin?: string;
   isPreflight?: boolean;
@@ -42,6 +57,9 @@ export async function runCorsTest(
     type: "set",
     statusCode: 200,
     body: null,
-    headers: expectation.headers,
+    headers: mirrorIgnoredHeader(
+      result.response.type === "set" ? result.response.headers : {},
+      expectation.headers
+    ),
   });
 }
