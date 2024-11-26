@@ -17,6 +17,11 @@ export type BasePipelineContextResponseUnset = {
   type: "unset";
 };
 
+export type BasePipelineContextResponsePartiallySet = {
+  type: "partially-set";
+  headers: Record<string, string>;
+};
+
 export type BasePipelineContextResponseSet = {
   type: "set";
   statusCode: StatusCode;
@@ -26,6 +31,7 @@ export type BasePipelineContextResponseSet = {
 
 export type BasePipelineContextResponse =
   | BasePipelineContextResponseUnset
+  | BasePipelineContextResponsePartiallySet
   | BasePipelineContextResponseSet;
 
 export type BasePipelineContextError =

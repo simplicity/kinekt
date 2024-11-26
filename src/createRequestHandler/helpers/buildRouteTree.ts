@@ -9,6 +9,7 @@ import {
 } from "../../helpers/routeMatch";
 import type { Method } from "../../helpers/types";
 import { validMethods } from "../../helpers/validMethods";
+import { isCorsMetadata } from "../../middlewares/cors/cors";
 import { addPath } from "../../routeTree/addPath";
 import type { RouteTree } from "../../routeTree/helpers/types";
 
@@ -17,6 +18,21 @@ type RootPipelineRouteTree = RouteTree<
 >;
 
 export type PipelineRouteTree = Record<Method, RootPipelineRouteTree>;
+
+const root: RootPipelineRouteTree = {
+  segment: { type: "root" },
+  children: [],
+  items: [],
+};
+
+const startAcc: PipelineRouteTree = {
+  GET: root,
+  POST: root,
+  PATCH: root,
+  PUT: root,
+  DELETE: root,
+  OPTIONS: root,
+};
 
 function addForAllValidMethods(
   startAcc: PipelineRouteTree,
@@ -35,6 +51,7 @@ function addForAllValidMethods(
 function addForAllMatchers(
   startAcc: PipelineRouteTree,
   routeMatchMetadata: RouteMatchMetadata,
+  hasCors: boolean,
   pipeline: Pipeline<any, any>
 ) {
   return routeMatchMetadata.matchers.reduce((acc, matcher) => {
@@ -45,23 +62,12 @@ function addForAllMatchers(
       : {
           ...acc,
           [matcher.method]: addPath(parts, acc[matcher.method], pipeline),
+          ...(hasCors
+            ? { ["OPTIONS"]: addPath(parts, acc[matcher.method], pipeline) }
+            : {}),
         };
   }, startAcc);
 }
-
-const root: RootPipelineRouteTree = {
-  segment: { type: "root" },
-  children: [],
-  items: [],
-};
-
-const startAcc: PipelineRouteTree = {
-  GET: root,
-  POST: root,
-  PATCH: root,
-  PUT: root,
-  DELETE: root,
-};
 
 function addForAllPipelines(pipelines: Array<Pipeline<any, any>>) {
   return pipelines.reduce((acc, pipeline) => {
@@ -69,11 +75,18 @@ function addForAllPipelines(pipelines: Array<Pipeline<any, any>>) {
 
     const routeMatchMetadata = metadata.find(isRouteMatchMetadata);
 
+    const corsMetadata = metadata.find(isCorsMetadata);
+
     if (routeMatchMetadata === undefined) {
       abort("Pipeline without route match metadata found.");
     }
 
-    return addForAllMatchers(acc, routeMatchMetadata, pipeline);
+    return addForAllMatchers(
+      acc,
+      routeMatchMetadata,
+      corsMetadata !== undefined,
+      pipeline
+    );
   }, startAcc);
 }
 

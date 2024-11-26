@@ -28,8 +28,8 @@ export function createTestContext(
 ): BasePipelineContext {
   const headers: Record<string, string> = {
     ...params?.requestHeaders,
-    ...(params?.contentType ? { "Content-Type": params.contentType } : {}),
-    ...(params?.accept ? { Accept: params.accept } : {}),
+    ...(params?.contentType ? { "content-type": params.contentType } : {}),
+    ...(params?.accept ? { accept: params.accept } : {}),
   };
 
   return {
@@ -39,7 +39,7 @@ export function createTestContext(
       path: params?.path ?? "/",
       params: params?.params ?? {},
       query: params?.query ?? "",
-      getHeader: (name) => headers[name],
+      getHeader: (name) => headers[name] ?? null,
       readText: async () => params?.text ?? "",
       readFormData: async () => params?.formData ?? new FormData(),
     },

@@ -33,6 +33,7 @@ async function getBody<
   >
 ): Promise<SafeParseReturnType<any, any>> {
   switch (method) {
+    case "OPTIONS":
     case "GET": {
       return fakeSuccess;
     }

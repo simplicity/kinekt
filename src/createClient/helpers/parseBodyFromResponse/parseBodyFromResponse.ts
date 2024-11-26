@@ -9,7 +9,7 @@ export async function parseBodyFromResponse(
 ): Promise<
   Result<unknown, "body-parse-error", { text?: string; statusCode: StatusCode }>
 > {
-  const mimeType = response.headers.get("Content-Type")?.split(";").at(0) as
+  const mimeType = response.headers.get("content-type")?.split(";").at(0) as
     | MimeType
     | undefined;
 

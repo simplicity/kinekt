@@ -22,7 +22,7 @@ function handle(context: BasePipelineContext): CheckAcceptHeaderContext {
   }
 
   const requestedMimeTypes = context.request
-    .getHeader("Accept")
+    .getHeader("accept")
     ?.split(",")
     .map((item) => item.split(";").at(0))
     .filter(isDefined) ?? ["*/*" satisfies MimeType];

@@ -10,7 +10,7 @@ import type {
 import { serializeUnknown } from "./serializeUnknown";
 
 function handle(context: CheckAcceptHeaderContext): SerializeContext {
-  if (context.response.type === "unset") {
+  if (context.response.type !== "set") {
     return reply(context, {}, { type: "unset" });
   }
 
@@ -19,7 +19,7 @@ function handle(context: CheckAcceptHeaderContext): SerializeContext {
     case "application/json": {
       return reply(
         context,
-        { "Content-Type": "application/json" },
+        { "content-type": "application/json" },
         { type: "set", body: serializeJson(context.response.body) }
       );
     }
@@ -34,21 +34,21 @@ function handle(context: CheckAcceptHeaderContext): SerializeContext {
     case "text/html": {
       return reply(
         context,
-        { "Content-Type": "text/html" },
+        { "content-type": "text/html" },
         { type: "set", body: context.response.body }
       );
     }
     case "text/plain": {
       return reply(
         context,
-        { "Content-Type": "text/plain" },
+        { "content-type": "text/plain" },
         { type: "set", body: context.response.body }
       );
     }
     case null: {
       return reply(
         context,
-        { "Content-Type": "text/plain" },
+        { "content-type": "text/plain" },
         { type: "set", body: serializeUnknown(context.response.body) }
       );
     }
