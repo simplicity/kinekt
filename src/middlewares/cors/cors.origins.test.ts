@@ -1,6 +1,6 @@
 import { describe, it } from "vitest";
 import { IGNORE_HEADER, runCorsTest } from "./helpers/testHelpers/runCorsTest";
-import { CorsParams, Origin } from "./helpers/types";
+import { CorsParams } from "./helpers/types";
 
 async function runOriginTest(
   origins: CorsParams["origins"],
@@ -9,10 +9,7 @@ async function runOriginTest(
 ) {
   await runCorsTest(
     { origins },
-    {
-      isPreflight: true,
-      ...(origin ? { origin } : {}),
-    },
+    { isPreflight: true, ...(origin ? { origin } : {}) },
     {
       headers: {
         "access-control-allow-methods": "GET,HEAD,POST,PUT,PATCH,DELETE",

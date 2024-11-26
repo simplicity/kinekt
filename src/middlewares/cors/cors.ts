@@ -46,7 +46,6 @@ function handle(
     ...(!isPreflight && writeExposeHeadersHeader(params)),
   };
 
-  // TODO add tests for non-preflights
   return reply(context, headers);
 }
 

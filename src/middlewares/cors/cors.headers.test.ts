@@ -17,6 +17,12 @@ async function runHeaderTest(
       },
     }
   );
+
+  await runCorsTest(
+    { allowHeaders },
+    { ...(requestHeaders ? { requestHeaders } : {}) },
+    { headers: { "access-control-allow-origin": "*" } }
+  );
 }
 
 describe("cors headers", () => {
