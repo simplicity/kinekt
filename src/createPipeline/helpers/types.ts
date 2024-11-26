@@ -13,7 +13,6 @@ export type BasePipelineContextRequest = {
   readFormData: () => Promise<FormData>;
 };
 
-// TODO can't we just abandon this?
 export type BasePipelineContextResponseUnset = {
   type: "unset";
 };
