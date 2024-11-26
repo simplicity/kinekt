@@ -25,8 +25,7 @@ type RunMiddlewareParams = {
   requestHeaders?: string;
 };
 
-// TODO dont export
-export async function runMiddleware(
+async function runMiddleware(
   corsParams: CorsParams,
   params: RunMiddlewareParams
 ) {
