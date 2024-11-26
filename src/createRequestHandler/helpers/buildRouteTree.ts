@@ -18,6 +18,21 @@ type RootPipelineRouteTree = RouteTree<
 
 export type PipelineRouteTree = Record<Method, RootPipelineRouteTree>;
 
+const root: RootPipelineRouteTree = {
+  segment: { type: "root" },
+  children: [],
+  items: [],
+};
+
+const startAcc: PipelineRouteTree = {
+  GET: root,
+  POST: root,
+  PATCH: root,
+  PUT: root,
+  DELETE: root,
+  OPTIONS: root, // TODO how do we route these?
+};
+
 function addForAllValidMethods(
   startAcc: PipelineRouteTree,
   parts: Array<string>,
@@ -48,21 +63,6 @@ function addForAllMatchers(
         };
   }, startAcc);
 }
-
-const root: RootPipelineRouteTree = {
-  segment: { type: "root" },
-  children: [],
-  items: [],
-};
-
-const startAcc: PipelineRouteTree = {
-  GET: root,
-  POST: root,
-  PATCH: root,
-  PUT: root,
-  DELETE: root,
-  OPTIONS: root, // TODO how do we route these?
-};
 
 function addForAllPipelines(pipelines: Array<Pipeline<any, any>>) {
   return pipelines.reduce((acc, pipeline) => {
