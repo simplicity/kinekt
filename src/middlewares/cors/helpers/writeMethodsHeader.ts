@@ -9,7 +9,6 @@ export function writeMethodsHeader(
     "access-control-request-method"
   );
 
-  // TODO test this
   if (requestedMethod === null) {
     return {};
   }

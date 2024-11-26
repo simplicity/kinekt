@@ -5,7 +5,7 @@ import { runCorsTest } from "./helpers/testHelpers/runCorsTest";
 async function runMethodTest(
   allowMethods: "ALL" | Array<Method> | undefined,
   requestMethod: Method | null,
-  expected: string
+  expected: string | null
 ) {
   await runCorsTest(
     { origins: "*", ...(allowMethods ? { allowMethods } : {}) },
@@ -16,7 +16,7 @@ async function runMethodTest(
     {
       headers: {
         "access-control-allow-origin": "*",
-        ...(requestMethod === null
+        ...(expected === null
           ? {}
           : { "access-control-allow-methods": expected }),
       },
@@ -34,7 +34,7 @@ describe("cors methods", () => {
   });
 
   it("doesn't list anything if request header isn't sent", async () => {
-    await runMethodTest(["PUT", "PATCH"], null, "GET,HEAD,POST,PUT,PATCH");
+    await runMethodTest(["PUT", "PATCH"], null, null);
   });
 
   it("allows all methods with allowMethods set to ALL", async () => {
