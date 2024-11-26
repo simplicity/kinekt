@@ -10,8 +10,6 @@ import { checkAcceptHeader } from "../checkAcceptHeader/checkAcceptHeader";
 import { deserialize } from "../deserialize/deserialize";
 import { cors } from "./cors";
 
-// TODO test that headers are merged
-
 async function expectRouted(
   path: string,
   method: Method,
@@ -76,8 +74,6 @@ describe("cors", () => {
     });
 
     const result = await cors({ origins: ["http://example.com"] })(context);
-
-    // TODO also test merging of response headers?
 
     expect(result.response).toEqual({
       type: "set",
