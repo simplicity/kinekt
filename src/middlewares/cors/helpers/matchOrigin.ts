@@ -1,16 +1,16 @@
 import { Origin } from "./types";
 
 export function matchOrigin(
-  requestOrigin: string | undefined,
+  requestOrigin: string,
   allowedOrigins: Origin[] | "*"
 ): boolean {
-  if (allowedOrigins === "*") return true;
-  if (!requestOrigin) return false;
+  if (allowedOrigins === "*") {
+    return true;
+  }
 
-  return allowedOrigins.some((origin) => {
-    if (typeof origin === "string") return origin === requestOrigin;
-    if (origin instanceof RegExp) return origin.test(requestOrigin);
-    if (typeof origin === "function") return origin(requestOrigin);
-    return false;
-  });
+  return allowedOrigins.some(
+    (origin) =>
+      (typeof origin === "string" && origin === requestOrigin) ||
+      (origin instanceof RegExp && origin.test(requestOrigin))
+  );
 }

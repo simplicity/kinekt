@@ -40,9 +40,9 @@ function handle(
   if (!matchOrigin(originHeader, params.origins)) {
     if (isPreflight) {
       return reply(context, {}, isPreflight);
+    } else {
+      return context;
     }
-
-    return context;
   }
 
   const headers: Record<string, string> = {

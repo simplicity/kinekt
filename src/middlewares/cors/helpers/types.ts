@@ -1,7 +1,4 @@
-export type Origin =
-  | string
-  | RegExp
-  | ((origin: string | undefined) => boolean);
+export type Origin = string | RegExp;
 
 export type CorsParams = {
   origins: Origin[] | "*";
