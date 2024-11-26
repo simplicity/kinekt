@@ -38,7 +38,10 @@ async function expectRouted(
     createHandleRequestParams({
       path,
       method,
-      headers: { origin: "http://example.com" },
+      headers: {
+        origin: "http://example.com",
+        "access-control-request-method": "GET",
+      },
     })
   );
 
@@ -104,7 +107,6 @@ describe("cors", () => {
       headers: {
         "access-control-allow-origin": "*",
         "access-control-allow-methods": "GET,HEAD,POST,PUT,PATCH,DELETE",
-        "access-control-allow-headers": "", // TODO is this correct?
       },
     });
   });

@@ -22,7 +22,7 @@ export function createHandleRequestParams(request?: {
     fullUrl: request?.fullUrl ?? "/",
     path: request?.path ?? "/",
     query: request?.query ?? "",
-    getHeader: (name) => headers[name],
+    getHeader: (name) => headers[name] ?? null,
     readText: async () => request?.text ?? "",
     readFormData: async () => request?.formData ?? new FormData(),
   };
