@@ -31,7 +31,7 @@ const startAcc: PipelineRouteTree = {
   PATCH: root,
   PUT: root,
   DELETE: root,
-  OPTIONS: root, // TODO how do we route these?
+  OPTIONS: root,
 };
 
 function addForAllValidMethods(
@@ -63,8 +63,7 @@ function addForAllMatchers(
           ...acc,
           [matcher.method]: addPath(parts, acc[matcher.method], pipeline),
           ...(hasCors
-            ? // TODO test this? -> implicitly tested
-              { ["OPTIONS"]: addPath(parts, acc[matcher.method], pipeline) }
+            ? { ["OPTIONS"]: addPath(parts, acc[matcher.method], pipeline) }
             : {}),
         };
   }, startAcc);
