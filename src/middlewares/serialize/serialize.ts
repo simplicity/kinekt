@@ -10,7 +10,7 @@ import type {
 import { serializeUnknown } from "./serializeUnknown";
 
 function handle(context: CheckAcceptHeaderContext): SerializeContext {
-  if (context.response.type === "unset") {
+  if (context.response.type !== "set") {
     return reply(context, {}, { type: "unset" });
   }
 

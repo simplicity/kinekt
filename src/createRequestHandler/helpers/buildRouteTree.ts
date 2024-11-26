@@ -9,6 +9,7 @@ import {
 } from "../../helpers/routeMatch";
 import type { Method } from "../../helpers/types";
 import { validMethods } from "../../helpers/validMethods";
+import { isCorsMetadata } from "../../middlewares/cors/cors";
 import { addPath } from "../../routeTree/addPath";
 import type { RouteTree } from "../../routeTree/helpers/types";
 
@@ -50,6 +51,7 @@ function addForAllValidMethods(
 function addForAllMatchers(
   startAcc: PipelineRouteTree,
   routeMatchMetadata: RouteMatchMetadata,
+  hasCors: boolean,
   pipeline: Pipeline<any, any>
 ) {
   return routeMatchMetadata.matchers.reduce((acc, matcher) => {
@@ -60,6 +62,10 @@ function addForAllMatchers(
       : {
           ...acc,
           [matcher.method]: addPath(parts, acc[matcher.method], pipeline),
+          ...(hasCors
+            ? // TODO test this? -> implicitly tested
+              { ["OPTIONS"]: addPath(parts, acc[matcher.method], pipeline) }
+            : {}),
         };
   }, startAcc);
 }
@@ -70,11 +76,18 @@ function addForAllPipelines(pipelines: Array<Pipeline<any, any>>) {
 
     const routeMatchMetadata = metadata.find(isRouteMatchMetadata);
 
+    const corsMetadata = metadata.find(isCorsMetadata);
+
     if (routeMatchMetadata === undefined) {
       abort("Pipeline without route match metadata found.");
     }
 
-    return addForAllMatchers(acc, routeMatchMetadata, pipeline);
+    return addForAllMatchers(
+      acc,
+      routeMatchMetadata,
+      corsMetadata !== undefined,
+      pipeline
+    );
   }, startAcc);
 }
 

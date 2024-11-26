@@ -13,8 +13,14 @@ export type BasePipelineContextRequest = {
   readFormData: () => Promise<FormData>;
 };
 
+// TODO can't we just abandon this?
 export type BasePipelineContextResponseUnset = {
   type: "unset";
+};
+
+export type BasePipelineContextResponsePartiallySet = {
+  type: "partially-set";
+  headers: Record<string, string>;
 };
 
 export type BasePipelineContextResponseSet = {
@@ -26,6 +32,7 @@ export type BasePipelineContextResponseSet = {
 
 export type BasePipelineContextResponse =
   | BasePipelineContextResponseUnset
+  | BasePipelineContextResponsePartiallySet
   | BasePipelineContextResponseSet;
 
 export type BasePipelineContextError =

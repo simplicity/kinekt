@@ -62,11 +62,11 @@ export async function runCorsTest(
   );
 
   expect(result.response).toEqual({
-    type: "set",
-    statusCode: 200,
-    body: null,
+    ...(params.isPreflight
+      ? { type: "set", statusCode: 200, body: null }
+      : { type: "partially-set" }),
     headers: mirrorIgnoredHeader(
-      result.response.type === "set" ? result.response.headers : {},
+      result.response.type !== "unset" ? result.response.headers : {},
       expectation.headers
     ),
   });

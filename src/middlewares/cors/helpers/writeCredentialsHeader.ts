@@ -4,6 +4,6 @@ export function writeCredentialsHeader(
   params: NormalizedCorsParams
 ): Record<string, string> {
   return params.allowCredentials
-    ? { "Access-Control-Allow-Credentials": "true" }
+    ? { "access-control-allow-credentials": "true" }
     : {};
 }

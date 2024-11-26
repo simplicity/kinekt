@@ -20,15 +20,15 @@ async function runAllowCredentialsTest(
 }
 
 describe("cors allow-credentials", () => {
-  it("sets Access-Control-Allow-Credentials when allowCredentials is true, and also sets the vary header", async () => {
+  it("sets access-control-allow-credentials when allowCredentials is true, and also sets the vary header", async () => {
     await runAllowCredentialsTest(true, {
       "access-control-allow-origin": "http://example.com",
-      "Access-Control-Allow-Credentials": "true",
+      "access-control-allow-credentials": "true",
       vary: "origin",
     });
   });
 
-  it("does not set Access-Control-Allow-Credentials when allowCredentials is false, and doesn't set the vary header", async () => {
+  it("does not set access-control-allow-credentials when allowCredentials is false, and doesn't set the vary header", async () => {
     await runAllowCredentialsTest(false, {
       "access-control-allow-origin": "*",
     });

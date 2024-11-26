@@ -15,6 +15,16 @@ import { writeOriginHeader } from "./helpers/writeOriginHeader";
 import { writePrivateNetworkHeader } from "./helpers/writePrivateNetworkHeader";
 import { writeVaryHeader } from "./helpers/writeVaryHeader";
 
+export type CorsMetadata = { type: "cors-metadata" };
+
+export function isCorsMetadata(metadata: unknown): metadata is CorsMetadata {
+  return (metadata as CorsMetadata)?.type === "cors-metadata";
+}
+
+export function corsMetadata(): CorsMetadata {
+  return { type: "cors-metadata" };
+}
+
 function handle(
   context: BasePipelineContext,
   params: NormalizedCorsParams
@@ -29,7 +39,7 @@ function handle(
 
   if (!matchOrigin(originHeader, params.origins)) {
     if (isPreflight) {
-      return reply(context, {});
+      return reply(context, {}, isPreflight);
     }
 
     return context;
@@ -46,7 +56,7 @@ function handle(
     ...(!isPreflight && writeExposeHeadersHeader(params)),
   };
 
-  return reply(context, headers);
+  return reply(context, headers, isPreflight);
 }
 
 export const cors = <In extends BasePipelineContext, Out extends In>(
@@ -56,6 +66,8 @@ export const cors = <In extends BasePipelineContext, Out extends In>(
 
   const middleware: Middleware<In, Out> = async (context) =>
     handle(context, normalizedCorsParams) as Out;
+
+  middleware.collectMetadata = () => [corsMetadata()];
 
   return middleware;
 };

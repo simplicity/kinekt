@@ -1,6 +1,5 @@
 import type {
   BasePipelineContext,
-  BasePipelineContextResponse,
   BasePipelineContextResponseSet,
   Middleware,
 } from "../../createPipeline/helpers/types";
@@ -28,9 +27,18 @@ export type BasicEndpointParams<
 
 function reply(
   context: BasePipelineContext,
-  response: BasePipelineContextResponse
+  response: BasePipelineContextResponseSet
 ): BasePipelineContext {
-  return { ...context, response };
+  return {
+    ...context,
+    response: {
+      ...response,
+      headers: {
+        ...(context.response.type !== "unset" ? context.response.headers : {}),
+        ...response.headers,
+      },
+    },
+  };
 }
 
 export const basicEndpoint = <

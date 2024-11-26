@@ -13,7 +13,7 @@ function handle(context: SerializeContext): FinalizeContext {
     });
   }
 
-  if (context.response.type === "unset") {
+  if (context.response.type !== "set") {
     return reply(context, {
       type: "no-response-set",
       body: "No response set.",
