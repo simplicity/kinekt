@@ -29,7 +29,7 @@ describe("cors vary", () => {
 
   it("add vary header when wildcard origin is configured and allowCredentials is set to true", async () => {
     await runCorsTest(
-      { origins: "*", allowCredentials: true },
+      { allowCredentials: true },
       {},
       {
         headers: {
@@ -43,7 +43,7 @@ describe("cors vary", () => {
 
   it("doesn't add vary header when wildcard origin is configured and allowCredentials is set to false", async () => {
     await runCorsTest(
-      { origins: "*" },
+      {},
       {},
       { headers: { "access-control-allow-origin": "*" } }
     );

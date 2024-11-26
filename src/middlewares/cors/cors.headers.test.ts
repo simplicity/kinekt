@@ -7,7 +7,7 @@ async function runHeaderTest(
   expected: string | null
 ) {
   await runCorsTest(
-    { origins: "*", allowHeaders },
+    { allowHeaders },
     { isPreflight: true, ...(requestHeaders ? { requestHeaders } : {}) },
     {
       headers: {

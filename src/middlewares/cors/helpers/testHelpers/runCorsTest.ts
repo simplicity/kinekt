@@ -49,11 +49,17 @@ async function runMiddleware(
 }
 
 export async function runCorsTest(
-  corsParams: CorsParams,
+  corsParams: Omit<CorsParams, "origins"> & { origins?: CorsParams["origins"] },
   params: RunMiddlewareParams,
   expectation: { headers: Record<string, string> }
 ) {
-  const result = await runMiddleware(corsParams, params);
+  const result = await runMiddleware(
+    {
+      origins: "*",
+      ...corsParams,
+    },
+    params
+  );
 
   expect(result.response).toEqual({
     type: "set",

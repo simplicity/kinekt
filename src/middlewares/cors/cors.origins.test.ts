@@ -1,9 +1,9 @@
 import { describe, it } from "vitest";
 import { IGNORE_HEADER, runCorsTest } from "./helpers/testHelpers/runCorsTest";
-import { Origin } from "./helpers/types";
+import { CorsParams, Origin } from "./helpers/types";
 
 async function runOriginTest(
-  origins: Origin[] | "*",
+  origins: CorsParams["origins"],
   origin: string | undefined,
   expected: string
 ) {

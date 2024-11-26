@@ -4,7 +4,7 @@ import { runCorsTest } from "./helpers/testHelpers/runCorsTest";
 describe("cors", () => {
   it("sets Access-Control-Expose-Headers", async () => {
     await runCorsTest(
-      { origins: "*", exposeHeaders: ["X-One", "X-Two"] },
+      { exposeHeaders: ["X-One", "X-Two"] },
       {},
       {
         headers: {
@@ -17,7 +17,7 @@ describe("cors", () => {
 
   it("does not set Access-Control-Expose-Headers in preflight response", async () => {
     await runCorsTest(
-      { origins: "*", exposeHeaders: ["X-One", "X-Two"] },
+      { exposeHeaders: ["X-One", "X-Two"] },
       { isPreflight: true },
       {
         headers: {

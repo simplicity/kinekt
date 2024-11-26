@@ -8,7 +8,7 @@ async function runMethodTest(
   expected: string | null
 ) {
   await runCorsTest(
-    { origins: "*", ...(allowMethods ? { allowMethods } : {}) },
+    { ...(allowMethods ? { allowMethods } : {}) },
     {
       isPreflight: true,
       requestMethod,

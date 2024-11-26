@@ -4,8 +4,7 @@ import { runCorsTest } from "./helpers/testHelpers/runCorsTest";
 describe("cors private-network", () => {
   it("adds private-network header if configured", async () => {
     await runCorsTest(
-      // TODO make origins optional for runCorsTest
-      { origins: "*", allowPrivateNetwork: true },
+      { allowPrivateNetwork: true },
       { isPreflight: true },
       {
         headers: {
@@ -19,8 +18,7 @@ describe("cors private-network", () => {
 
   it("doesn't add private-network header if not configured", async () => {
     await runCorsTest(
-      // TODO make origins optional for runCorsTest
-      { origins: "*", allowPrivateNetwork: false },
+      { allowPrivateNetwork: false },
       { isPreflight: true },
       {
         headers: {
