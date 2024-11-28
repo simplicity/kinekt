@@ -14,7 +14,6 @@ import {
 } from "./helpers/types";
 
 function handle(context: BasePipelineContext): CheckAcceptHeaderContext {
-  // TODO test
   if (context.response.type === "set") {
     return reply(context, null, null);
   }

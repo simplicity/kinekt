@@ -178,4 +178,17 @@ describe("validatedEndpoint ", () => {
       headers: { "Some-Header": "some value" },
     });
   });
+
+  it("doesn't set a response if response is already set", async () => {
+    const mw = validatedEndpoint(
+      { endpointDeclaration: "GET /", response: { 200: z.void() } },
+      async () => ({ statusCode: 200, body: undefined })
+    );
+    const context = createCustomTestContext({
+      response: { type: "set", body: null, headers: {}, statusCode: 200 },
+      deserializedBody: { type: "set", body: "some body" },
+    });
+    const result = await mw(context);
+    expect(result.response).toBe(context.response);
+  });
 });

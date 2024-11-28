@@ -13,7 +13,6 @@ import {
 async function handle(
   context: BasePipelineContext
 ): Promise<DeserializeContext> {
-  // TODO test
   if (context.response.type === "set") {
     return reply(context, null, { type: "set", body: null });
   }

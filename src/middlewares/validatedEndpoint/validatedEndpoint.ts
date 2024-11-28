@@ -56,7 +56,6 @@ export const validatedEndpoint = <
     context
   ) => {
     if (context.response.type === "set") {
-      // TODO test
       return context;
     }
 
