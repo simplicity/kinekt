@@ -6,4 +6,5 @@ export const validMethods: Array<Method> = [
   "PUT",
   "PATCH",
   "DELETE",
+  "OPTIONS",
 ];

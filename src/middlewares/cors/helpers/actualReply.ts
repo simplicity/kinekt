@@ -1,22 +1,9 @@
 import { BasePipelineContext } from "../../../createPipeline/helpers/types";
 
-export function reply(
+export function actualReply(
   context: BasePipelineContext,
-  headers: Record<string, string>,
-  isPreflight: boolean
+  headers: Record<string, string>
 ): BasePipelineContext {
-  if (isPreflight) {
-    return {
-      ...context,
-      response: {
-        type: "set",
-        statusCode: 200,
-        body: null,
-        headers,
-      },
-    };
-  }
-
   return {
     ...context,
     response: {
