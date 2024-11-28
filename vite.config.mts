@@ -9,7 +9,7 @@ export default defineConfig({
       fileName: "main",
     },
     rollupOptions: {
-      external: ["http"],
+      external: ["zod", "http"],
     },
 
     // TODO make configurable - or should it be the default?
