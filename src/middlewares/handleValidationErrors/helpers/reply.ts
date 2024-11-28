@@ -11,7 +11,8 @@ export function reply(
       type: "set",
       statusCode: handlerResult.statusCode,
       body: handlerResult.body,
-      headers: context.response.type === "set" ? context.response.headers : {},
+      headers:
+        context.response.type !== "unset" ? context.response.headers : {},
     },
   };
 }

@@ -14,6 +14,8 @@ const defaultValidationErrorHandler = (validationErrors: ValidationErrors) => ({
   body: validationErrors,
 });
 
+// TODO add integration tests for cors mw
+
 export const testPipeline = createValidatedEndpointFactory(
   createPipeline(
     checkAcceptHeader(),

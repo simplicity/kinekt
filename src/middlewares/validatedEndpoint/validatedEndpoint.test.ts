@@ -55,7 +55,7 @@ async function expectValitationResults(
   expect(result.validationErrors).toEqual(expectedValidationErrors);
 }
 
-describe("deserialize ", () => {
+describe("validatedEndpoint ", () => {
   it("takes and returns data as described", async () => {
     const mw = validatedEndpoint(
       {
@@ -165,9 +165,7 @@ describe("deserialize ", () => {
         method: "POST",
         deserializedBody: { type: "set", body: undefined },
         response: {
-          type: "set",
-          body: null,
-          statusCode: 500,
+          type: "partially-set",
           headers: { "Some-Header": "some value" },
         },
       })
@@ -179,5 +177,18 @@ describe("deserialize ", () => {
       body: undefined,
       headers: { "Some-Header": "some value" },
     });
+  });
+
+  it("doesn't set a response if response is already set", async () => {
+    const mw = validatedEndpoint(
+      { endpointDeclaration: "GET /", response: { 200: z.void() } },
+      async () => ({ statusCode: 200, body: undefined })
+    );
+    const context = createCustomTestContext({
+      response: { type: "set", body: null, headers: {}, statusCode: 200 },
+      deserializedBody: { type: "set", body: "some body" },
+    });
+    const result = await mw(context);
+    expect(result.response).toBe(context.response);
   });
 });

@@ -140,9 +140,7 @@ describe("deserialize ", () => {
         method: "POST",
         contentType: "unsupported" as any,
         response: {
-          type: "set",
-          body: null,
-          statusCode: 500,
+          type: "partially-set",
           headers: { "Some-Header": "some value" },
         },
       })
@@ -159,5 +157,15 @@ describe("deserialize ", () => {
       },
       headers: { "Some-Header": "some value" },
     });
+  });
+
+  it("doesn't set a response if response is already set", async () => {
+    const context = createTestContext({
+      method: "POST",
+      contentType: "unsupported" as any,
+      response: { type: "set", body: null, headers: {}, statusCode: 200 },
+    });
+    const result = await mw(context);
+    expect(result.response).toBe(context.response);
   });
 });

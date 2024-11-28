@@ -9,6 +9,9 @@ export type CreateResponse<T, Arg = void> = (
   arg: Arg
 ) => T;
 
+const noRouteFoundError = "No route found to serve request.";
+const notFinalizedError = "Pipeline was not finalized.";
+
 export function postProcess<T, Arg>(
   result: HandleRequestResult,
   createResponse: CreateResponse<T, Arg>,
@@ -18,12 +21,8 @@ export function postProcess<T, Arg>(
   if (result.type === "error") {
     switch (result.code) {
       case "no-route-found": {
-        return createResponse(
-          "No route found to serve request.",
-          500,
-          undefined,
-          arg
-        );
+        logger.error(noRouteFoundError);
+        return createResponse(noRouteFoundError, 500, undefined, arg);
       }
     }
   }
@@ -33,7 +32,8 @@ export function postProcess<T, Arg>(
   }
 
   if (!isFinalized(result.value)) {
-    return createResponse("Pipeline was not finalized.", 500, undefined, arg);
+    logger.error(notFinalizedError);
+    return createResponse(notFinalizedError, 500, undefined, arg);
   }
 
   return createResponse(

@@ -30,14 +30,27 @@ function createCustomTestContext(
 }
 
 describe("handleValidationErrors ", () => {
-  it("sets serialized body to not ready if response is unset", async () => {
+  it("uses the provided callback to set a response", async () => {
+    const result = await mw(
+      createCustomTestContext({
+        validationErrors: [{ message: "some message" }],
+      })
+    );
+
+    expect(result.response).toEqual({
+      type: "set",
+      statusCode: 400,
+      body: [{ message: "some message" }],
+      headers: {},
+    });
+  });
+
+  it("merges response headers", async () => {
     const result = await mw(
       createCustomTestContext({
         validationErrors: [{ message: "some message" }],
         response: {
-          type: "set",
-          body: null,
-          statusCode: 500,
+          type: "partially-set",
           headers: { "Some-Header": "some value" },
         },
       })
@@ -49,5 +62,14 @@ describe("handleValidationErrors ", () => {
       body: [{ message: "some message" }],
       headers: { "Some-Header": "some value" },
     });
+  });
+
+  it("doesn't set a response if response is already set", async () => {
+    const context = createCustomTestContext({
+      validationErrors: [],
+      response: { type: "set", body: null, headers: {}, statusCode: 200 },
+    });
+    const result = await mw(context);
+    expect(result.response).toBe(context.response);
   });
 });

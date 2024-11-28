@@ -1,6 +1,7 @@
 import type {
   BasePipelineContext,
   BasePipelineContextError,
+  BasePipelineContextResponsePartiallySet,
   BasePipelineContextResponseSet,
   PipelineMetadata,
 } from "../../createPipeline/helpers/types";
@@ -18,7 +19,9 @@ export type CreateTestContextParams = {
   contentType?: MimeType;
   accept?: MimeType;
   formData?: FormData;
-  response?: BasePipelineContextResponseSet;
+  response?:
+    | BasePipelineContextResponseSet
+    | BasePipelineContextResponsePartiallySet;
   error?: BasePipelineContextError;
   metadata?: PipelineMetadata;
 };

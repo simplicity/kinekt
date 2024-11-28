@@ -14,6 +14,10 @@ import {
 } from "./helpers/types";
 
 function handle(context: BasePipelineContext): CheckAcceptHeaderContext {
+  if (context.response.type === "set") {
+    return reply(context, null, null);
+  }
+
   const supportedMimeTypes =
     context.metadata.find(isCheckAcceptHeaderMetadata)?.mimeTypes ?? [];
 

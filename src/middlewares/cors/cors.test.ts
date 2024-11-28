@@ -44,7 +44,6 @@ async function expectRouted(
   );
 
   if (result.type === "error") {
-    console.log(result);
     throw new Error('Unexpected: result.type === "error"');
   }
 
@@ -52,9 +51,21 @@ async function expectRouted(
 }
 
 describe("cors", () => {
-  it("does nothing if origin header isn't set", async () => {
+  it("does nothing if origin header isn't set and it isn't a preflight request", async () => {
     const context = createTestContext();
     expect(await cors({ origins: "*" })(context)).toEqual(context);
+  });
+
+  it("sets a response if origin header isn't set and it is a preflight request", async () => {
+    const context = createTestContext({ method: "OPTIONS" });
+    const result = await cors({ origins: "*" })(context);
+
+    expect(result.response).toEqual({
+      type: "set",
+      body: null,
+      statusCode: 200,
+      headers: {},
+    });
   });
 
   it("does nothing if origin doesn't match and request isn't a preflight", async () => {

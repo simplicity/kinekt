@@ -75,9 +75,7 @@ describe("checkAcceptHeader ", () => {
       createCustomTestContext({
         accept: "text/html",
         response: {
-          type: "set",
-          body: null,
-          statusCode: 500,
+          type: "partially-set",
           headers: { "Some-Header": "some value" },
         },
       })
@@ -93,5 +91,14 @@ describe("checkAcceptHeader ", () => {
       headers: { "Some-Header": "some value" },
       statusCode: 406,
     });
+  });
+
+  it("doesn't set a response if response is already set", async () => {
+    const context = createCustomTestContext({
+      accept: "text/html",
+      response: { type: "set", body: null, headers: {}, statusCode: 200 },
+    });
+    const result = await mw(context);
+    expect(result.response).toBe(context.response);
   });
 });

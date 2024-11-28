@@ -2,9 +2,10 @@ import {
   BasePipelineContext,
   Middleware,
 } from "../../createPipeline/helpers/types";
+import { actualReply } from "./helpers/actualReply";
 import { matchOrigin } from "./helpers/matchOrigin";
 import { normalizeParams } from "./helpers/normalizeParams";
-import { reply } from "./helpers/reply";
+import { preflightReply } from "./helpers/preflightReply";
 import { CorsParams, NormalizedCorsParams } from "./helpers/types";
 import { writeCredentialsHeader } from "./helpers/writeCredentialsHeader";
 import { writeExposeHeadersHeader } from "./helpers/writeExposeHeadersHeader";
@@ -29,20 +30,20 @@ function handle(
   context: BasePipelineContext,
   params: NormalizedCorsParams
 ): BasePipelineContext {
-  const originHeader = context.request.getHeader("origin");
-
-  if (!originHeader) {
+  if (context.response.type === "set") {
     return context;
   }
 
   const isPreflight = context.request.method === "OPTIONS";
 
+  const originHeader = context.request.getHeader("origin");
+
+  if (originHeader === null) {
+    return isPreflight ? preflightReply(context, {}) : context;
+  }
+
   if (!matchOrigin(originHeader, params.origins)) {
-    if (isPreflight) {
-      return reply(context, {}, isPreflight);
-    } else {
-      return context;
-    }
+    return isPreflight ? preflightReply(context, {}) : context;
   }
 
   const headers: Record<string, string> = {
@@ -56,7 +57,9 @@ function handle(
     ...(!isPreflight && writeExposeHeadersHeader(params)),
   };
 
-  return reply(context, headers, isPreflight);
+  return isPreflight
+    ? preflightReply(context, headers)
+    : actualReply(context, headers);
 }
 
 export const cors = <In extends BasePipelineContext, Out extends In>(

@@ -15,10 +15,10 @@ export function reply(
     ...(response
       ? {
           response: {
-            ...(context.response.type === "set" ? context.response : {}),
+            ...(context.response.type !== "unset" ? context.response : {}),
             ...response,
             headers: {
-              ...(context.response.type === "set"
+              ...(context.response.type !== "unset"
                 ? context.response.headers
                 : {}),
               ...response.headers,
