@@ -11,5 +11,9 @@ export default defineConfig({
     rollupOptions: {
       external: ["http"],
     },
+
+    // TODO make configurable - or should it be the default?
+    minify: false,
+    sourcemap: true,
   },
 });
