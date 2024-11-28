@@ -23,7 +23,7 @@ const testEndpoint = createTestPipeline({
 
 export const handleRequest = createRequestHandler([testEndpoint]);
 
-// TODO add more tests. also test the cors stuff
+// TODO add more tests
 
 describe("createRequestHandler ", () => {
   it("handles GET requests", async () => {
