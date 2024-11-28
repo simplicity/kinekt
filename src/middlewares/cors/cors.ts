@@ -30,6 +30,10 @@ function handle(
   context: BasePipelineContext,
   params: NormalizedCorsParams
 ): BasePipelineContext {
+  if (context.response.type === "set") {
+    return context;
+  }
+
   const isPreflight = context.request.method === "OPTIONS";
 
   const originHeader = context.request.getHeader("origin");

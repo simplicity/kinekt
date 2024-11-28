@@ -55,6 +55,11 @@ export const validatedEndpoint = <
   const middleware: Middleware<PipelineContext, PipelineContext> = async (
     context
   ) => {
+    if (context.response.type === "set") {
+      // TODO test
+      return context;
+    }
+
     if (context.request.deserializedBody.type === "unset") {
       return context;
     }

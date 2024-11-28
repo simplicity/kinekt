@@ -75,9 +75,7 @@ describe("checkAcceptHeader ", () => {
       createCustomTestContext({
         accept: "text/html",
         response: {
-          type: "set",
-          body: null,
-          statusCode: 500,
+          type: "partially-set",
           headers: { "Some-Header": "some value" },
         },
       })

@@ -55,7 +55,7 @@ async function expectValitationResults(
   expect(result.validationErrors).toEqual(expectedValidationErrors);
 }
 
-describe("deserialize ", () => {
+describe("validatedEndpoint ", () => {
   it("takes and returns data as described", async () => {
     const mw = validatedEndpoint(
       {
@@ -165,9 +165,7 @@ describe("deserialize ", () => {
         method: "POST",
         deserializedBody: { type: "set", body: undefined },
         response: {
-          type: "set",
-          body: null,
-          statusCode: 500,
+          type: "partially-set",
           headers: { "Some-Header": "some value" },
         },
       })

@@ -27,7 +27,9 @@ export const handleValidationErrors =
     >
   ): Middleware<In, Out> =>
   async (context) => ({
-    ...((context.validationErrors === null
+    ...((context.validationErrors === null ||
+    // TODO test
+    context.response.type === "set"
       ? context
       : reply(context, handler(context.validationErrors))) as Out),
     ...({} as HandleValidationErrorsCustomMiddlewareResponse<

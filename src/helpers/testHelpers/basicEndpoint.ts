@@ -29,6 +29,10 @@ function reply(
   context: BasePipelineContext,
   response: BasePipelineContextResponseSet
 ): BasePipelineContext {
+  if (context.response.type === "set") {
+    return context;
+  }
+
   return {
     ...context,
     response: {

@@ -44,7 +44,6 @@ async function expectRouted(
   );
 
   if (result.type === "error") {
-    console.log(result);
     throw new Error('Unexpected: result.type === "error"');
   }
 

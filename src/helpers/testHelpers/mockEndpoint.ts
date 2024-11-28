@@ -9,7 +9,7 @@ import {
 } from "../../createServer/helpers/postProcess";
 import { Endpoint } from "../../createValidatedEndpointFactory/helpers/types";
 import { notFound } from "../../middlewares/notFound/notFound";
-import { consoleLogger } from "../consoleLogger";
+import { noopLogger } from "../noopLogger";
 import {
   EndpointDeclarationBase,
   ExtractPathParams,
@@ -91,7 +91,7 @@ export function mockEndpoint<
         readFormData: async () => body as FormData,
       });
 
-      return postProcess(result, createResponse, undefined, consoleLogger);
+      return postProcess(result, createResponse, undefined, noopLogger);
     }
   );
 
