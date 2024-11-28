@@ -62,5 +62,10 @@ export const checkAcceptHeader = <
   const middleware: Middleware<In, Out> = async (context) =>
     handle(context) as Out;
 
+  middleware.executionMode = {
+    type: "bypass-when-response-is-set",
+    cb: async (context) => reply(context, null, null) as Out,
+  };
+
   return middleware;
 };

@@ -46,7 +46,9 @@ export const finalize = <
   const middleware: Middleware<In, Out> = async (context) =>
     handle(context) as Out;
 
-  middleware.alwaysRun = true;
+  middleware.executionMode = {
+    type: "always-run",
+  };
 
   return middleware;
 };

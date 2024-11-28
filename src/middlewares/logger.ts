@@ -24,7 +24,9 @@ export const logger = <PipelineContext extends FinalizeContext>(params?: {
     return context;
   };
 
-  middleware.alwaysRun = true;
+  middleware.executionMode = {
+    type: "always-run",
+  };
 
   return middleware;
 };

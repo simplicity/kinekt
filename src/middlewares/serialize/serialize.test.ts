@@ -105,8 +105,4 @@ describe("serialize ", () => {
       { "Some-Header": "some value" }
     );
   });
-
-  it("always runs", async () => {
-    expect(mw.alwaysRun).toEqual(true);
-  });
 });

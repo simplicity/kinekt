@@ -20,11 +20,19 @@ export async function process<T extends BasePipelineContext>(
     return input;
   }
 
-  if (
-    (input.response.type === "set" || input.error.type === "error") &&
-    middleware.alwaysRun !== true
-  ) {
+  if (input.error.type === "error") {
     return process(input, middlewares, currentIndex + 1);
+  }
+
+  if (
+    input.response.type === "set" &&
+    middleware.executionMode.type === "bypass-when-response-is-set"
+  ) {
+    return process(
+      await middleware.executionMode.cb(input),
+      middlewares,
+      currentIndex + 1
+    );
   }
 
   return middleware(input)

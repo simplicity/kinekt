@@ -53,5 +53,10 @@ export const deserialize = <
   const middleware: Middleware<In, Out> = async (context) =>
     handle(context) as Promise<Out>;
 
+  middleware.executionMode = {
+    type: "bypass-when-response-is-set",
+    cb: async (context) => reply(context, null, { type: "unset" }) as Out,
+  };
+
   return middleware;
 };

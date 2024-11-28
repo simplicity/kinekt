@@ -1,6 +1,7 @@
 import { process } from "./helpers/process";
 import type {
   BasePipelineContext,
+  ExecutionMode,
   Middleware,
   Pipeline,
   PipelineMetadata,
@@ -8,6 +9,7 @@ import type {
 
 type MiddlewareLike = {
   (context: BasePipelineContext): Promise<BasePipelineContext>;
+  executionMode: ExecutionMode<BasePipelineContext, BasePipelineContext>;
   collectMetadata?: () => PipelineMetadata;
   flatten?: () => Array<MiddlewareLike>;
 };
@@ -114,6 +116,8 @@ export function createPipeline(...fns: Array<MiddlewareLike>) {
   const collectedMetadata = flattenedFns
     .map((fn) => fn.collectMetadata?.() ?? [])
     .flat();
+
+  pipeline.executionMode = { type: "always-run" };
 
   pipeline.collectMetadata = () => collectedMetadata;
 

@@ -52,6 +52,11 @@ export const basicEndpoint = <
     context
   ) => reply(context, await params.cb(context)) as PipelineContext;
 
+  middleware.executionMode = {
+    type: "bypass-when-response-is-set",
+    cb: async (context) => context as PipelineContext,
+  };
+
   middleware.collectMetadata = () => [
     routeMatchMetadata([{ method: params.method, path: params.path }]),
     checkAcceptHeaderMetadata([params.mimeType]),

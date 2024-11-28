@@ -94,6 +94,11 @@ export const validatedEndpoint = <
     ) as PipelineContext;
   };
 
+  middleware.executionMode = {
+    type: "bypass-when-response-is-set",
+    cb: async (context) => context,
+  };
+
   const method = extractMethod(routeDefinition.endpointDeclaration);
   const path = removeQuery(removeMethod(routeDefinition.endpointDeclaration));
 

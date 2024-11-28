@@ -67,6 +67,11 @@ export const cors = <In extends BasePipelineContext, Out extends In>(
   const middleware: Middleware<In, Out> = async (context) =>
     handle(context, normalizedCorsParams) as Out;
 
+  middleware.executionMode = {
+    type: "bypass-when-response-is-set",
+    cb: async (context) => context as Out,
+  };
+
   middleware.collectMetadata = () => [corsMetadata()];
 
   return middleware;

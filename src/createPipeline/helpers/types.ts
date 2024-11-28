@@ -46,16 +46,31 @@ export type BasePipelineContext = {
   metadata: PipelineMetadata;
 };
 
+export type ExecutionMode<
+  In extends BasePipelineContext,
+  Out extends In = In
+> =
+  | {
+      type: "bypass-when-response-is-set";
+      cb: (context: In) => Promise<Out>;
+    }
+  | {
+      type: "always-run";
+    };
+
 export type Middleware<In extends BasePipelineContext, Out extends In = In> = {
   (context: In): Promise<Out>;
+  executionMode: ExecutionMode<In, Out>;
+
   collectMetadata?: () => PipelineMetadata;
-  alwaysRun?: true;
   // TODO maybe introduce an "explain" function, which can be called by `process` during debugging
   // to log what the mw is doing
 };
 
 export type Pipeline<In extends BasePipelineContext, Out extends In> = {
   (context: In): Promise<Out>;
+
+  executionMode: ExecutionMode<In, Out>;
 
   collectMetadata: () => PipelineMetadata;
 
