@@ -12,7 +12,6 @@ export default defineConfig({
       external: ["zod", "http"],
     },
 
-    // TODO make configurable - or should it be the default?
     minify: false,
     sourcemap: true,
   },
