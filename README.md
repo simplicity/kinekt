@@ -151,3 +151,5 @@ export const createUser = testPipeline.createEndpoint(
   }
 );
 ```
+
+<!-- TODO add section about how the client can handle status codes -->
