@@ -9,6 +9,13 @@ export function reply<Session>(
   context: BasePipelineContext,
   result: AuthenticateCallbackResult<Session>
 ): AuthenticateContext<Session> {
+  if (context.response.type === "set") {
+    return {
+      ...context,
+      session: null,
+    } as AuthenticateContext<Session>;
+  }
+
   switch (result.type) {
     case "set": {
       return {
