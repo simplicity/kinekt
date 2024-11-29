@@ -71,6 +71,7 @@ export function mockEndpoint<
         ...(body instanceof FormData
           ? { "content-type": "multipart/form-data" }
           : {}),
+        authorization: "c29tZUBlbWFpbC5jb20=",
       } as Record<string, string>;
 
       const handleRequest = createRequestHandler([
@@ -86,7 +87,7 @@ export function mockEndpoint<
         fullUrl: fullUrl as string,
         path: url.pathname,
         query: url.search,
-        getHeader: (name) => headers[name],
+        getHeader: (name) => headers[name] ?? null,
         readText: async () => body as string,
         readFormData: async () => body as FormData,
       });

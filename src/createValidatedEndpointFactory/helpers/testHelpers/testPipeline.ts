@@ -1,5 +1,7 @@
 import { createPipeline } from "../../../createPipeline/createPipeline";
+import { BasePipelineContext } from "../../../createPipeline/helpers/types";
 import { authenticate } from "../../../middlewares/authenticate/authenticate";
+import { AuthenticateCallbackResult } from "../../../middlewares/authenticate/helpers/types";
 import { checkAcceptHeader } from "../../../middlewares/checkAcceptHeader/checkAcceptHeader";
 import { deserialize } from "../../../middlewares/deserialize/deserialize";
 import { finalize } from "../../../middlewares/finalize/finalize";
@@ -14,13 +16,26 @@ const defaultValidationErrorHandler = (validationErrors: ValidationErrors) => ({
   body: validationErrors,
 });
 
+type AppSession = { user: { email: string } };
+
+async function getSession<In extends BasePipelineContext>(
+  context: In
+): Promise<AuthenticateCallbackResult<AppSession>> {
+  const authorization = context.request.getHeader("authorization");
+
+  return authorization === null
+    ? { type: "unset" }
+    : { type: "set", session: { user: { email: atob(authorization) } } };
+}
+
 // TODO add integration tests for cors mw
+// TODO add integration tests for authenticate
 
 export const testPipeline = createValidatedEndpointFactory(
   createPipeline(
     checkAcceptHeader(),
     deserialize(),
-    authenticate(),
+    authenticate(getSession),
     withValidation()
   ).split(
     handleValidationErrors(defaultValidationErrorHandler),

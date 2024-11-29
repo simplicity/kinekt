@@ -18,6 +18,7 @@ export function reply(
     ...(response
       ? {
           response: {
+            // TODO why do we check for "unset" here? we don't expect "set" states, and so there's no need to mix in the entire response
             ...(context.response.type !== "unset" ? context.response : {}),
             ...response,
             headers: {
