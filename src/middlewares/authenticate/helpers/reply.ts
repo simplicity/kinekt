@@ -32,7 +32,7 @@ export function reply<Session>(
           body: { error: "Unauthorized" } satisfies UnauthorizedResponseBody,
           statusCode: 401,
           headers: {
-            ...(context.response.type !== "unset"
+            ...(context.response.type === "partially-set"
               ? context.response.headers
               : {}),
           },

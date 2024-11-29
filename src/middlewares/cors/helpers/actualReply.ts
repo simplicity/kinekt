@@ -9,7 +9,9 @@ export function actualReply(
     response: {
       type: "partially-set",
       headers: {
-        ...(context.response.type !== "unset" ? context.response.headers : {}),
+        ...(context.response.type === "partially-set"
+          ? context.response.headers
+          : {}),
         ...headers,
       },
     },

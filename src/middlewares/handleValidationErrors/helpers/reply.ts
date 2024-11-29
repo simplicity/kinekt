@@ -12,7 +12,9 @@ export function reply(
       statusCode: handlerResult.statusCode,
       body: handlerResult.body,
       headers:
-        context.response.type !== "unset" ? context.response.headers : {},
+        context.response.type === "partially-set"
+          ? context.response.headers
+          : {},
     },
   };
 }

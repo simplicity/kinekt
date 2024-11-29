@@ -15,10 +15,9 @@ export function reply(
     ...(response
       ? {
           response: {
-            ...(context.response.type !== "unset" ? context.response : {}),
             ...response,
             headers: {
-              ...(context.response.type !== "unset"
+              ...(context.response.type === "partially-set"
                 ? context.response.headers
                 : {}),
               ...response.headers,
