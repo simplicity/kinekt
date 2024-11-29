@@ -3,14 +3,20 @@ import {
   Middleware,
 } from "../../createPipeline/helpers/types";
 import { reply } from "./helpers/reply";
-import { AuthenticateContextExtension } from "./helpers/types";
+import {
+  AuthenticateCallback,
+  AuthenticateContextExtension,
+} from "./helpers/types";
 
 export const authenticate = <
+  Session,
   In extends BasePipelineContext,
-  Out extends In & AuthenticateContextExtension
->(): Middleware<In, Out> => {
+  Out extends In & AuthenticateContextExtension<Session>
+>(
+  cb: AuthenticateCallback<In, Session>
+): Middleware<In, Out> => {
   const middleware: Middleware<In, Out> = async (context) =>
-    reply(context) as Out;
+    reply<Session>(context, await cb(context)) as Out;
 
   middleware.alwaysRun = true;
 
