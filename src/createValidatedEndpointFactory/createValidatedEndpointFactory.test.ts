@@ -16,7 +16,7 @@ describe("createValidatedEndpointFactory", () => {
         params: { organizationId: "some-organization-id" },
         query: { private: false },
         body: { email: "some@email.com" },
-      })
+      }).all()
     ).toEqual({
       type: "ok",
       value: {
@@ -35,7 +35,7 @@ describe("createValidatedEndpointFactory", () => {
         params: { organizationId: "some-organization-id" },
         query: { private: false },
         body: { email: "existing@email.com" },
-      })
+      }).all()
     ).toEqual({
       type: "ok",
       value: {
@@ -46,7 +46,7 @@ describe("createValidatedEndpointFactory", () => {
   });
 
   it("allows to create a 'getHtml' endpoint", async () => {
-    expect(await mockEndpoint(getHtml)({})).toEqual({
+    expect(await mockEndpoint(getHtml)({}).all()).toEqual({
       type: "ok",
       value: { statusCode: 200, body: "<h1>hello world</h1>" },
     });
@@ -64,7 +64,7 @@ describe("createValidatedEndpointFactory", () => {
             "text/plain"
           ),
         },
-      })
+      }).all()
     ).toEqual({
       type: "ok",
       value: { statusCode: 200, body: { text: "Hello, world!" } },
@@ -76,7 +76,7 @@ describe("createValidatedEndpointFactory", () => {
     expect(
       await mockEndpoint(urlEncodedUpload)({
         body: { someField: "some text" },
-      })
+      }).all()
     ).toEqual({
       type: "ok",
       value: { statusCode: 200, body: { someField: "some text" } },
@@ -85,7 +85,9 @@ describe("createValidatedEndpointFactory", () => {
 
   it("doesn't return an error when endpoint is not served but `notFound` middleware is present", async () => {
     expect(
-      await mockEndpoint(getHtml, { dontServe: true, serveNotFound: true })({})
+      await mockEndpoint(getHtml, { dontServe: true, serveNotFound: true })(
+        {}
+      ).all()
     ).toEqual({
       type: "ok",
       value: { statusCode: 404, body: "" },
@@ -93,7 +95,7 @@ describe("createValidatedEndpointFactory", () => {
   });
 
   it("returns an error when endpoint is not served", async () => {
-    expect(await mockEndpoint(getHtml, { dontServe: true })({})).toEqual({
+    expect(await mockEndpoint(getHtml, { dontServe: true })({}).all()).toEqual({
       type: "error",
       code: "internal-server-error",
       description: "Internal Server Error",
