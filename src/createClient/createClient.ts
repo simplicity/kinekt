@@ -18,7 +18,8 @@ import { parseBodyFromResponse } from "./helpers/parseBodyFromResponse/parseBody
 import type { Client } from "./helpers/types";
 
 export type ClientParams = {
-  baseUrl: string | null;
+  baseUrl?: string;
+  authorize?: string;
 };
 
 export function createClient<
@@ -55,20 +56,20 @@ export function createClient<
   const path = removeMethod(routeDefinition.endpointDeclaration);
   const method = extractMethod(routeDefinition.endpointDeclaration);
 
-  // TODO how to pass authorization data?
-
   // TODO type properly
   const run = async (props: any) => {
     const pathString = buildPathString(props.params, path);
     const queryString = buildQueryString(props.query);
 
+    // TODO handle case where baseUrl is not set
     const url = `${params.clientParams.baseUrl}${pathString}${queryString}`;
 
     const fetchResult = await doFetch(
       url,
       method,
       props.body,
-      params.acceptHeader
+      params.acceptHeader,
+      params.clientParams.authorize
     );
 
     if (fetchResult.type === "error") {
