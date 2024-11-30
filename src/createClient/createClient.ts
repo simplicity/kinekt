@@ -55,6 +55,8 @@ export function createClient<
   const path = removeMethod(routeDefinition.endpointDeclaration);
   const method = extractMethod(routeDefinition.endpointDeclaration);
 
+  // TODO how to pass authorization data?
+
   // TODO type properly
   const run = async (props: any) => {
     const pathString = buildPathString(props.params, path);
