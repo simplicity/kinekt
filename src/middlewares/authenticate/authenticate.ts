@@ -18,7 +18,5 @@ export const authenticate = <
   const middleware: Middleware<In, Out> = async (context) =>
     reply<Session>(context, await cb(context)) as Out;
 
-  middleware.alwaysRun = true;
-
   return middleware;
 };

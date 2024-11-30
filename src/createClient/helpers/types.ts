@@ -1,12 +1,19 @@
 import type { z } from "zod";
 import type { MimeType } from "../../helpers/MimeType";
-import type { ErrorResult, OkResult } from "../../helpers/result";
+import { ErrorResult, OkResult } from "../../helpers/result";
 import type {
   EndpointDeclarationBase,
   ExtractMethod,
   ExtractPathParams,
   StatusCode,
 } from "../../helpers/types";
+
+type ExtractResponse<StatusCode, Input> = Input extends {
+  statusCode: StatusCode;
+  body: infer Body;
+}
+  ? Body
+  : never;
 
 export type Client<
   EndpointDeclaration extends EndpointDeclarationBase,
@@ -39,20 +46,36 @@ export type Client<
       : {
           body: z.infer<ReqB>;
         })
-) => Promise<
-  | {
-      [StatusCode in ResC]: OkResult<{
-        statusCode: StatusCode;
-        body: z.infer<ResB[StatusCode]>;
-      }>;
-    }[ResC]
-  | OkResult<CustomMiddlewareResponses>
-  | ErrorResult<"body-parse-error", { text?: string; statusCode: StatusCode }>
-  | ErrorResult<"network-error", { cause: string }>
-  | ErrorResult<"internal-server-error", { cause: unknown }>
-  | ErrorResult<"invalid-mime-type-requested", { cause: unknown }>
-  | ErrorResult<"invalid-mime-type-provided", { cause: unknown }>
->;
+) => {
+  ok: <StatusCode extends number>(
+    statusCode: StatusCode
+  ) => Promise<
+    ExtractResponse<
+      StatusCode,
+      | {
+          [StatusCode in ResC]: {
+            statusCode: StatusCode;
+            body: z.infer<ResB[StatusCode]>;
+          };
+        }[ResC]
+      | CustomMiddlewareResponses
+    >
+  >;
+  all: () => Promise<
+    | {
+        [StatusCode in ResC]: OkResult<{
+          statusCode: StatusCode;
+          body: z.infer<ResB[StatusCode]>;
+        }>;
+      }[ResC]
+    | OkResult<CustomMiddlewareResponses>
+    | ErrorResult<"body-parse-error", { text?: string; statusCode: StatusCode }>
+    | ErrorResult<"network-error", { cause: string }>
+    | ErrorResult<"internal-server-error", { cause: unknown }>
+    | ErrorResult<"invalid-mime-type-requested", { cause: unknown }>
+    | ErrorResult<"invalid-mime-type-provided", { cause: unknown }>
+  >;
+};
 
 export type SupportedRequestMimeTypes = Extract<
   MimeType,

@@ -18,7 +18,8 @@ import { parseBodyFromResponse } from "./helpers/parseBodyFromResponse/parseBody
 import type { Client } from "./helpers/types";
 
 export type ClientParams = {
-  baseUrl: string | null;
+  baseUrl?: string;
+  authorize?: string;
 };
 
 export function createClient<
@@ -55,9 +56,17 @@ export function createClient<
   const path = removeMethod(routeDefinition.endpointDeclaration);
   const method = extractMethod(routeDefinition.endpointDeclaration);
 
-  return async (props) => {
+  const run = async (props: {
+    params?: unknown;
+    query?: unknown;
+    body?: unknown;
+  }) => {
     const pathString = buildPathString(props.params, path);
     const queryString = buildQueryString(props.query);
+
+    if (params.clientParams.baseUrl === undefined) {
+      abort("Can't invoke client, because no base url was set.");
+    }
 
     const url = `${params.clientParams.baseUrl}${pathString}${queryString}`;
 
@@ -65,7 +74,8 @@ export function createClient<
       url,
       method,
       props.body,
-      params.acceptHeader
+      params.acceptHeader,
+      params.clientParams.authorize
     );
 
     if (fetchResult.type === "error") {
@@ -108,4 +118,22 @@ export function createClient<
       }
     }
   };
+
+  return (props) => ({
+    all: () => run(props),
+    ok: (statusCode) =>
+      run(props).then((result) => {
+        if (result.type === "error") {
+          throw new Error("Expected ok result, received error.");
+        }
+
+        if (result.value.statusCode !== (statusCode as StatusCode)) {
+          throw new Error(
+            `Expected status code ${statusCode}, received ${result.value.statusCode}.`
+          );
+        }
+
+        return result.value.body as any;
+      }),
+  });
 }

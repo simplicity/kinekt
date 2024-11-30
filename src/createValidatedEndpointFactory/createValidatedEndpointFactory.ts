@@ -31,9 +31,7 @@ export function createValidatedEndpointFactory<
     Pipeline<PrePipelineOut, PostPipelineOut>
   ]
 ) {
-  const clientParams: ClientParams = {
-    baseUrl: null,
-  };
+  const clientParams: ClientParams = {};
 
   return {
     createEndpoint: <

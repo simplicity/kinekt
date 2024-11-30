@@ -3,6 +3,7 @@ import { BasePipelineContext } from "../../../createPipeline/helpers/types";
 import { authenticate } from "../../../middlewares/authenticate/authenticate";
 import { AuthenticateCallbackResult } from "../../../middlewares/authenticate/helpers/types";
 import { checkAcceptHeader } from "../../../middlewares/checkAcceptHeader/checkAcceptHeader";
+import { cors } from "../../../middlewares/cors/cors";
 import { deserialize } from "../../../middlewares/deserialize/deserialize";
 import { finalize } from "../../../middlewares/finalize/finalize";
 import { handleValidationErrors } from "../../../middlewares/handleValidationErrors/handleValidationErrors";
@@ -16,11 +17,11 @@ const defaultValidationErrorHandler = (validationErrors: ValidationErrors) => ({
   body: validationErrors,
 });
 
-type AppSession = { user: { email: string } };
+export type TestSession = { user: { email: string } };
 
 async function getSession<In extends BasePipelineContext>(
   context: In
-): Promise<AuthenticateCallbackResult<AppSession>> {
+): Promise<AuthenticateCallbackResult<TestSession>> {
   const authorization = context.request.getHeader("authorization");
 
   return authorization === null
@@ -28,11 +29,9 @@ async function getSession<In extends BasePipelineContext>(
     : { type: "set", session: { user: { email: atob(authorization) } } };
 }
 
-// TODO add integration tests for cors mw
-// TODO add integration tests for authenticate
-
 export const testPipeline = createValidatedEndpointFactory(
   createPipeline(
+    cors({ origins: ["http://example.com"] }),
     checkAcceptHeader(),
     deserialize(),
     authenticate(getSession),
