@@ -29,8 +29,6 @@ async function getSession<In extends BasePipelineContext>(
     : { type: "set", session: { user: { email: atob(authorization) } } };
 }
 
-// TODO add integration tests for authenticate
-
 export const testPipeline = createValidatedEndpointFactory(
   createPipeline(
     cors({ origins: ["http://example.com"] }),
