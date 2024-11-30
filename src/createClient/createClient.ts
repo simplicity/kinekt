@@ -64,7 +64,10 @@ export function createClient<
     const pathString = buildPathString(props.params, path);
     const queryString = buildQueryString(props.query);
 
-    // TODO handle case where baseUrl is not set
+    if (params.clientParams.baseUrl === undefined) {
+      abort("Can't invoke client, because no base url was set.");
+    }
+
     const url = `${params.clientParams.baseUrl}${pathString}${queryString}`;
 
     const fetchResult = await doFetch(
