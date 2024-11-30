@@ -56,8 +56,11 @@ export function createClient<
   const path = removeMethod(routeDefinition.endpointDeclaration);
   const method = extractMethod(routeDefinition.endpointDeclaration);
 
-  // TODO type properly
-  const run = async (props: any) => {
+  const run = async (props: {
+    params?: unknown;
+    query?: unknown;
+    body?: unknown;
+  }) => {
     const pathString = buildPathString(props.params, path);
     const queryString = buildQueryString(props.query);
 
@@ -121,8 +124,7 @@ export function createClient<
           throw new Error("Expected ok result, received error.");
         }
 
-        // TODO avoid any?
-        if (result.value.statusCode !== (statusCode as any)) {
+        if (result.value.statusCode !== (statusCode as StatusCode)) {
           throw new Error(
             `Expected status code ${statusCode}, received ${result.value.statusCode}.`
           );
