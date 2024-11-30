@@ -8,7 +8,7 @@ export async function doFetch(
   method: Method,
   body: unknown,
   acceptHeader: string,
-  authorizeHeader: string | undefined
+  authorizationHeader: string | undefined
 ) {
   const mimeType =
     method !== "GET" && body !== undefined && body !== null
@@ -22,7 +22,7 @@ export async function doFetch(
           ? {}
           : { "content-type": mimeType }),
         accept: acceptHeader,
-        ...(authorizeHeader ? { authorize: authorizeHeader } : {}),
+        ...(authorizationHeader ? { authorization: authorizationHeader } : {}),
       },
       method,
       ...(mimeType === null
