@@ -17,11 +17,11 @@ const defaultValidationErrorHandler = (validationErrors: ValidationErrors) => ({
   body: validationErrors,
 });
 
-type AppSession = { user: { email: string } };
+export type TestSession = { user: { email: string } };
 
 async function getSession<In extends BasePipelineContext>(
   context: In
-): Promise<AuthenticateCallbackResult<AppSession>> {
+): Promise<AuthenticateCallbackResult<TestSession>> {
   const authorization = context.request.getHeader("authorization");
 
   return authorization === null
