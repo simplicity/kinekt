@@ -41,7 +41,7 @@ serve(getUser, ...otherEndpoints);
 Use it through the auto-generated client:
 
 ```TypeScript
-const user = await getUser({ params: { id: "some-id" } });
+const user = await getUser({ params: { id: "some-id" } }).ok(200);
 ```
 
 <hr>

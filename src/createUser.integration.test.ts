@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { createUser } from "./createValidatedEndpointFactory/helpers/testHelpers/createUser";
 import { mockEndpoint } from "./helpers/testHelpers/mockEndpoint";
 
-describe("createComment", () => {
+describe("createUser", () => {
   afterEach(() => vi.restoreAllMocks());
 
   it("returns 200", async () => {
