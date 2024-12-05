@@ -14,7 +14,7 @@ const createResponse: CreateResponse<Response, void> = (
 
 export function serveDeno(
   endpoints: Array<HasPipeline>,
-  params: CreateServerParams
+  params: Required<CreateServerParams>
 ) {
   const handleRequest = createRequestHandler(endpoints);
 

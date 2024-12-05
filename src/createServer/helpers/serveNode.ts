@@ -23,7 +23,7 @@ const createResponse: CreateResponse<void, ServerResponse> = (
 
 export async function serveNode(
   endpoints: Array<HasPipeline>,
-  params: CreateServerParams
+  params: Required<CreateServerParams>
 ) {
   const handleRequest = createRequestHandler(endpoints);
 
