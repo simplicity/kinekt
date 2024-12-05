@@ -6,7 +6,6 @@ import { CreateServerParams, Server } from "./helpers/types";
 
 declare const Deno: any;
 
-// TODO can't we serve the notFound pipeline by default in here?
 export function createServer(params: CreateServerParams): Server {
   const finalParams: Required<CreateServerParams> = {
     hostname: params.hostname ?? "localhost",

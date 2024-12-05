@@ -1,6 +1,6 @@
 import { vi } from "vitest";
 import { z } from "zod";
-import { createPipeline } from "../../createPipeline/createPipeline";
+import { createNotFoundEndpoint } from "../../createNotFoundEndpoint/createNotFoundEndpoint";
 import { BasePipelineContext } from "../../createPipeline/helpers/types";
 import { createRequestHandler } from "../../createRequestHandler/createRequestHandler";
 import {
@@ -8,7 +8,6 @@ import {
   postProcess,
 } from "../../createServer/helpers/postProcess";
 import { Endpoint } from "../../createValidatedEndpointFactory/helpers/types";
-import { notFound } from "../../middlewares/notFound/notFound";
 import { noopLogger } from "../noopLogger";
 import {
   EndpointDeclarationBase,
@@ -17,7 +16,7 @@ import {
   StatusCode,
 } from "../types";
 
-const notFoundEndpoint = { pipeline: createPipeline(notFound()) };
+const notFoundEndpoint = createNotFoundEndpoint();
 
 const createResponse: CreateResponse<Response, void> = (
   body,
