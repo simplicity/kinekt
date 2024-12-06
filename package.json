@@ -3,6 +3,8 @@
   "version": "0.0.16",
   "license": "MIT",
   "main": "./dist/main.mjs",
+  "homepage": "https://kinekt.dev",
+  "author": "Samuel Müller",
   "types": "./dist/pkg/types.d.ts",
   "exports": {
     "import": "./dist/main.mjs",
