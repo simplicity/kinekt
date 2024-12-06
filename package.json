@@ -1,6 +1,6 @@
 {
   "name": "kinekt",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "license": "MIT",
   "main": "./dist/main.mjs",
   "types": "./dist/pkg/types.d.ts",
