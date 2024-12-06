@@ -1,6 +1,6 @@
 <div align="center">
   <h1>Kinekt</h1>
-  <h3>Type Safe Rest APIs Made Easy.</h3>
+  <h3>Build REST APIs With High Precision.</h3>
   <h4>Pronounced like 'connect' but with an i.</h4>
 
   <img src="https://github.com/simplicity/kinekt/actions/workflows/test.yml/badge.svg?branch=main" alt="Test Results">
@@ -151,5 +151,3 @@ export const createUser = testPipeline.createEndpoint(
   }
 );
 ```
-
-<!-- TODO add section about how the client can handle status codes -->
