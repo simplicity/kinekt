@@ -7,8 +7,8 @@
     <img src="https://github.com/simplicity/kinekt/actions/workflows/test.yml/badge.svg?branch=main" alt="Test Results">
   </a>
 
-  <a href='https://coveralls.io/github/simplicity/kinekt'>
-    <img src='https://coveralls.io/repos/github/simplicity/kinekt/badge.svg' alt='Coverage Status' />
+  <a href='https://coveralls.io/github/simplicity/kinekt?branch=main'>
+    <img src='https://coveralls.io/repos/github/simplicity/kinekt/badge.svg?branch=main' alt='Coverage Status' />
   </a>
 </div>
 
