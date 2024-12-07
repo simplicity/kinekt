@@ -33,3 +33,9 @@ jobs:
 
       - name: Run tests
         run: pnpm run test
+
+      - name: Compile test coverage
+        run: pnpm run test-coverage
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2

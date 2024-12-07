@@ -3,8 +3,13 @@
   <h3>Build REST APIs With High Precision.</h3>
   <h4>Pronounced like 'connect' but with an i.</h4>
 
-  <img src="https://github.com/simplicity/kinekt/actions/workflows/test.yml/badge.svg?branch=main" alt="Test Results">
-  <br />
+  <a href="https://github.com/simplicity/kinekt/actions/workflows/test.yml">
+    <img src="https://github.com/simplicity/kinekt/actions/workflows/test.yml/badge.svg?branch=main" alt="Test Results">
+  </a>
+
+  <a href='https://coveralls.io/github/simplicity/kinekt'>
+    <img src='https://coveralls.io/repos/github/simplicity/kinekt/badge.svg' alt='Coverage Status' />
+  </a>
 </div>
 
 <hr>
