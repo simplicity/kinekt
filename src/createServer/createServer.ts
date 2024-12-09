@@ -6,11 +6,11 @@ import { CreateServerParams, Server } from "./helpers/types";
 
 declare const Deno: any;
 
-export function createServer(params: CreateServerParams): Server {
+export function createServer(params?: CreateServerParams): Server {
   const finalParams: Required<CreateServerParams> = {
-    hostname: params.hostname ?? "localhost",
-    port: params.port ?? 3000,
-    logger: params.logger ?? consoleLogger,
+    hostname: params?.hostname ?? "localhost",
+    port: params?.port ?? 3000,
+    logger: params?.logger ?? consoleLogger,
   };
 
   return (...endpoints) => {
