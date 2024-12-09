@@ -6,5 +6,5 @@ export const getDefaultLogStatement = async (context: FinalizeContext) => {
   const route = `${context.request.method} ${context.request.path}${context.request.query ? "?" : ""}${context.request.query}`;
   const statusCode = context.finalizedResponse.statusCode;
   const responseTime = endTime - context.startTime;
-  return `${route} (${statusCode}) (${responseTime}ms)`;
+  return `${route} (${statusCode}) (${responseTime.toFixed(2)}ms)`;
 };
