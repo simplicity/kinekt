@@ -14,13 +14,18 @@ export function createServer(params: CreateServerParams): Server {
   };
 
   return (...endpoints) => {
-    if (typeof Deno !== "undefined" && Deno.version && Deno.version.deno) {
+    if (
+      Deno.env.get("DENO_DEPLOYMENT_ID") !== undefined ||
+      (typeof Deno !== "undefined" && Deno.version && Deno.version.deno)
+    ) {
+      consoleLogger.info("Environment check: deno detected");
       serveDeno(endpoints, finalParams);
     } else if (
       typeof process !== "undefined" &&
       process.versions &&
       process.versions.node
     ) {
+      consoleLogger.info("Environment check: node detected");
       serveNode(endpoints, finalParams);
     } else {
       abort("Unknown environment");
