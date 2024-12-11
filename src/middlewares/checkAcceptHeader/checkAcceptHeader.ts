@@ -15,7 +15,7 @@ import {
 
 function handle(context: BasePipelineContext): CheckAcceptHeaderContext {
   if (context.response.type === "set") {
-    return reply(context, null, null);
+    return reply(context, null, undefined);
   }
 
   const supportedMimeTypes =
@@ -52,7 +52,7 @@ function handle(context: BasePipelineContext): CheckAcceptHeaderContext {
         ),
         headers: {},
       },
-      null
+      undefined
     );
   }
 

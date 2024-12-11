@@ -8,7 +8,7 @@ import { CheckAcceptHeaderContext } from "./types";
 export function reply(
   context: BasePipelineContext,
   response: BasePipelineContextResponseSet | null,
-  supportedMimeType: MimeType | null
+  supportedMimeType: MimeType | undefined
 ): CheckAcceptHeaderContext {
   return {
     ...context,

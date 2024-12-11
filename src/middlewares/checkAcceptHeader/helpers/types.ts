@@ -2,7 +2,7 @@ import { BasePipelineContext } from "../../../createPipeline/helpers/types";
 import type { MimeType } from "../../../helpers/MimeType";
 
 export type CheckAcceptHeaderContextExtension = {
-  supportedMimeType: MimeType | null;
+  supportedMimeType?: MimeType;
 };
 
 export type CheckAcceptHeaderContext = BasePipelineContext &

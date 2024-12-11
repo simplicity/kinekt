@@ -45,7 +45,7 @@ function handle(context: CheckAcceptHeaderContext): SerializeContext {
         { type: "set", body: context.response.body }
       );
     }
-    case null: {
+    case undefined: {
       return reply(
         context,
         { "content-type": "text/plain" },

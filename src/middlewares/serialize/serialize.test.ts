@@ -8,7 +8,7 @@ const mw = serialize();
 async function expectSerialization(
   givenBody: unknown,
   expectedBody: unknown,
-  givenSupportedMimeType: MimeType | null,
+  givenSupportedMimeType: MimeType | undefined,
   expectedSupportedMimeType: MimeType,
   additionalGivenHeaders: Record<string, string> = {}
 ) {
@@ -89,11 +89,16 @@ describe("serialize ", () => {
   });
 
   it("defaults to text/plain when supportedMimeType is not set and body is a string", async () => {
-    await expectSerialization("some value", "some value", null, "text/plain");
+    await expectSerialization(
+      "some value",
+      "some value",
+      undefined,
+      "text/plain"
+    );
   });
 
   it("defaults to text/plain when supportedMimeType is not set and body is not a string", async () => {
-    await expectSerialization({}, "", null, "text/plain");
+    await expectSerialization({}, "", undefined, "text/plain");
   });
 
   it("merges response headers", async () => {
