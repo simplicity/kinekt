@@ -26,6 +26,9 @@ function handle(context: BasePipelineContext): CheckAcceptHeaderContext {
   //      On the other hand, if it is put before authenticate, we won't have this
   //      problem. Another option is to set it to alwaysRun, and determine the
   //      supportedMimeType in any case.
+  //
+  //      But: the naming here is weird. maybe the determination of the supported
+  //      mimetype should be done in a separate middleware?
   const supportedMimeTypes =
     context.metadata.find(isCheckAcceptHeaderMetadata)?.mimeTypes ?? [];
 
