@@ -1,9 +1,6 @@
 import { BasePipelineContext } from "../../../createPipeline/helpers/types";
-import {
-  AuthenticateCallbackResult,
-  AuthenticateContext,
-  UnauthorizedResponseBody,
-} from "./types";
+import { precheckResponseBody } from "../../../helpers/precheckResponseBody";
+import { AuthenticateCallbackResult, AuthenticateContext } from "./types";
 
 export function reply<Session>(
   context: BasePipelineContext,
@@ -29,7 +26,11 @@ export function reply<Session>(
         session: null, // TODO not great
         response: {
           type: "set",
-          body: { error: "Unauthorized" } satisfies UnauthorizedResponseBody,
+          // TODO this has to adapt to json output if the endpoint returns json. is that the case?
+          body: precheckResponseBody(
+            "authentication-failed",
+            "Authentication failed"
+          ),
           statusCode: 401,
           headers: {
             ...(context.response.type === "partially-set"

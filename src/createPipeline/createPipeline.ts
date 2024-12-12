@@ -1,4 +1,4 @@
-import { noopMw } from "./helpers/noopMiddleware";
+import { noopMiddlewareSingleton } from "./helpers/noopMiddleware";
 import { process } from "./helpers/process";
 import type {
   BasePipelineContext,
@@ -110,7 +110,7 @@ export function createPipeline(...fns: Array<MiddlewareLike>) {
       new Array<MiddlewareLike>()
     )
     // TODO is this effective?
-    .filter((fn) => fn !== noopMw);
+    .filter((fn) => fn !== noopMiddlewareSingleton);
 
   const pipeline: PipelineInternal = (context) =>
     process(context, flattenedFns, 0);

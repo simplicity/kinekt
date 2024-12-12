@@ -25,7 +25,7 @@ export function createValidatedEndpointFactory<
   PrePipelineIn extends BasePipelineContext,
   PrePipelineOut extends PrePipelineIn & DeserializeContextExtension,
   PostPipelineIn extends PrePipelineOut & ValidatedEndpointContextExtension,
-  PostPipelineOut extends PostPipelineIn
+  PostPipelineOut extends PostPipelineIn // TODO extend this with FinalizeContextExtension?
 >(
   pipelines: [
     Pipeline<PrePipelineIn, PrePipelineOut>,

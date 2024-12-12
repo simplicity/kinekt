@@ -24,14 +24,15 @@ async function runAuthenticateIntegrationTest(
 describe("authenticate", () => {
   afterEach(() => vi.restoreAllMocks());
 
+  // TODO add test for an endpoint which returns json
   it("returns 401 if not authorized", async () => {
     await runAuthenticateIntegrationTest(
       false,
       {
         type: "ok",
-        body: { error: "Unauthorized" },
+        body: "Authentication failed",
         statusCode: 401,
-        headers: { "content-type": "text/html" },
+        headers: { "content-type": "text/plain" },
       },
       null
     );

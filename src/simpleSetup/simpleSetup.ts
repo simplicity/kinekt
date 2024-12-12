@@ -1,5 +1,5 @@
 import { createPipeline } from "../createPipeline/createPipeline";
-import { noopMw } from "../createPipeline/helpers/noopMiddleware";
+import { noopMiddleware } from "../createPipeline/helpers/noopMiddleware";
 import { createValidatedEndpointFactory } from "../createValidatedEndpointFactory/createValidatedEndpointFactory";
 import { authenticate } from "../middlewares/authenticate/authenticate";
 import { checkAcceptHeader } from "../middlewares/checkAcceptHeader/checkAcceptHeader";
@@ -16,10 +16,10 @@ export function simpleSetup<Session>(
 ) {
   return createValidatedEndpointFactory(
     createPipeline(
-      params.cors ? cors(params.cors) : noopMw,
-      params.checkAcceptHeader ? checkAcceptHeader() : noopMw,
-      deserialize(),
-      authenticate(params.getSession) // TODO this should come at the beginning
+      authenticate(params.getSession),
+      params.cors ? cors(params.cors) : noopMiddleware(),
+      params.checkAcceptHeader ? checkAcceptHeader() : noopMiddleware(),
+      deserialize()
     ).split(
       handleValidationErrors(defaultValidationErrorHandler),
       serialize(),

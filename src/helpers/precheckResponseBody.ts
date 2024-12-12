@@ -10,6 +10,7 @@ export function isPrecheckResponseBody(
   return (body as PrecheckResponseBody)?.type === "precheck-response-body";
 }
 
+// TODO bad naming
 export function precheckResponseBody(
   id: string,
   message: string
