@@ -14,6 +14,7 @@ async function getSession<In extends BasePipelineContext>(
     : { type: "set", session: { user: { email: atob(authorization) } } };
 }
 
+// TODO dont call this "pipeline"
 export const testPipeline = simpleSetup({
   checkAcceptHeader: true,
   cors: { origins: ["http://example.com"] },

@@ -1,37 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { createPipeline } from "../../createPipeline/createPipeline";
-import { BasePipelineContextResponseSet } from "../../createPipeline/helpers/types";
 import { createRequestHandler } from "../../createRequestHandler/createRequestHandler";
-import { basicEndpoint } from "../../helpers/testHelpers/basicEndpoint";
+import { getHtml } from "../../createValidatedEndpointFactory/helpers/testHelpers/getHtml";
 import { createHandleRequestParams } from "../../helpers/testHelpers/createHandleRequestParams";
 import { createTestContext } from "../../helpers/testHelpers/createTestContext";
 import { Method } from "../../helpers/types";
-import { checkAcceptHeader } from "../checkAcceptHeader/checkAcceptHeader";
-import { deserialize } from "../deserialize/deserialize";
+import { BasePipelineContextResponseWithSerializedBody } from "../serialize/helpers/types";
 import { cors } from "./cors";
 
 async function expectRouted(
   path: string,
   method: Method,
-  expectedResponse: BasePipelineContextResponseSet
+  expectedResponse: BasePipelineContextResponseWithSerializedBody
 ) {
-  const pipeline = createPipeline(
-    cors({ origins: "*" }),
-    deserialize(),
-    checkAcceptHeader(),
-    basicEndpoint({
-      method: "GET",
-      mimeType: "text/plain",
-      path: "/a",
-      cb: async () => ({
-        type: "set",
-        body: "some body",
-        headers: { some: "header" },
-        statusCode: 201,
-      }),
-    })
-  );
-  const handleRequest = createRequestHandler([{ pipeline }]);
+  const handleRequest = createRequestHandler([{ pipeline: getHtml.pipeline }]);
   const result = await handleRequest(
     createHandleRequestParams({
       path,
@@ -39,6 +20,7 @@ async function expectRouted(
       headers: {
         origin: "http://example.com",
         "access-control-request-method": "GET",
+        authorization: btoa("some@email.com"),
       },
     })
   );
@@ -95,25 +77,34 @@ describe("cors", () => {
   });
 
   it("routes requests as expected and adds cors headers", async () => {
-    await expectRouted("/a", "GET", {
+    await expectRouted("/html", "GET", {
       type: "set",
-      body: "some body",
-      statusCode: 201,
+      body: "<h1>hello world</h1>",
+      statusCode: 200,
       headers: {
-        some: "header",
-        "access-control-allow-origin": "*",
+        "access-control-allow-origin": "http://example.com",
+        "content-type": "text/html",
+      },
+      serializedBody: {
+        type: "set",
+        body: "<h1>hello world</h1>",
       },
     });
   });
 
   it("replies to preflight requests", async () => {
-    await expectRouted("/a", "OPTIONS", {
+    await expectRouted("/html", "OPTIONS", {
       type: "set",
       body: null,
       statusCode: 200,
       headers: {
-        "access-control-allow-origin": "*",
+        "access-control-allow-origin": "http://example.com",
         "access-control-allow-methods": "GET,HEAD,POST,PUT,PATCH,DELETE",
+        "content-type": "text/plain",
+      },
+      serializedBody: {
+        type: "set",
+        body: "",
       },
     });
   });

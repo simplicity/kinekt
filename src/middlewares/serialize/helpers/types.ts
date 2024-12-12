@@ -12,11 +12,13 @@ export type SerializedBody =
       body: unknown;
     };
 
+export type BasePipelineContextResponseWithSerializedBody =
+  BasePipelineContextResponse & {
+    serializedBody: SerializedBody;
+  };
+
 export type SerializeContextExtension = {
-  response:
-    | BasePipelineContextResponse & {
-        serializedBody: SerializedBody;
-      };
+  response: BasePipelineContextResponseWithSerializedBody;
 };
 
 export type SerializeContext = BasePipelineContext & SerializeContextExtension;
