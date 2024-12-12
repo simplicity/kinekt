@@ -21,7 +21,7 @@ export type BasicEndpointParams<
 > = {
   method: Method;
   path: string;
-  mimeType: MimeType;
+  mimeType: MimeType; // TODO make this optional
   cb: BasicEndpointParamsCb<PipelineContext>;
 };
 
