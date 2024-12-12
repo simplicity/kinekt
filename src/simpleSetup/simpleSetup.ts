@@ -20,7 +20,7 @@ export function simpleSetup<Session>(
       params.cors ? cors(params.cors) : noopMw,
       params.checkAcceptHeader ? checkAcceptHeader() : noopMw,
       deserialize(),
-      authenticate(params.getSession),
+      authenticate(params.getSession), // TODO this should come at the beginning
       withValidation()
     ).split(
       handleValidationErrors(defaultValidationErrorHandler),
