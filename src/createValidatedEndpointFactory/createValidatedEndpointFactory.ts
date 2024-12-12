@@ -14,6 +14,7 @@ import type {
 } from "../helpers/types";
 import { isCheckAcceptHeaderMetadata } from "../middlewares/checkAcceptHeader/helpers/metadata";
 import { DeserializeContextExtension } from "../middlewares/deserialize/helpers/types";
+import { FinalizeContextExtension } from "../middlewares/finalize/helpers/types";
 import type {
   RouteHandlerCallback,
   ValidatedEndpointContextExtension,
@@ -25,7 +26,7 @@ export function createValidatedEndpointFactory<
   PrePipelineIn extends BasePipelineContext,
   PrePipelineOut extends PrePipelineIn & DeserializeContextExtension,
   PostPipelineIn extends PrePipelineOut & ValidatedEndpointContextExtension,
-  PostPipelineOut extends PostPipelineIn // TODO extend this with FinalizeContextExtension?
+  PostPipelineOut extends PostPipelineIn & FinalizeContextExtension
 >(
   pipelines: [
     Pipeline<PrePipelineIn, PrePipelineOut>,
