@@ -1,7 +1,7 @@
 import { html } from "../../../helpers/html";
-import { testPipeline } from "./testPipeline";
+import { testSetup } from "./testSetup";
 
-export const getHtml = testPipeline.createEndpoint(
+export const getHtml = testSetup.createEndpoint(
   "GET /html",
 
   { response: { 200: html() } },

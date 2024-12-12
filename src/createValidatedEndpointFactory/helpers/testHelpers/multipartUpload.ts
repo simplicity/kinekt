@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { fileDataSchema } from "../../../helpers/fileData";
-import { testPipeline } from "./testPipeline";
+import { testSetup } from "./testSetup";
 
-export const multipartUpload = testPipeline.createEndpoint(
+export const multipartUpload = testSetup.createEndpoint(
   "POST /multipartUpload",
 
   {

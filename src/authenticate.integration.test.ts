@@ -1,7 +1,7 @@
 import { afterEach } from "node:test";
 import { describe, expect, it, vi } from "vitest";
 import { getHtml } from "./createValidatedEndpointFactory/helpers/testHelpers/getHtml";
-import { TestSession } from "./createValidatedEndpointFactory/helpers/testHelpers/testPipeline";
+import { TestSession } from "./createValidatedEndpointFactory/helpers/testHelpers/testSetup";
 import { createTestContext } from "./helpers/testHelpers/createTestContext";
 import { FinalizedResponse } from "./middlewares/finalize/helpers/types";
 

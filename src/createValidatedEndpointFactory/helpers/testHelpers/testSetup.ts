@@ -14,11 +14,10 @@ async function getSession<In extends BasePipelineContext>(
     : { type: "set", session: { user: { email: atob(authorization) } } };
 }
 
-// TODO dont call this "pipeline"
-export const testPipeline = simpleSetup({
+export const testSetup = simpleSetup({
   checkAcceptHeader: true,
   cors: { origins: ["http://example.com"] },
   getSession,
 });
 
-testPipeline.setGlobalClientParams({ baseUrl: "https://some-test-domain.ch" });
+testSetup.setGlobalClientParams({ baseUrl: "https://some-test-domain.ch" });
