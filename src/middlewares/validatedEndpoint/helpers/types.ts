@@ -8,7 +8,6 @@ import type {
   StatusCode,
 } from "../../../helpers/types";
 import { DeserializeContextExtension } from "../../deserialize/helpers/types";
-import { WithValidationContextExtension } from "../../withValidation";
 
 export type RouteHandlerCallback<
   EndpointDeclaration extends EndpointDeclarationBase,
@@ -47,6 +46,10 @@ export type ValidationResult = Result<
   { validationErrors: ValidationErrors }
 >;
 
+export type ValidatedEndpointContextExtension = {
+  validationErrors?: ValidationErrors;
+};
+
 export type ValidatedEndpointContext = BasePipelineContext &
   DeserializeContextExtension &
-  WithValidationContextExtension;
+  ValidatedEndpointContextExtension;

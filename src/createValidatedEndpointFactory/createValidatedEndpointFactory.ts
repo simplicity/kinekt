@@ -14,21 +14,22 @@ import type {
 } from "../helpers/types";
 import { isCheckAcceptHeaderMetadata } from "../middlewares/checkAcceptHeader/helpers/metadata";
 import { DeserializeContextExtension } from "../middlewares/deserialize/helpers/types";
-import type { RouteHandlerCallback } from "../middlewares/validatedEndpoint/helpers/types";
+import type {
+  RouteHandlerCallback,
+  ValidatedEndpointContextExtension,
+} from "../middlewares/validatedEndpoint/helpers/types";
 import { validatedEndpoint } from "../middlewares/validatedEndpoint/validatedEndpoint";
-import { WithValidationContextExtension } from "../middlewares/withValidation";
 import type { Endpoint } from "./helpers/types";
 
 export function createValidatedEndpointFactory<
   PrePipelineIn extends BasePipelineContext,
-  PrePipelineOut extends PrePipelineIn &
-    DeserializeContextExtension &
-    WithValidationContextExtension,
-  PostPipelineOut extends PrePipelineOut
+  PrePipelineOut extends PrePipelineIn & DeserializeContextExtension,
+  PostPipelineIn extends PrePipelineOut & ValidatedEndpointContextExtension,
+  PostPipelineOut extends PostPipelineIn
 >(
   pipelines: [
     Pipeline<PrePipelineIn, PrePipelineOut>,
-    Pipeline<PrePipelineOut, PostPipelineOut>
+    Pipeline<PostPipelineIn, PostPipelineOut>
   ]
 ) {
   const clientParams: ClientParams = {};

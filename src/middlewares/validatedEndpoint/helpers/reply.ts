@@ -1,8 +1,12 @@
-import { BasePipelineContextResponseSet } from "../../../createPipeline/helpers/types";
+import {
+  BasePipelineContext,
+  BasePipelineContextResponseSet,
+} from "../../../createPipeline/helpers/types";
+import { DeserializeContextExtension } from "../../deserialize/helpers/types";
 import type { ValidatedEndpointContext, ValidationErrors } from "./types";
 
 export function reply(
-  context: ValidatedEndpointContext,
+  context: BasePipelineContext & DeserializeContextExtension,
   response: BasePipelineContextResponseSet | null,
   validationErrors: ValidationErrors
 ): ValidatedEndpointContext {

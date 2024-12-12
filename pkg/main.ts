@@ -15,4 +15,3 @@ export { handleValidationErrors } from "../src/middlewares/handleValidationError
 export { logger } from "../src/middlewares/logger/logger";
 export { notFound } from "../src/middlewares/notFound/notFound";
 export { serialize } from "../src/middlewares/serialize/serialize";
-export { withValidation } from "../src/middlewares/withValidation";

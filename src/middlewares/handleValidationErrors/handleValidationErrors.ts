@@ -3,16 +3,17 @@ import type {
   Middleware,
 } from "../../createPipeline/helpers/types";
 import type { StatusCode } from "../../helpers/types";
-import type { WithValidationContextExtension } from "../withValidation";
+import { ValidatedEndpointContextExtension } from "../validatedEndpoint/helpers/types";
 import { reply } from "./helpers/reply";
 import {
   HandleValidationErrorsCustomMiddlewareResponse,
   ValidationErrorHandler,
 } from "./helpers/types";
 
+// TODO coulnd't we avoid this by doing the handling inside validatedEndpoint?
 export const handleValidationErrors =
   <
-    In extends BasePipelineContext & WithValidationContextExtension,
+    In extends BasePipelineContext & ValidatedEndpointContextExtension,
     Out extends In &
       HandleValidationErrorsCustomMiddlewareResponse<
         ValidationErrorStatusCode,
@@ -29,7 +30,7 @@ export const handleValidationErrors =
   async (context) => ({
     ...((context.validationErrors === null || context.response.type === "set"
       ? context
-      : reply(context, handler(context.validationErrors))) as Out),
+      : reply(context, handler(context.validationErrors ?? []))) as Out),
     ...({} as HandleValidationErrorsCustomMiddlewareResponse<
       ValidationErrorStatusCode,
       ValidationErrorBody

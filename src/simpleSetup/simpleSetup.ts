@@ -8,7 +8,6 @@ import { deserialize } from "../middlewares/deserialize/deserialize";
 import { finalize } from "../middlewares/finalize/finalize";
 import { handleValidationErrors } from "../middlewares/handleValidationErrors/handleValidationErrors";
 import { serialize } from "../middlewares/serialize/serialize";
-import { withValidation } from "../middlewares/withValidation";
 import { defaultValidationErrorHandler } from "./helpers/defaultValidationErrorHandler";
 import { CreateDefaultSetupParams } from "./helpers/types";
 
@@ -20,8 +19,7 @@ export function simpleSetup<Session>(
       params.cors ? cors(params.cors) : noopMw,
       params.checkAcceptHeader ? checkAcceptHeader() : noopMw,
       deserialize(),
-      authenticate(params.getSession), // TODO this should come at the beginning
-      withValidation()
+      authenticate(params.getSession) // TODO this should come at the beginning
     ).split(
       handleValidationErrors(defaultValidationErrorHandler),
       serialize(),
