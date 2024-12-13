@@ -15,7 +15,6 @@ async function getSession<In extends BasePipelineContext>(
 }
 
 export const testSetup = simpleSetup({
-  checkAcceptHeader: true,
   cors: { origins: ["http://example.com"] },
   getSession,
 });

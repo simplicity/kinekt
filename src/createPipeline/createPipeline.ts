@@ -109,7 +109,6 @@ export function createPipeline(...fns: Array<MiddlewareLike>) {
       (acc, fn) => [...acc, ...(fn.flatten ? fn.flatten() : [fn])],
       new Array<MiddlewareLike>()
     )
-    // TODO is this effective?
     .filter((fn) => fn !== noopMiddlewareSingleton);
 
   const pipeline: PipelineInternal = (context) =>
