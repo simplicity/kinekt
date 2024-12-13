@@ -32,17 +32,7 @@ function handle(context: BasePipelineContext): SerializeContext {
     );
   }
 
-  const type = typeof context.response.body;
-
-  if (type === "string") {
-    return reply(
-      context,
-      { "content-type": "text/plain" },
-      { type: "set", body: context.response.body }
-    );
-  }
-
-  if (type === "object") {
+  if (typeof context.response.body === "object") {
     if (isFrameworkSpecificResponseBody(context.response.body)) {
       return reply(
         context,
@@ -58,11 +48,10 @@ function handle(context: BasePipelineContext): SerializeContext {
     );
   }
 
-  // TODO what to do here?
   return reply(
     context,
     { "content-type": "text/plain" },
-    { type: "set", body: "" }
+    { type: "set", body: context.response.body?.toString?.() ?? "" }
   );
 }
 
