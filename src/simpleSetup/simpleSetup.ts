@@ -7,6 +7,7 @@ import { cors } from "../middlewares/cors/cors";
 import { deserialize } from "../middlewares/deserialize/deserialize";
 import { finalize } from "../middlewares/finalize/finalize";
 import { handleValidationErrors } from "../middlewares/handleValidationErrors/handleValidationErrors";
+import { logger } from "../middlewares/logger/logger";
 import { serialize } from "../middlewares/serialize/serialize";
 import { defaultValidationErrorHandler } from "./helpers/defaultValidationErrorHandler";
 import { CreateDefaultSetupParams } from "./helpers/types";
@@ -23,7 +24,8 @@ export function simpleSetup<Session>(
     ).split(
       handleValidationErrors(defaultValidationErrorHandler),
       serialize(),
-      finalize()
+      finalize(),
+      logger({ logger: params.logger })
     )
   );
 }
