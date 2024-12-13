@@ -46,7 +46,6 @@ function handle(context: BasePipelineContext): SerializeContext {
     if (isPrecheckResponseBody(context.response.body)) {
       return reply(
         context,
-        // TODO should be determined based on accept header
         { "content-type": "text/plain" },
         { type: "set", body: context.response.body.message }
       );
