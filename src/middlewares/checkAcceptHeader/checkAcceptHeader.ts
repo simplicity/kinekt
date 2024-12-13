@@ -18,17 +18,6 @@ function handle(context: BasePipelineContext): CheckAcceptHeaderContext {
     return reply(context, null, undefined);
   }
 
-  // TODO shouldn't the supported mime type be determined always?
-  //      the question arised because a middleware like authenticate will
-  //      halt execution, and so supported mime type will never be set, which
-  //      means that the response will not adapt to the correct format
-  //
-  //      On the other hand, if it is put before authenticate, we won't have this
-  //      problem. Another option is to set it to alwaysRun, and determine the
-  //      supportedMimeType in any case.
-  //
-  //      But: the naming here is weird. maybe the determination of the supported
-  //      mimetype should be done in a separate middleware?
   const supportedMimeTypes =
     context.metadata.find(isCheckAcceptHeaderMetadata)?.mimeTypes ?? [];
 
