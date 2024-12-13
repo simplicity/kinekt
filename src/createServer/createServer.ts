@@ -15,7 +15,8 @@ export function createServer(params?: CreateServerParams): Server {
 
   return (...endpoints) => {
     if (
-      Deno.env.get("DENO_DEPLOYMENT_ID") !== undefined ||
+      (typeof Deno !== "undefined" &&
+        Deno.env.get("DENO_DEPLOYMENT_ID") !== undefined) ||
       (typeof Deno !== "undefined" && Deno.version && Deno.version.deno)
     ) {
       consoleLogger.info("Environment check: deno detected");
