@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createRequestHandler } from "../../createRequestHandler/createRequestHandler";
 import { getHtml } from "../../createValidatedEndpointFactory/helpers/testHelpers/getHtml";
+import { html } from "../../helpers/html";
 import { createHandleRequestParams } from "../../helpers/testHelpers/createHandleRequestParams";
 import { createTestContext } from "../../helpers/testHelpers/createTestContext";
 import { Method } from "../../helpers/types";
@@ -79,7 +80,7 @@ describe("cors", () => {
   it("routes requests as expected and adds cors headers", async () => {
     await expectRouted("/html", "GET", {
       type: "set",
-      body: "<h1>hello world</h1>",
+      body: html.reply("<h1>hello world</h1>"),
       statusCode: 200,
       headers: {
         "access-control-allow-origin": "http://example.com",

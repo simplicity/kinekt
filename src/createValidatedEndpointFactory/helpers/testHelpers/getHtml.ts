@@ -4,12 +4,12 @@ import { testSetup } from "./testSetup";
 export const getHtml = testSetup.createEndpoint(
   "GET /html",
 
-  { response: { 200: html() } },
+  { response: { 200: html.schema() } },
 
   async () => {
     return {
       statusCode: 200,
-      body: "<h1>hello world</h1>",
+      body: html.reply("<h1>hello world</h1>"),
     };
   }
 );

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { html } from "../../helpers/html";
 import { MimeType } from "../../helpers/MimeType";
 import { createTestContext } from "../../helpers/testHelpers/createTestContext";
 import { serialize } from "./serialize";
@@ -8,7 +9,6 @@ const mw = serialize();
 async function expectSerialization(
   givenBody: unknown,
   expectedBody: unknown,
-  givenSupportedMimeType: MimeType | undefined,
   expectedSupportedMimeType: MimeType,
   additionalGivenHeaders: Record<string, string> = {}
 ) {
@@ -21,7 +21,6 @@ async function expectSerialization(
         statusCode: 200,
       },
     }),
-    supportedMimeType: givenSupportedMimeType,
   });
 
   expect(result.response).toEqual({
@@ -43,7 +42,6 @@ describe("serialize ", () => {
   it("sets serialized body to not ready if response is unset", async () => {
     const result = await mw({
       ...createTestContext(),
-      supportedMimeType: "application/json",
     });
 
     expect(result.response).toEqual({
@@ -56,7 +54,6 @@ describe("serialize ", () => {
     await expectSerialization(
       { some: "property" },
       `{\"some\":\"property\"}`,
-      "application/json",
       "application/json"
     );
   });
@@ -65,50 +62,26 @@ describe("serialize ", () => {
     await expectSerialization(
       { some: "property" },
       `{\"some\":\"property\"}`,
-      "application/json",
       "application/json"
     );
   });
 
   it("serializes text/html", async () => {
     await expectSerialization(
+      html.reply("some value"),
       "some value",
-      "some value",
-      "text/html",
       "text/html"
     );
   });
 
   it("serializes text/plain", async () => {
-    await expectSerialization(
-      "some value",
-      "some value",
-      "text/plain",
-      "text/plain"
-    );
-  });
-
-  it("defaults to text/plain when supportedMimeType is not set and body is a string", async () => {
-    await expectSerialization(
-      "some value",
-      "some value",
-      undefined,
-      "text/plain"
-    );
-  });
-
-  it("defaults to text/plain when supportedMimeType is not set and body is not a string", async () => {
-    await expectSerialization({}, "", undefined, "text/plain");
+    await expectSerialization("some value", "some value", "text/plain");
   });
 
   it("merges response headers", async () => {
-    await expectSerialization(
-      "some value",
-      "some value",
-      "text/plain",
-      "text/plain",
-      { "Some-Header": "some value" }
-    );
+    await expectSerialization("some value", "some value", "text/plain", {
+      "Some-Header": "some value",
+    });
   });
 
   it("always runs", async () => {

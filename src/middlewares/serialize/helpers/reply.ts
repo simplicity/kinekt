@@ -1,9 +1,8 @@
 import type { BasePipelineContext } from "../../../createPipeline/helpers/types";
-import { CheckAcceptHeaderContextExtension } from "../../checkAcceptHeader/helpers/types";
 import type { SerializeContext, SerializedBody } from "./types";
 
 export function reply(
-  context: BasePipelineContext & CheckAcceptHeaderContextExtension,
+  context: BasePipelineContext,
   headers: Record<string, string>,
   serializedBody: SerializedBody
 ): SerializeContext {
