@@ -109,8 +109,9 @@ export function createClient<
         }
 
         return okResult({
-          statusCode: fetchResult.value.status as ResC,
           body: bodyParseResult.value,
+          statusCode: fetchResult.value.status as ResC,
+          headers: Object.fromEntries(fetchResult.value.headers.entries()),
         });
       }
       case "error": {
