@@ -1,6 +1,6 @@
 import { afterEach } from "node:test";
 import { describe, expect, it, vi } from "vitest";
-import { createUser } from "./createValidatedEndpointFactory/helpers/testHelpers/createUser";
+import { createUser } from "./createSchematizedEndpointFactory/helpers/testHelpers/createUser";
 import { mockEndpoint } from "./helpers/testHelpers/mockEndpoint";
 
 describe("createUser", () => {

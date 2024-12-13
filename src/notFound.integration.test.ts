@@ -1,6 +1,6 @@
 import { afterEach } from "node:test";
 import { describe, expect, it, vi } from "vitest";
-import { getHtml } from "./createValidatedEndpointFactory/helpers/testHelpers/getHtml";
+import { getHtml } from "./createSchematizedEndpointFactory/helpers/testHelpers/getHtml";
 import { mockEndpoint } from "./helpers/testHelpers/mockEndpoint";
 
 describe("notFound", () => {

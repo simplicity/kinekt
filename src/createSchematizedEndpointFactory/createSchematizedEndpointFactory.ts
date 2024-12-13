@@ -18,11 +18,11 @@ import { FinalizeContextExtension } from "../middlewares/finalize/helpers/types"
 import type {
   RouteHandlerCallback,
   ValidatedEndpointContextExtension,
-} from "../middlewares/validatedEndpoint/helpers/types";
-import { validatedEndpoint } from "../middlewares/validatedEndpoint/validatedEndpoint";
+} from "../middlewares/schematizedEndpoint/helpers/types";
+import { validatedEndpoint } from "../middlewares/schematizedEndpoint/schematizedEndpoint";
 import type { Endpoint } from "./helpers/types";
 
-export function createValidatedEndpointFactory<
+export function createSchematizedEndpointFactory<
   PrePipelineIn extends BasePipelineContext,
   PrePipelineOut extends PrePipelineIn & DeserializeContextExtension,
   PostPipelineIn extends PrePipelineOut & ValidatedEndpointContextExtension,

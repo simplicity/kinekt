@@ -1,6 +1,6 @@
 import { afterEach } from "node:test";
 import { describe, expect, it, vi } from "vitest";
-import { getMixed } from "./createValidatedEndpointFactory/helpers/testHelpers/getMixed";
+import { getMixed } from "./createSchematizedEndpointFactory/helpers/testHelpers/getMixed";
 import { MimeType } from "./helpers/MimeType";
 import { mockEndpoint } from "./helpers/testHelpers/mockEndpoint";
 import { StatusCode } from "./helpers/types";

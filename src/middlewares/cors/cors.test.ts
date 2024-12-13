@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createRequestHandler } from "../../createRequestHandler/createRequestHandler";
-import { getHtml } from "../../createValidatedEndpointFactory/helpers/testHelpers/getHtml";
+import { getHtml } from "../../createSchematizedEndpointFactory/helpers/testHelpers/getHtml";
 import { html } from "../../helpers/html";
 import { createHandleRequestParams } from "../../helpers/testHelpers/createHandleRequestParams";
 import { createTestContext } from "../../helpers/testHelpers/createTestContext";

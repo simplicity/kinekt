@@ -1,8 +1,8 @@
 export { createNotFoundEndpoint } from "../src/createNotFoundEndpoint/createNotFoundEndpoint";
 export { createPipeline } from "../src/createPipeline/createPipeline";
 export { createRequestHandler } from "../src/createRequestHandler/createRequestHandler";
+export { createSchematizedEndpointFactory } from "../src/createSchematizedEndpointFactory/createSchematizedEndpointFactory";
 export { createServer } from "../src/createServer/createServer";
-export { createValidatedEndpointFactory } from "../src/createValidatedEndpointFactory/createValidatedEndpointFactory";
 export { consoleLogger } from "../src/helpers/consoleLogger";
 export { getDefaultLogStatement } from "../src/helpers/getDefaultLogStatement";
 export { authenticate } from "../src/middlewares/authenticate/authenticate";

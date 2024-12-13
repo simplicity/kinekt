@@ -1,4 +1,4 @@
-import { ValidationErrors } from "../../middlewares/validatedEndpoint/helpers/types";
+import { ValidationErrors } from "../../middlewares/schematizedEndpoint/helpers/types";
 
 export const defaultValidationErrorHandler = (
   validationErrors: ValidationErrors

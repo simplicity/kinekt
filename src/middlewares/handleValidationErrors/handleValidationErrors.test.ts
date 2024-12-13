@@ -7,7 +7,7 @@ import {
 import {
   ValidatedEndpointContextExtension,
   ValidationErrors,
-} from "../validatedEndpoint/helpers/types";
+} from "../schematizedEndpoint/helpers/types";
 import { handleValidationErrors } from "./handleValidationErrors";
 
 const mw = handleValidationErrors((validationErrors) => ({

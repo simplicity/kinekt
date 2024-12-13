@@ -3,11 +3,11 @@ import { z } from "zod";
 import { createNotFoundEndpoint } from "../../createNotFoundEndpoint/createNotFoundEndpoint";
 import { BasePipelineContext } from "../../createPipeline/helpers/types";
 import { createRequestHandler } from "../../createRequestHandler/createRequestHandler";
+import { Endpoint } from "../../createSchematizedEndpointFactory/helpers/types";
 import {
   CreateResponse,
   postProcess,
 } from "../../createServer/helpers/postProcess";
-import { Endpoint } from "../../createValidatedEndpointFactory/helpers/types";
 import { noopLogger } from "../noopLogger";
 import {
   EndpointDeclarationBase,

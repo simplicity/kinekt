@@ -3,7 +3,7 @@ import type {
   Middleware,
 } from "../../createPipeline/helpers/types";
 import type { StatusCode } from "../../helpers/types";
-import { ValidatedEndpointContextExtension } from "../validatedEndpoint/helpers/types";
+import { ValidatedEndpointContextExtension } from "../schematizedEndpoint/helpers/types";
 import { reply } from "./helpers/reply";
 import {
   HandleValidationErrorsCustomMiddlewareResponse,

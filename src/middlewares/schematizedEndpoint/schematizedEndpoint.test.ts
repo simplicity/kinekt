@@ -18,7 +18,7 @@ import {
   ValidatedEndpointContextExtension,
   ValidationErrors,
 } from "./helpers/types";
-import { validatedEndpoint } from "./validatedEndpoint";
+import { validatedEndpoint } from "./schematizedEndpoint";
 
 function createCustomTestContext(
   params?: CreateTestContextParams & { deserializedBody?: DeserializedBody }
@@ -58,7 +58,7 @@ async function expectValitationResults(
   expect(result.validationErrors).toEqual(expectedValidationErrors);
 }
 
-describe("validatedEndpoint ", () => {
+describe("schematizedEndpoint", () => {
   it("takes and returns data as described", async () => {
     const mw = validatedEndpoint(
       {

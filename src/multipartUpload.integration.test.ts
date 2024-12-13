@@ -1,6 +1,6 @@
 import { afterEach } from "node:test";
 import { describe, expect, it, vi } from "vitest";
-import { multipartUpload } from "./createValidatedEndpointFactory/helpers/testHelpers/multipartUpload";
+import { multipartUpload } from "./createSchematizedEndpointFactory/helpers/testHelpers/multipartUpload";
 import { createFileData } from "./helpers/fileData";
 import { mockEndpoint } from "./helpers/testHelpers/mockEndpoint";
 

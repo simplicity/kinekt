@@ -1,6 +1,6 @@
 import { createPipeline } from "../createPipeline/createPipeline";
 import { noopMiddleware } from "../createPipeline/helpers/noopMiddleware";
-import { createValidatedEndpointFactory } from "../createValidatedEndpointFactory/createValidatedEndpointFactory";
+import { createSchematizedEndpointFactory } from "../createSchematizedEndpointFactory/createSchematizedEndpointFactory";
 import { authenticate } from "../middlewares/authenticate/authenticate";
 import { checkAcceptHeader } from "../middlewares/checkAcceptHeader/checkAcceptHeader";
 import { cors } from "../middlewares/cors/cors";
@@ -14,7 +14,7 @@ import { CreateDefaultSetupParams } from "./helpers/types";
 export function simpleSetup<Session>(
   params: CreateDefaultSetupParams<Session>
 ) {
-  return createValidatedEndpointFactory(
+  return createSchematizedEndpointFactory(
     createPipeline(
       authenticate(params.getSession),
       params.cors ? cors(params.cors) : noopMiddleware(),

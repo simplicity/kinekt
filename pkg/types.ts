@@ -5,5 +5,5 @@ export { FinalizeContext } from "../src/middlewares/finalize/helpers/types";
 export {
   ValidationErrors,
   ValidationResult,
-} from "../src/middlewares/validatedEndpoint/helpers/types";
+} from "../src/middlewares/schematizedEndpoint/helpers/types";
 export * from "./main";
