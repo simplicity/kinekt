@@ -26,7 +26,6 @@ export function reply<Session>(
         session: null, // TODO not great
         response: {
           type: "set",
-          // TODO this has to adapt to json output if the endpoint returns json. is that the case?
           body: precheckResponseBody(
             "authentication-failed",
             "Authentication failed"
