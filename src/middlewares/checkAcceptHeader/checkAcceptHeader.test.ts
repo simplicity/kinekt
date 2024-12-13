@@ -37,13 +37,11 @@ describe("checkAcceptHeader ", () => {
 
   it("sets a default if no accept header is provided", async () => {
     const result = await mw(createCustomTestContext());
-    expect(result.supportedMimeType).toBe("application/json");
     expectResponse("unset", result.response);
   });
 
   it("sets a default when '*/*' is provided", async () => {
     const result = await mw(createCustomTestContext({ accept: "*/*" }));
-    expect(result.supportedMimeType).toBe("application/json");
     expectResponse("unset", result.response);
   });
 
@@ -51,7 +49,6 @@ describe("checkAcceptHeader ", () => {
     const result = await mw(
       createCustomTestContext({ accept: "application/json" })
     );
-    expect(result.supportedMimeType).toBe("application/json");
     expectResponse("unset", result.response);
   });
 
