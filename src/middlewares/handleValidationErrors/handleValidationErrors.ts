@@ -10,7 +10,6 @@ import {
   ValidationErrorHandler,
 } from "./helpers/types";
 
-// TODO coulnd't we avoid this by doing the handling inside validatedEndpoint?
 export const handleValidationErrors =
   <
     In extends BasePipelineContext & ValidatedEndpointContextExtension,
