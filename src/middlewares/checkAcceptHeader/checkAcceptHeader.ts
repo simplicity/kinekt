@@ -3,9 +3,9 @@ import type {
   Middleware,
 } from "../../createPipeline/helpers/types";
 import { abort } from "../../helpers/abort";
+import { frameworkSpecificResponseBody } from "../../helpers/frameworkSpecificResponseBody";
 import { isDefined } from "../../helpers/isDefined";
 import type { MimeType } from "../../helpers/MimeType";
-import { precheckResponseBody } from "../../helpers/precheckResponseBody";
 import { isCheckAcceptHeaderMetadata } from "./helpers/metadata";
 import { reply } from "./helpers/reply";
 
@@ -40,7 +40,7 @@ function handle(context: BasePipelineContext): BasePipelineContext {
     return reply(context, {
       type: "set",
       statusCode: 406,
-      body: precheckResponseBody(
+      body: frameworkSpecificResponseBody(
         "unsupported-mime-type",
         `Unable to satisfy requested MIME types [${requestedMimeTypesFormatted}]. Supported types: [${supportedMimeTypesFormatted}].`
       ),

@@ -1,4 +1,4 @@
-import { precheckResponseBody } from "../../../helpers/precheckResponseBody";
+import { frameworkSpecificResponseBody } from "../../../helpers/frameworkSpecificResponseBody";
 import { ErrorResult } from "../../../helpers/result";
 
 export function getBodyForBodyParseResult(
@@ -8,13 +8,13 @@ export function getBodyForBodyParseResult(
 ) {
   switch (bodyParseResult.code) {
     case "unsupported-mime-type": {
-      return precheckResponseBody(
+      return frameworkSpecificResponseBody(
         bodyParseResult.code,
         bodyParseResult.description
       );
     }
     case "json-parse-error": {
-      return precheckResponseBody(
+      return frameworkSpecificResponseBody(
         bodyParseResult.code,
         "MIME type is valid, but received malformed content."
       );

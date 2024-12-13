@@ -1,5 +1,5 @@
 import { BasePipelineContext } from "../../../createPipeline/helpers/types";
-import { precheckResponseBody } from "../../../helpers/precheckResponseBody";
+import { frameworkSpecificResponseBody } from "../../../helpers/frameworkSpecificResponseBody";
 import { AuthenticateCallbackResult, AuthenticateContext } from "./types";
 
 export function reply<Session>(
@@ -26,7 +26,7 @@ export function reply<Session>(
         session: null, // TODO not great
         response: {
           type: "set",
-          body: precheckResponseBody(
+          body: frameworkSpecificResponseBody(
             "authentication-failed",
             "Authentication failed"
           ),

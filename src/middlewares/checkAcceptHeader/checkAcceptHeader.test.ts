@@ -60,7 +60,7 @@ describe("checkAcceptHeader ", () => {
         id: "unsupported-mime-type",
         message:
           "Unable to satisfy requested MIME types [text/html]. Supported types: [application/json, application/x-www-form-urlencoded].",
-        type: "precheck-response-body",
+        type: "<framework-specific-response-body>",
       },
       headers: {},
       statusCode: 406,
@@ -83,7 +83,7 @@ describe("checkAcceptHeader ", () => {
         id: "unsupported-mime-type",
         message:
           "Unable to satisfy requested MIME types [text/html]. Supported types: [application/json, application/x-www-form-urlencoded].",
-        type: "precheck-response-body",
+        type: "<framework-specific-response-body>",
       },
       headers: { "Some-Header": "some value" },
       statusCode: 406,

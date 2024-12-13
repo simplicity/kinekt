@@ -28,7 +28,7 @@ describe("authenticate", () => {
       body: {
         id: "authentication-failed",
         message: "Authentication failed",
-        type: "precheck-response-body",
+        type: "<framework-specific-response-body>",
       },
       statusCode: 401,
       headers: {},
@@ -50,7 +50,7 @@ describe("authenticate", () => {
       body: {
         id: "authentication-failed",
         message: "Authentication failed",
-        type: "precheck-response-body",
+        type: "<framework-specific-response-body>",
       },
       statusCode: 401,
       headers: { "Some-Header": "some value" },

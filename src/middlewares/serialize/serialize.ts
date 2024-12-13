@@ -2,8 +2,8 @@ import type {
   BasePipelineContext,
   Middleware,
 } from "../../createPipeline/helpers/types";
+import { isFrameworkSpecificResponseBody } from "../../helpers/frameworkSpecificResponseBody";
 import { isHtml } from "../../helpers/html";
-import { isPrecheckResponseBody } from "../../helpers/precheckResponseBody";
 import { reply } from "./helpers/reply";
 import { serializeJson } from "./helpers/serializeJson";
 import type {
@@ -43,7 +43,7 @@ function handle(context: BasePipelineContext): SerializeContext {
   }
 
   if (type === "object") {
-    if (isPrecheckResponseBody(context.response.body)) {
+    if (isFrameworkSpecificResponseBody(context.response.body)) {
       return reply(
         context,
         { "content-type": "text/plain" },
