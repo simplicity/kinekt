@@ -1,6 +1,6 @@
 import { afterEach } from "node:test";
 import { describe, expect, it, vi } from "vitest";
-import { urlEncodedUpload } from "./createValidatedEndpointFactory/helpers/testHelpers/urlEncodedUpload";
+import { urlEncodedUpload } from "./createSchematizedEndpointFactory/helpers/testHelpers/urlEncodedUpload";
 import { mockEndpoint } from "./helpers/testHelpers/mockEndpoint";
 
 describe("urlEncodedUpload", () => {

@@ -37,13 +37,11 @@ describe("checkAcceptHeader ", () => {
 
   it("sets a default if no accept header is provided", async () => {
     const result = await mw(createCustomTestContext());
-    expect(result.supportedMimeType).toBe("application/json");
     expectResponse("unset", result.response);
   });
 
   it("sets a default when '*/*' is provided", async () => {
     const result = await mw(createCustomTestContext({ accept: "*/*" }));
-    expect(result.supportedMimeType).toBe("application/json");
     expectResponse("unset", result.response);
   });
 
@@ -51,7 +49,6 @@ describe("checkAcceptHeader ", () => {
     const result = await mw(
       createCustomTestContext({ accept: "application/json" })
     );
-    expect(result.supportedMimeType).toBe("application/json");
     expectResponse("unset", result.response);
   });
 
@@ -63,7 +60,7 @@ describe("checkAcceptHeader ", () => {
         id: "unsupported-mime-type",
         message:
           "Unable to satisfy requested MIME types [text/html]. Supported types: [application/json, application/x-www-form-urlencoded].",
-        type: "precheck-response-body",
+        type: "<framework-specific-response-body>",
       },
       headers: {},
       statusCode: 406,
@@ -86,7 +83,7 @@ describe("checkAcceptHeader ", () => {
         id: "unsupported-mime-type",
         message:
           "Unable to satisfy requested MIME types [text/html]. Supported types: [application/json, application/x-www-form-urlencoded].",
-        type: "precheck-response-body",
+        type: "<framework-specific-response-body>",
       },
       headers: { "Some-Header": "some value" },
       statusCode: 406,

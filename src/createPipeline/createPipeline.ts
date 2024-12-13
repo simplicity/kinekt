@@ -1,3 +1,4 @@
+import { noopMiddlewareSingleton } from "./helpers/noopMiddleware";
 import { process } from "./helpers/process";
 import type {
   BasePipelineContext,
@@ -103,10 +104,12 @@ export function createPipeline<
 >(mw1: Middleware<T00, T01>): Pipeline<T00, T01>;
 
 export function createPipeline(...fns: Array<MiddlewareLike>) {
-  const flattenedFns = fns.reduce(
-    (acc, fn) => [...acc, ...(fn.flatten ? fn.flatten() : [fn])],
-    new Array<MiddlewareLike>()
-  );
+  const flattenedFns = fns
+    .reduce(
+      (acc, fn) => [...acc, ...(fn.flatten ? fn.flatten() : [fn])],
+      new Array<MiddlewareLike>()
+    )
+    .filter((fn) => fn !== noopMiddlewareSingleton);
 
   const pipeline: PipelineInternal = (context) =>
     process(context, flattenedFns, 0);

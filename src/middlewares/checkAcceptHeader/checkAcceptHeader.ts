@@ -3,19 +3,15 @@ import type {
   Middleware,
 } from "../../createPipeline/helpers/types";
 import { abort } from "../../helpers/abort";
+import { frameworkSpecificResponseBody } from "../../helpers/frameworkSpecificResponseBody";
 import { isDefined } from "../../helpers/isDefined";
 import type { MimeType } from "../../helpers/MimeType";
-import { precheckResponseBody } from "../../helpers/precheckResponseBody";
 import { isCheckAcceptHeaderMetadata } from "./helpers/metadata";
 import { reply } from "./helpers/reply";
-import {
-  CheckAcceptHeaderContext,
-  CheckAcceptHeaderContextExtension,
-} from "./helpers/types";
 
-function handle(context: BasePipelineContext): CheckAcceptHeaderContext {
+function handle(context: BasePipelineContext): BasePipelineContext {
   if (context.response.type === "set") {
-    return reply(context, null, null);
+    return reply(context, null);
   }
 
   const supportedMimeTypes =
@@ -41,27 +37,23 @@ function handle(context: BasePipelineContext): CheckAcceptHeaderContext {
     const requestedMimeTypesFormatted = requestedMimeTypes.join(", ");
     const supportedMimeTypesFormatted = supportedMimeTypes.join(", ");
 
-    return reply(
-      context,
-      {
-        type: "set",
-        statusCode: 406,
-        body: precheckResponseBody(
-          "unsupported-mime-type",
-          `Unable to satisfy requested MIME types [${requestedMimeTypesFormatted}]. Supported types: [${supportedMimeTypesFormatted}].`
-        ),
-        headers: {},
-      },
-      null
-    );
+    return reply(context, {
+      type: "set",
+      statusCode: 406,
+      body: frameworkSpecificResponseBody(
+        "unsupported-mime-type",
+        `Unable to satisfy requested MIME types [${requestedMimeTypesFormatted}]. Supported types: [${supportedMimeTypesFormatted}].`
+      ),
+      headers: {},
+    });
   }
 
-  return reply(context, null, supportedMimeType);
+  return reply(context, null);
 }
 
 export const checkAcceptHeader = <
   In extends BasePipelineContext,
-  Out extends In & CheckAcceptHeaderContextExtension
+  Out extends In
 >(): Middleware<In, Out> => {
   const middleware: Middleware<In, Out> = async (context) =>
     handle(context) as Out;

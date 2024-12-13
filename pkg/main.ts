@@ -1,8 +1,8 @@
 export { createNotFoundEndpoint } from "../src/createNotFoundEndpoint/createNotFoundEndpoint";
 export { createPipeline } from "../src/createPipeline/createPipeline";
 export { createRequestHandler } from "../src/createRequestHandler/createRequestHandler";
+export { createSchematizedEndpointFactory } from "../src/createSchematizedEndpointFactory/createSchematizedEndpointFactory";
 export { createServer } from "../src/createServer/createServer";
-export { createValidatedEndpointFactory } from "../src/createValidatedEndpointFactory/createValidatedEndpointFactory";
 export { consoleLogger } from "../src/helpers/consoleLogger";
 export { getDefaultLogStatement } from "../src/helpers/getDefaultLogStatement";
 export { authenticate } from "../src/middlewares/authenticate/authenticate";
@@ -15,4 +15,4 @@ export { handleValidationErrors } from "../src/middlewares/handleValidationError
 export { logger } from "../src/middlewares/logger/logger";
 export { notFound } from "../src/middlewares/notFound/notFound";
 export { serialize } from "../src/middlewares/serialize/serialize";
-export { withValidation } from "../src/middlewares/withValidation";
+export { simpleSetup } from "../src/simpleSetup/simpleSetup";

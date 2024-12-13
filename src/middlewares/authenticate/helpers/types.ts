@@ -21,6 +21,6 @@ export type AuthenticateCallbackResult<Session> =
   | { type: "set"; session: Session }
   | { type: "unset" };
 
-export type AuthenticateCallback<In extends BasePipelineContext, Session> = (
-  context: In
+export type AuthenticateCallback<Session> = (
+  context: BasePipelineContext
 ) => Promise<AuthenticateCallbackResult<Session>>;

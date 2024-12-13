@@ -15,16 +15,17 @@ import type {
 } from "../../helpers/types";
 import { checkAcceptHeaderMetadata } from "../checkAcceptHeader/helpers/metadata";
 import type { DeserializeContextExtension } from "../deserialize/helpers/types";
-import type { WithValidationContextExtension } from "../withValidation";
 import { collectMimeTypes } from "./helpers/collectMimeTypes";
 import { getValidationResult } from "./helpers/getValidationResult";
 import { reply } from "./helpers/reply";
-import type { RouteHandlerCallback } from "./helpers/types";
+import type {
+  RouteHandlerCallback,
+  ValidatedEndpointContextExtension,
+} from "./helpers/types";
 
 export const validatedEndpoint = <
-  PipelineContext extends BasePipelineContext &
-    DeserializeContextExtension &
-    WithValidationContextExtension,
+  In extends BasePipelineContext & DeserializeContextExtension,
+  Out extends In & ValidatedEndpointContextExtension,
   EndpointDeclaration extends EndpointDeclarationBase,
   PathParams extends ExtractPathParams<EndpointDeclaration>,
   ReqP extends PathParams extends void ? z.ZodVoid : z.ZodType<PathParams>,
@@ -49,18 +50,16 @@ export const validatedEndpoint = <
     ReqB,
     ResB,
     ResC,
-    PipelineContext
+    In
   >
-): Middleware<PipelineContext, PipelineContext> => {
-  const middleware: Middleware<PipelineContext, PipelineContext> = async (
-    context
-  ) => {
+): Middleware<In, Out> => {
+  const middleware: Middleware<In, Out> = async (context) => {
     if (context.response.type === "set") {
-      return context;
+      return reply(context, null, []) as Out;
     }
 
     if (context.request.deserializedBody.type === "unset") {
-      return context;
+      return reply(context, null, []) as Out;
     }
 
     const validationResult = await getValidationResult(
@@ -76,7 +75,7 @@ export const validatedEndpoint = <
         context,
         null,
         validationResult.metadata.validationErrors
-      ) as PipelineContext;
+      ) as Out;
     }
 
     const response = await callback({
@@ -95,7 +94,7 @@ export const validatedEndpoint = <
         headers: {},
       },
       []
-    ) as PipelineContext;
+    ) as Out;
   };
 
   const method = extractMethod(routeDefinition.endpointDeclaration);

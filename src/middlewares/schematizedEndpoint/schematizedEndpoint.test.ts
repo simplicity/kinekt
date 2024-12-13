@@ -13,15 +13,18 @@ import {
   DeserializeContextExtension,
   DeserializedBody,
 } from "../deserialize/helpers/types";
-import { WithValidationContextExtension } from "../withValidation";
-import { ValidatedEndpointContext, ValidationErrors } from "./helpers/types";
-import { validatedEndpoint } from "./validatedEndpoint";
+import {
+  ValidatedEndpointContext,
+  ValidatedEndpointContextExtension,
+  ValidationErrors,
+} from "./helpers/types";
+import { validatedEndpoint } from "./schematizedEndpoint";
 
 function createCustomTestContext(
   params?: CreateTestContextParams & { deserializedBody?: DeserializedBody }
 ): BasePipelineContext &
   DeserializeContextExtension &
-  WithValidationContextExtension {
+  ValidatedEndpointContextExtension {
   const base = createTestContext(params);
 
   return {
@@ -38,7 +41,7 @@ async function expectValitationResults(
   mw: Middleware<
     BasePipelineContext &
       DeserializeContextExtension &
-      WithValidationContextExtension,
+      ValidatedEndpointContextExtension,
     ValidatedEndpointContext
   >,
   expectedValidationErrors: ValidationErrors,
@@ -55,7 +58,7 @@ async function expectValitationResults(
   expect(result.validationErrors).toEqual(expectedValidationErrors);
 }
 
-describe("validatedEndpoint ", () => {
+describe("schematizedEndpoint", () => {
   it("takes and returns data as described", async () => {
     const mw = validatedEndpoint(
       {

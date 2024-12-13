@@ -10,7 +10,7 @@ export function collectMimeTypes(response: {
   [key: number]: z.ZodType;
 }): Array<MimeType> {
   return Object.values(response).reduce((acc, item) => {
-    if (item === html()) {
+    if (item === html.schema()) {
       return addMimeType(acc, "text/html");
     }
 

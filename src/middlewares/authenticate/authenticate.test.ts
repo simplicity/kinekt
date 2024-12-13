@@ -25,7 +25,11 @@ describe("authenticate", () => {
     const result = await mw(createTestContext());
     expect(result.response).toEqual({
       type: "set",
-      body: { error: "Unauthorized" },
+      body: {
+        id: "authentication-failed",
+        message: "Authentication failed",
+        type: "<framework-specific-response-body>",
+      },
       statusCode: 401,
       headers: {},
     });
@@ -43,7 +47,11 @@ describe("authenticate", () => {
 
     expect(result.response).toEqual({
       type: "set",
-      body: { error: "Unauthorized" },
+      body: {
+        id: "authentication-failed",
+        message: "Authentication failed",
+        type: "<framework-specific-response-body>",
+      },
       statusCode: 401,
       headers: { "Some-Header": "some value" },
     });

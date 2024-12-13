@@ -1,5 +1,5 @@
 import { StatusCode } from "../../../helpers/types";
-import { ValidationErrors } from "../../validatedEndpoint/helpers/types";
+import { ValidationErrors } from "../../schematizedEndpoint/helpers/types";
 
 export type HandleValidationErrorsCustomMiddlewareResponse<
   ValidationErrorStatusCode extends StatusCode,

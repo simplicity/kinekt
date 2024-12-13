@@ -13,7 +13,7 @@ export const authenticate = <
   In extends BasePipelineContext,
   Out extends In & AuthenticateContextExtension<Session>
 >(
-  cb: AuthenticateCallback<In, Session>
+  cb: AuthenticateCallback<Session>
 ): Middleware<In, Out> => {
   const middleware: Middleware<In, Out> = async (context) =>
     reply<Session>(context, await cb(context)) as Out;

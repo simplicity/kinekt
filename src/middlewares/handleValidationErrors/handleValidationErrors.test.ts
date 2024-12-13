@@ -4,8 +4,10 @@ import {
   CreateTestContextParams,
   createTestContext,
 } from "../../helpers/testHelpers/createTestContext";
-import { ValidationErrors } from "../validatedEndpoint/helpers/types";
-import { WithValidationContextExtension } from "../withValidation";
+import {
+  ValidatedEndpointContextExtension,
+  ValidationErrors,
+} from "../schematizedEndpoint/helpers/types";
 import { handleValidationErrors } from "./handleValidationErrors";
 
 const mw = handleValidationErrors((validationErrors) => ({
@@ -17,7 +19,7 @@ function createCustomTestContext(
   params?: CreateTestContextParams & {
     validationErrors?: ValidationErrors;
   }
-): BasePipelineContext & WithValidationContextExtension {
+): BasePipelineContext & ValidatedEndpointContextExtension {
   const base = createTestContext(params);
 
   return {

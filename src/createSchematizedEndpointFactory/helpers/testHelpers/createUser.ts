@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { testPipeline } from "./testPipeline";
+import { testSetup } from "./testSetup";
 
 type User = {
   id: string;
@@ -12,7 +12,7 @@ function zodBooleanFromString() {
   return z.enum(["true", "false"]).transform((value) => value === "true");
 }
 
-export const createUser = testPipeline.createEndpoint(
+export const createUser = testSetup.createEndpoint(
   "POST /organization/:organizationId/users",
 
   {

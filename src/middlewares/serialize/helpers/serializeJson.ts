@@ -1,7 +1,7 @@
-import { isPrecheckResponseBody } from "../../../helpers/precheckResponseBody";
+import { isFrameworkSpecificResponseBody } from "../../../helpers/frameworkSpecificResponseBody";
 
 export function serializeJson(body: unknown) {
   return JSON.stringify(
-    isPrecheckResponseBody(body) ? { message: body.message } : body
+    isFrameworkSpecificResponseBody(body) ? { message: body.message } : body
   );
 }

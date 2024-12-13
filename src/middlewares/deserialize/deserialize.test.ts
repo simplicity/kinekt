@@ -91,7 +91,7 @@ describe("deserialize ", () => {
       type: "set",
       statusCode: 415,
       body: {
-        type: "precheck-response-body",
+        type: "<framework-specific-response-body>",
         id: "unsupported-mime-type",
         message: "Unsupported MIME type 'unsupported'",
       },
@@ -126,7 +126,7 @@ describe("deserialize ", () => {
       type: "set",
       statusCode: 415,
       body: {
-        type: "precheck-response-body",
+        type: "<framework-specific-response-body>",
         id: "json-parse-error",
         message: "MIME type is valid, but received malformed content.",
       },
@@ -151,7 +151,7 @@ describe("deserialize ", () => {
       type: "set",
       statusCode: 415,
       body: {
-        type: "precheck-response-body",
+        type: "<framework-specific-response-body>",
         id: "unsupported-mime-type",
         message: "Unsupported MIME type 'unsupported'",
       },

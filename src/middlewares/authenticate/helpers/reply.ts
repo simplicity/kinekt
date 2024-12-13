@@ -1,9 +1,6 @@
 import { BasePipelineContext } from "../../../createPipeline/helpers/types";
-import {
-  AuthenticateCallbackResult,
-  AuthenticateContext,
-  UnauthorizedResponseBody,
-} from "./types";
+import { frameworkSpecificResponseBody } from "../../../helpers/frameworkSpecificResponseBody";
+import { AuthenticateCallbackResult, AuthenticateContext } from "./types";
 
 export function reply<Session>(
   context: BasePipelineContext,
@@ -29,7 +26,10 @@ export function reply<Session>(
         session: null, // TODO not great
         response: {
           type: "set",
-          body: { error: "Unauthorized" } satisfies UnauthorizedResponseBody,
+          body: frameworkSpecificResponseBody(
+            "authentication-failed",
+            "Authentication failed"
+          ),
           statusCode: 401,
           headers: {
             ...(context.response.type === "partially-set"

@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { testPipeline } from "./testPipeline";
+import { testSetup } from "./testSetup";
 
-export const urlEncodedUpload = testPipeline.createEndpoint(
+export const urlEncodedUpload = testSetup.createEndpoint(
   "POST /urlEncodedUpload",
 
   {
