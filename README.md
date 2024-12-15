@@ -10,6 +10,14 @@
   <a href='https://coveralls.io/github/simplicity/kinekt?branch=main'>
     <img src='https://coveralls.io/repos/github/simplicity/kinekt/badge.svg?branch=main' alt='Coverage Status' />
   </a>
+
+  <a href='https://bundlephobia.com/result?p=hono'>
+    <img src='https://img.shields.io/bundlephobia/min/kinekt' alt='Minified Size' />
+  </a>
+
+  <a href='https://bundlephobia.com/result?p=hono'>
+    <img src='https://img.shields.io/bundlephobia/minzip/kinekt' alt='Minzipped Size' />
+  </a>
 </div>
 
 <hr>
