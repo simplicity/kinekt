@@ -4,21 +4,19 @@
   <h4>Pronounced like 'connect' but with an i.</h4>
 
   <a href='https://github.com/simplicity/kinekt/actions/workflows/test.yml'>
-    <img src="https://github.com/simplicity/kinekt/actions/workflows/test.yml/badge.svg?branch=main" alt="Test Results">
+    <span><img src="https://github.com/simplicity/kinekt/actions/workflows/test.yml/badge.svg?branch=main" alt="Test Results"></span>
   </a>
-
-&nbsp;
 
   <a href='https://coveralls.io/github/simplicity/kinekt?branch=main'>
-    <img src='https://coveralls.io/repos/github/simplicity/kinekt/badge.svg?branch=main' alt='Coverage Status' />
+    <span><img src='https://coveralls.io/repos/github/simplicity/kinekt/badge.svg?branch=main' alt='Coverage Status' /></span>
   </a>
 
   <a href='https://bundlephobia.com/result?p=hono'>
-    <img src='https://img.shields.io/bundlephobia/min/kinekt' alt='Minified Size' />
+    <span><img src='https://img.shields.io/bundlephobia/min/kinekt' alt='Minified Size' /></span>
   </a>
 
   <a href='https://bundlephobia.com/result?p=hono'>
-    <img src='https://img.shields.io/bundlephobia/minzip/kinekt' alt='Minzipped Size' />
+    <span><img src='https://img.shields.io/bundlephobia/minzip/kinekt' alt='Minzipped Size' /></span>
   </a>
 </div>
 
