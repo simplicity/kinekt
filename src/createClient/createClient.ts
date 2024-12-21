@@ -125,6 +125,7 @@ export function createClient<
     ok: (statusCode) =>
       run(props).then((result) => {
         if (result.type === "error") {
+          // TODO would be really useful to print the status code here
           throw new Error("Expected ok result, received error.");
         }
 

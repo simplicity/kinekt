@@ -23,6 +23,7 @@ import type {
   ValidatedEndpointContextExtension,
 } from "./helpers/types";
 
+// TODO rename
 export const validatedEndpoint = <
   In extends BasePipelineContext & DeserializeContextExtension,
   Out extends In & ValidatedEndpointContextExtension,
